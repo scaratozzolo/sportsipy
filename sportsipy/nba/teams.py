@@ -45,6 +45,9 @@ class Team:
         self._abbreviation = None
         self._name = None
         self._games_played = None
+        self._wins = None
+        self._losses = None
+        self._win_percentage = None
         self._minutes_played = None
         self._field_goals = None
         self._field_goal_attempts = None
@@ -186,6 +189,9 @@ class Team:
             'free_throw_percentage': self.free_throw_percentage,
             'free_throws': self.free_throws,
             'games_played': self.games_played,
+            'wins': self.wins,
+            'losses': self.losses,
+            'win_percentage': self.win_percentage,
             'minutes_played': self.minutes_played,
             'name': self.name,
             'offensive_rebounds': self.offensive_rebounds,
@@ -280,6 +286,30 @@ class Team:
         during the season.
         """
         return self._games_played
+
+    @int_property_decorator
+    def wins(self):
+        """
+        Returns an ``int`` of the number of games the team won during the
+        season.
+        """
+        return self._wins
+
+    @int_property_decorator
+    def losses(self):
+        """
+        Returns an ``int`` of the number of games the team lost during the
+        season.
+        """
+        return self._losses
+
+    @float_property_decorator
+    def win_percentage(self):
+        """
+        Returns a ``float`` of the number of wins divided by the number of
+        games played. Percentage ranges from 0-1.
+        """
+        return self._win_percentage
 
     @int_property_decorator
     def minutes_played(self):

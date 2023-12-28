@@ -1,6 +1,9 @@
 PARSING_SCHEME = {
     'name': 'a',
     'games_played': 'td[data-stat="g"]:first',
+    'wins': 'td[data-stat="wins"]:first',
+    'losses': 'td[data-stat="losses"]:first',
+    'win_percentage': 'td[data-stat="win_loss_pct"]:first',
     'minutes_played': 'td[data-stat="mp"]:first',
     'field_goals': 'td[data-stat="fg"]:first',
     'field_goal_attempts': 'td[data-stat="fga"]:first',

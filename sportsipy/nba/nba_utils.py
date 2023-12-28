@@ -30,12 +30,15 @@ def _add_stats_data(teams_list, team_data_dict):
     # Teams are listed in terms of rank with the first team being #1
     rank = 1
     for team_data in teams_list:
-        abbr = utils._parse_field(PARSING_SCHEME, team_data, 'abbreviation')
-        try:
-            team_data_dict[abbr]['data'] += team_data
-        except KeyError:
-            team_data_dict[abbr] = {'data': team_data, 'rank': rank}
-        rank += 1
+        # Only try to pull data from the row if there's a team link, otherwise it
+        # might be an embedded header row, like in the division standings
+        if team_data('a').attr('href') is not None:
+            abbr = utils._parse_field(PARSING_SCHEME, team_data, 'abbreviation')
+            try:
+                team_data_dict[abbr]['data'] += team_data
+            except KeyError:
+                team_data_dict[abbr] = {'data': team_data, 'rank': rank}
+            rank += 1
     return team_data_dict
 
 
@@ -84,10 +87,14 @@ def _retrieve_all_teams(year, season_file=None):
     doc = utils._pull_page(SEASON_PAGE_URL % year, season_file)
     teams_list = utils._get_stats_table(doc, 'div#div_totals-team')
     opp_teams_list = utils._get_stats_table(doc, 'div#div_totals-opponent')
+    # Team wins, losses, and win % are in separate tables, and older years
+    # do not have a conference standings table
+    standings_list_E = utils._get_stats_table(doc, 'div#div_divs_standings_E')
+    standings_list_W = utils._get_stats_table(doc, 'div#div_divs_standings_W')
 
-    if not teams_list and not opp_teams_list:
+    if not teams_list and not opp_teams_list and not standings_list_E and not standings_list_W:
         utils._no_data_found()
         return None, None
-    for stats_list in [teams_list, opp_teams_list]:
+    for stats_list in [teams_list, opp_teams_list, standings_list_E, standings_list_W]:
         team_data_dict = _add_stats_data(stats_list, team_data_dict)
     return team_data_dict, year
