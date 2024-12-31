@@ -20,6 +20,7 @@ from sportsipy.nfl.constants import (CONF_CHAMPIONSHIP,
                                      DIVISION,
                                      SUPER_BOWL,
                                      WILD_CARD)
+from typing import Iterator, Optional
 
 
 class Game:
@@ -166,7 +167,7 @@ class Game:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the boxscore string.
@@ -216,7 +217,7 @@ class Game:
         return pd.DataFrame([fields_to_include], index=[self._boxscore])
 
     @property
-    def dataframe_extended(self):
+    def dataframe_extended(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame representing the Boxscore class for the
         game. This property provides much richer context for the selected game,
@@ -226,7 +227,7 @@ class Game:
         return self.boxscore.dataframe
 
     @int_property_decorator
-    def week(self):
+    def week(self) -> Optional[int]:
         """
         Returns an ``int`` of the week number in the season, such as 1 for the
         first week of the regular season.
@@ -242,7 +243,7 @@ class Game:
         return self._week
 
     @property
-    def day(self):
+    def day(self) -> Optional[str]:
         """
         Returns a ``string`` of the day of the week the game was played as a
         3-letter abbreviation, such as 'Sun' for Sunday.
@@ -250,7 +251,7 @@ class Game:
         return self._day
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the month and day the game was played, such as
         'September 7'.
@@ -258,7 +259,7 @@ class Game:
         return self._date
 
     @property
-    def boxscore(self):
+    def boxscore(self) -> Boxscore:
         """
         Returns an instance of the Boxscore class containing more detailed
         stats on the game.
@@ -266,7 +267,7 @@ class Game:
         return Boxscore(self._boxscore)
 
     @property
-    def boxscore_index(self):
+    def boxscore_index(self) -> Optional[str]:
         """
         Returns a ``string`` of the URI for a boxscore which can be used to
         access or index a game.
@@ -274,7 +275,7 @@ class Game:
         return self._boxscore
 
     @property
-    def type(self):
+    def type(self) -> Optional[str]:
         """
         Returns a ``string`` constant indicating whether the game is a regular
         season or playoff matchup.
@@ -282,7 +283,7 @@ class Game:
         return self._type
 
     @property
-    def datetime(self):
+    def datetime(self) -> Optional[datetime]:
         """
         Returns a datetime object representing the date the game was played.
         """
@@ -297,7 +298,7 @@ class Game:
         return datetime.strptime(date_string, '%a %B %d %Y')
 
     @property
-    def result(self):
+    def result(self) -> Optional[str]:
         """
         Returns a ``string`` constant indicating whether the team won or lost
         the game. NFL games may end in a tie if the score is even at the end of
@@ -314,7 +315,7 @@ class Game:
             return None
 
     @property
-    def overtime(self):
+    def overtime(self) -> bool:
         """
         Returns a ``boolean`` value that evaluates to True if the game when to
         overtime and False if it ended in regulation.
@@ -324,7 +325,7 @@ class Game:
         return False
 
     @property
-    def location(self):
+    def location(self) -> Optional[str]:
         """
         Returns a ``string`` constant indicating whether the game was played at
         home, away, or a neutral site, such as the Super Bowl.
@@ -336,7 +337,7 @@ class Game:
         return HOME
 
     @property
-    def opponent_abbr(self):
+    def opponent_abbr(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponent's 3-letter abbreviation, such as
         'NWE' for the New England Patriots.
@@ -344,7 +345,7 @@ class Game:
         return self._opponent_abbr
 
     @property
-    def opponent_name(self):
+    def opponent_name(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponent's full name, such as the 'New
         England Patriots'.
@@ -352,28 +353,28 @@ class Game:
         return self._opponent_name
 
     @int_property_decorator
-    def points_scored(self):
+    def points_scored(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points scored by the team.
         """
         return self._points_scored
 
     @int_property_decorator
-    def points_allowed(self):
+    def points_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points allowed by the team.
         """
         return self._points_allowed
 
     @int_property_decorator
-    def pass_completions(self):
+    def pass_completions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of completed passed by the team.
         """
         return self._pass_completions
 
     @int_property_decorator
-    def pass_attempts(self):
+    def pass_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passes the team attempted during
         the game.
@@ -381,7 +382,7 @@ class Game:
         return self._pass_attempts
 
     @int_property_decorator
-    def pass_yards(self):
+    def pass_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards the team gained as a result
         of passing plays.
@@ -389,7 +390,7 @@ class Game:
         return self._pass_yards
 
     @int_property_decorator
-    def pass_touchdowns(self):
+    def pass_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of touchdowns the team scored as a
         result of passing plays.
@@ -397,14 +398,14 @@ class Game:
         return self._pass_touchdowns
 
     @int_property_decorator
-    def interceptions(self):
+    def interceptions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of interceptions the team threw.
         """
         return self._interceptions
 
     @int_property_decorator
-    def times_sacked(self):
+    def times_sacked(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the quarterback was sacked by
         the opponent.
@@ -412,7 +413,7 @@ class Game:
         return self._times_sacked
 
     @int_property_decorator
-    def yards_lost_from_sacks(self):
+    def yards_lost_from_sacks(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards lost as a result of a
         sack.
@@ -420,7 +421,7 @@ class Game:
         return self._yards_lost_from_sacks
 
     @float_property_decorator
-    def pass_yards_per_attempt(self):
+    def pass_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per passing
         play.
@@ -428,7 +429,7 @@ class Game:
         return self._pass_yards_per_attempt
 
     @float_property_decorator
-    def pass_completion_rate(self):
+    def pass_completion_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of passes that were completed by
         the team. Percentage ranges from 0-100.
@@ -436,14 +437,14 @@ class Game:
         return self._pass_completion_rate
 
     @float_property_decorator
-    def quarterback_rating(self):
+    def quarterback_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the quarterback's rating for the game.
         """
         return self._quarterback_rating
 
     @int_property_decorator
-    def rush_attempts(self):
+    def rush_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of times the team attempted a
         rushing play.
@@ -451,7 +452,7 @@ class Game:
         return self._rush_attempts
 
     @int_property_decorator
-    def rush_yards(self):
+    def rush_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the team gain as a
         result of rushing plays.
@@ -459,7 +460,7 @@ class Game:
         return self._rush_yards
 
     @float_property_decorator
-    def rush_yards_per_attempt(self):
+    def rush_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per rushing
         play.
@@ -467,7 +468,7 @@ class Game:
         return self._rush_yards_per_attempt
 
     @int_property_decorator
-    def rush_touchdowns(self):
+    def rush_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of touchdowns the team scored as a
         result of rushing plays.
@@ -475,14 +476,14 @@ class Game:
         return self._rush_touchdowns
 
     @int_property_decorator
-    def field_goals_made(self):
+    def field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals the team scored.
         """
         return self._field_goals_made
 
     @int_property_decorator
-    def field_goals_attempted(self):
+    def field_goals_attempted(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of times the team attempted a
         field goal.
@@ -490,7 +491,7 @@ class Game:
         return self._field_goals_attempted
 
     @int_property_decorator
-    def extra_points_made(self):
+    def extra_points_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of extra points the team successfully
         converted after scoring a touchdown.
@@ -498,7 +499,7 @@ class Game:
         return self._extra_points_made
 
     @int_property_decorator
-    def extra_points_attempted(self):
+    def extra_points_attempted(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the team attempted to convert
         an extra point after scoring a touchdown.
@@ -506,14 +507,14 @@ class Game:
         return self._extra_points_attempted
 
     @int_property_decorator
-    def punts(self):
+    def punts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the team punted the ball.
         """
         return self._punts
 
     @int_property_decorator
-    def punt_yards(self):
+    def punt_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the team punted the
         ball.
@@ -521,7 +522,7 @@ class Game:
         return self._punt_yards
 
     @int_property_decorator
-    def third_down_conversions(self):
+    def third_down_conversions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of third downs the team successfully
         converted.
@@ -529,7 +530,7 @@ class Game:
         return self._third_down_conversions
 
     @int_property_decorator
-    def third_down_attempts(self):
+    def third_down_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of third downs the team
         attempted to convert.
@@ -537,7 +538,7 @@ class Game:
         return self._third_down_attempts
 
     @int_property_decorator
-    def fourth_down_conversions(self):
+    def fourth_down_conversions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of fourth downs the team successfully
         converted.
@@ -545,7 +546,7 @@ class Game:
         return self._fourth_down_conversions
 
     @int_property_decorator
-    def fourth_down_attempts(self):
+    def fourth_down_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of fourth downs the team
         attempted to convert.
@@ -553,7 +554,7 @@ class Game:
         return self._fourth_down_attempts
 
     @property
-    def time_of_possession(self):
+    def time_of_possession(self) -> Optional[str]:
         """
         Returns a ``string`` of the total time the team spent with the ball.
         Time is in the format 'MM:SS'.
@@ -599,7 +600,7 @@ class Schedule:
         """
         return self._games[index]
 
-    def __call__(self, date):
+    def __call__(self, date) -> Game:
         """
         Return a specified game.
 
@@ -645,7 +646,7 @@ class Schedule:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Game]:
         """
         Returns an iterator of all of the games scheduled for the given team.
         """
@@ -715,7 +716,7 @@ class Schedule:
             self._add_games_to_schedule(playoffs, POST_SEASON, year)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Game class. Rows are indexed by the boxscore string.
@@ -730,7 +731,7 @@ class Schedule:
         return pd.concat(frames)
 
     @property
-    def dataframe_extended(self):
+    def dataframe_extended(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Boxscore class for every game in the schedule. Rows are indexed by the

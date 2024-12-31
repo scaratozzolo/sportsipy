@@ -7,6 +7,8 @@ from urllib.error import HTTPError
 from .. import utils
 from .constants import PLAYER_SCHEME, PLAYER_URL, ROSTER_URL, DETAILED_STATS
 from .player import AbstractPlayer
+from typing import Optional, Union
+from datetime import datetime
 
 
 def _cleanup(prop):
@@ -478,7 +480,7 @@ class Player(AbstractPlayer):
         element should be the index value.
         """
         index = 0
-        for season in self._season or season == 'Career':
+        for season in self._season or ['Career']:
             if season == 'Career':
                 self._index = index
                 break
@@ -694,7 +696,7 @@ class Player(AbstractPlayer):
         return fields_to_include
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and values where each index is a different season plus the
@@ -713,7 +715,7 @@ class Player(AbstractPlayer):
         return pd.DataFrame(rows, index=[indices])
 
     @property
-    def season(self):
+    def season(self) -> Optional[str]:
         """
         Returns a ``string`` of the season in the format 'YYYY', such as
         '2017'. If no season was requested, the career stats will be returned
@@ -722,7 +724,7 @@ class Player(AbstractPlayer):
         return self._season[self._index]
 
     @property
-    def team_abbreviation(self):
+    def team_abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's abbreviation, such as 'NOR' for the
         New Orleans Saints.
@@ -730,14 +732,14 @@ class Player(AbstractPlayer):
         return self._team_abbreviation[self._index]
 
     @property
-    def position(self):
+    def position(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's primary position.
         """
         return self._position[self._index]
 
     @property
-    def height(self):
+    def height(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's height in the format
         "feet-inches".
@@ -745,7 +747,7 @@ class Player(AbstractPlayer):
         return self._height
 
     @property
-    def weight(self):
+    def weight(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's weight in pounds.
         """
@@ -754,28 +756,28 @@ class Player(AbstractPlayer):
         return int(self._weight.replace('lb', ''))
 
     @property
-    def birth_date(self):
+    def birth_date(self) -> Optional[datetime]:
         """
         Returns a ``datetime`` object of the day and year the player was born.
         """
         return self._birth_date
 
     @_int_property_decorator
-    def games(self):
+    def games(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player participated in.
         """
         return self._games
 
     @_int_property_decorator
-    def games_started(self):
+    def games_started(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player started.
         """
         return self._games_started
 
     @_int_property_decorator
-    def approximate_value(self):
+    def approximate_value(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's approximate value which is a
         singular number used to compare players across seasons and positions,
@@ -784,7 +786,7 @@ class Player(AbstractPlayer):
         return self._approximate_value
 
     @property
-    def qb_record(self):
+    def qb_record(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's quarterback record as a starter in
         the format 'W-L-T'.
@@ -792,21 +794,21 @@ class Player(AbstractPlayer):
         return self._qb_record[self._index]
 
     @_int_property_decorator
-    def completed_passes(self):
+    def completed_passes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of completed passes the player threw.
         """
         return self._completed_passes
 
     @_int_property_decorator
-    def attempted_passes(self):
+    def attempted_passes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passes the player attempted.
         """
         return self._attempted_passes
 
     @_float_property_decorator
-    def passing_completion(self):
+    def passing_completion(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of passes that were caught by a
         receiver. Percentage ranges from 0-100.
@@ -814,7 +816,7 @@ class Player(AbstractPlayer):
         return self._passing_completion
 
     @_int_property_decorator
-    def passing_yards(self):
+    def passing_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards receivers have gained as a
         result of the player's passes.
@@ -822,7 +824,7 @@ class Player(AbstractPlayer):
         return self._passing_yards
 
     @_int_property_decorator
-    def passing_touchdowns(self):
+    def passing_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of touchdowns passes the player has
         thrown.
@@ -830,7 +832,7 @@ class Player(AbstractPlayer):
         return self._passing_touchdowns
 
     @_float_property_decorator
-    def passing_touchdown_percentage(self):
+    def passing_touchdown_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of total passes that are
         touchdowns. Percentage ranges from 0-100.
@@ -838,7 +840,7 @@ class Player(AbstractPlayer):
         return self._passing_touchdown_percentage
 
     @_int_property_decorator
-    def interceptions_thrown(self):
+    def interceptions_thrown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of interceptions the player has
         thrown.
@@ -846,7 +848,7 @@ class Player(AbstractPlayer):
         return self._interceptions_thrown
 
     @_float_property_decorator
-    def interception_percentage(self):
+    def interception_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of passes the player throws that
         are intercepted. Percentage ranges from 0-100.
@@ -854,21 +856,21 @@ class Player(AbstractPlayer):
         return self._interception_percentage
 
     @_int_property_decorator
-    def longest_pass(self):
+    def longest_pass(self) -> Optional[int]:
         """
         Returns an ``int`` of the longest completed pass the player threw.
         """
         return self._longest_pass
 
     @_float_property_decorator
-    def passing_yards_per_attempt(self):
+    def passing_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of yards gained per passing attempt.
         """
         return self._passing_yards_per_attempt
 
     @_float_property_decorator
-    def adjusted_yards_per_attempt(self):
+    def adjusted_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the adjusted number of yards gained per passing
         attempt, equal to (yards + 20 * pass_touchdowns - 45 * interceptions) /
@@ -877,28 +879,28 @@ class Player(AbstractPlayer):
         return self._adjusted_yards_per_attempt
 
     @_float_property_decorator
-    def yards_per_completed_pass(self):
+    def yards_per_completed_pass(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of yards gained per completed pass.
         """
         return self._yards_per_completed_pass
 
     @_float_property_decorator
-    def yards_per_game_played(self):
+    def yards_per_game_played(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of passing yards gained per gamed.
         """
         return self._yards_per_game_played
 
     @_float_property_decorator
-    def quarterback_rating(self):
+    def quarterback_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's quarterback rating.
         """
         return self._quarterback_rating
 
     @_float_property_decorator
-    def espn_qbr(self):
+    def espn_qbr(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's Total Quarterback Rating according
         to ESPN.
@@ -906,7 +908,7 @@ class Player(AbstractPlayer):
         return self._espn_qbr
 
     @_int_property_decorator
-    def times_sacked(self):
+    def times_sacked(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player was sacked as a
         quarterback.
@@ -914,14 +916,14 @@ class Player(AbstractPlayer):
         return self._times_sacked
 
     @_int_property_decorator
-    def yards_lost_to_sacks(self):
+    def yards_lost_to_sacks(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards lost as a result of sacks.
         """
         return self._yards_lost_to_sacks
 
     @_float_property_decorator
-    def net_yards_per_pass_attempt(self):
+    def net_yards_per_pass_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the net yards gained per pass attempt, equal to
         (pass_yards - sack_yards) / (pass_attempts + times_sacked).
@@ -929,7 +931,7 @@ class Player(AbstractPlayer):
         return self._net_yards_per_pass_attempt
 
     @_float_property_decorator
-    def adjusted_net_yards_per_pass_attempt(self):
+    def adjusted_net_yards_per_pass_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the adjusted net yards gained per pass attempt,
         equal to (pass_yards - sack_yards + (20 * pass_touchdowns) - (45 *
@@ -938,7 +940,7 @@ class Player(AbstractPlayer):
         return self._adjusted_net_yards_per_pass_attempt
 
     @_float_property_decorator
-    def sack_percentage(self):
+    def sack_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of times sacked during a passing
         attempt, equal to times_sacked / (pass_attempts + times_sacked).
@@ -947,7 +949,7 @@ class Player(AbstractPlayer):
         return self._sack_percentage
 
     @_int_property_decorator
-    def fourth_quarter_comebacks(self):
+    def fourth_quarter_comebacks(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player has lead a team to
         victory or a tie as a quarterback while the team trailed at the
@@ -956,7 +958,7 @@ class Player(AbstractPlayer):
         return self._fourth_quarter_comebacks
 
     @_int_property_decorator
-    def game_winning_drives(self):
+    def game_winning_drives(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player has lead a drive
         that resulted in a score in the fourth quarter while the team was
@@ -965,7 +967,7 @@ class Player(AbstractPlayer):
         return self._game_winning_drives
 
     @_int_property_decorator
-    def yards_per_attempt_index(self):
+    def yards_per_attempt_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the average number of yards
         gained per attempt where 100 denotes an average player in this category
@@ -974,7 +976,7 @@ class Player(AbstractPlayer):
         return self._yards_per_attempt_index
 
     @_int_property_decorator
-    def net_yards_per_attempt_index(self):
+    def net_yards_per_attempt_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the net average yards gained
         per attempt where 100 denotes an average player in this category and
@@ -983,7 +985,7 @@ class Player(AbstractPlayer):
         return self._net_yards_per_attempt_index
 
     @_int_property_decorator
-    def adjusted_yards_per_attempt_index(self):
+    def adjusted_yards_per_attempt_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the average adjusted yards
         gained per attempt where 100 denotes an average player in this category
@@ -992,7 +994,7 @@ class Player(AbstractPlayer):
         return self._adjusted_yards_per_attempt_index
 
     @_int_property_decorator
-    def adjusted_net_yards_per_attempt_index(self):
+    def adjusted_net_yards_per_attempt_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the net average adjusted yards
         gained per attempt where 100 denotes an average player in this category
@@ -1001,7 +1003,7 @@ class Player(AbstractPlayer):
         return self._adjusted_net_yards_per_attempt_index
 
     @_int_property_decorator
-    def completion_percentage_index(self):
+    def completion_percentage_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by their passing completion
         percentage where 100 denotes an average player in this category and
@@ -1010,7 +1012,7 @@ class Player(AbstractPlayer):
         return self._completion_percentage_index
 
     @_int_property_decorator
-    def touchdown_percentage_index(self):
+    def touchdown_percentage_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the percentage of their passes
         that result in a touchdown where 100 denotes an average player in this
@@ -1019,7 +1021,7 @@ class Player(AbstractPlayer):
         return self._touchdown_percentage_index
 
     @_int_property_decorator
-    def interception_percentage_index(self):
+    def interception_percentage_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the percentage of their passes
         that are intercepted where 100 denotes an average player in this
@@ -1028,7 +1030,7 @@ class Player(AbstractPlayer):
         return self._interception_percentage_index
 
     @_int_property_decorator
-    def sack_percentage_index(self):
+    def sack_percentage_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by the percentage of plays that
         end in the player being sacked where 100 denotes an average player in
@@ -1037,7 +1039,7 @@ class Player(AbstractPlayer):
         return self._sack_percentage_index
 
     @_int_property_decorator
-    def passer_rating_index(self):
+    def passer_rating_index(self) -> Optional[int]:
         """
         Returns an ``int`` comparing players by their quarterback rating where
         100 denotes an average player in this category and higher numbers are
@@ -1046,21 +1048,21 @@ class Player(AbstractPlayer):
         return self._passer_rating_index
 
     @_int_property_decorator
-    def rush_attempts(self):
+    def rush_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing plays the player attempted.
         """
         return self._rush_attempts
 
     @_int_property_decorator
-    def rush_yards(self):
+    def rush_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing yards the player gained.
         """
         return self._rush_yards
 
     @_int_property_decorator
-    def rush_touchdowns(self):
+    def rush_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing touchdowns the player
         scored.
@@ -1068,7 +1070,7 @@ class Player(AbstractPlayer):
         return self._rush_touchdowns
 
     @_int_property_decorator
-    def longest_rush(self):
+    def longest_rush(self) -> Optional[int]:
         """
         Returns an ``int`` of the highest number of yards the player gained
         during a single rushing attempt.
@@ -1076,7 +1078,7 @@ class Player(AbstractPlayer):
         return self._longest_rush
 
     @_float_property_decorator
-    def rush_yards_per_attempt(self):
+    def rush_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per rushing
         attempt.
@@ -1084,7 +1086,7 @@ class Player(AbstractPlayer):
         return self._rush_yards_per_attempt
 
     @_float_property_decorator
-    def rush_yards_per_game(self):
+    def rush_yards_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of rushing yards gained per
         game.
@@ -1092,7 +1094,7 @@ class Player(AbstractPlayer):
         return self._rush_yards_per_game
 
     @_float_property_decorator
-    def rush_attempts_per_game(self):
+    def rush_attempts_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of rushing attempts the
         player made per game.
@@ -1100,7 +1102,7 @@ class Player(AbstractPlayer):
         return self._rush_attempts_per_game
 
     @_int_property_decorator
-    def first_downs_rushing(self):
+    def first_downs_rushing(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of first downs the player has gained
         from rush attempts.
@@ -1108,7 +1110,7 @@ class Player(AbstractPlayer):
         return self._first_downs_rushing
 
     @_int_property_decorator
-    def rush_yards_before_contact(self):
+    def rush_yards_before_contact(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player has gained
         prior to receiving contact on a rush.
@@ -1116,7 +1118,7 @@ class Player(AbstractPlayer):
         return self._rush_yards_before_contact
 
     @_float_property_decorator
-    def rush_yards_before_contact_per_attempt(self):
+    def rush_yards_before_contact_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of yards the player gains on average
         prior to receiving contact on a rush.
@@ -1124,7 +1126,7 @@ class Player(AbstractPlayer):
         return self._rush_yards_before_contact_per_attempt
 
     @_int_property_decorator
-    def rush_yards_after_contact(self):
+    def rush_yards_after_contact(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player has gained
         after receiving contact on a rush.
@@ -1132,7 +1134,7 @@ class Player(AbstractPlayer):
         return self._rush_yards_after_contact
 
     @_float_property_decorator
-    def rush_yards_after_contact_per_attempt(self):
+    def rush_yards_after_contact_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of yards the player gains on average
         after receiving contact on a rush.
@@ -1140,7 +1142,7 @@ class Player(AbstractPlayer):
         return self._rush_yards_after_contact_per_attempt
 
     @_int_property_decorator
-    def rush_broken_tackles(self):
+    def rush_broken_tackles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of tackles the player broke while
         rushing.
@@ -1148,14 +1150,14 @@ class Player(AbstractPlayer):
         return self._rush_broken_tackles
 
     @_float_property_decorator
-    def rush_attempts_per_broken_tackle(self):
+    def rush_attempts_per_broken_tackle(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of tackles the player broke per rush.
         """
         return self._rush_attempts_per_broken_tackle
 
     @_int_property_decorator
-    def times_pass_target(self):
+    def times_pass_target(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player was the target of
         a pass.
@@ -1163,21 +1165,21 @@ class Player(AbstractPlayer):
         return self._times_pass_target
 
     @_int_property_decorator
-    def receptions(self):
+    def receptions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of receptions the player made.
         """
         return self._receptions
 
     @_int_property_decorator
-    def receiving_yards(self):
+    def receiving_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of receiving yards the player gained.
         """
         return self._receiving_yards
 
     @_float_property_decorator
-    def receiving_yards_per_reception(self):
+    def receiving_yards_per_reception(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player gained
         per reception.
@@ -1185,7 +1187,7 @@ class Player(AbstractPlayer):
         return self._receiving_yards_per_reception
 
     @_int_property_decorator
-    def receiving_touchdowns(self):
+    def receiving_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of touchdowns the player scored after
         receiving a pass.
@@ -1193,7 +1195,7 @@ class Player(AbstractPlayer):
         return self._receiving_touchdowns
 
     @_int_property_decorator
-    def longest_reception(self):
+    def longest_reception(self) -> Optional[int]:
         """
         Returns an ``int`` of the highest number of yards the player gained as
         a result of a single reception.
@@ -1201,7 +1203,7 @@ class Player(AbstractPlayer):
         return self._longest_reception
 
     @_float_property_decorator
-    def receptions_per_game(self):
+    def receptions_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of receptions the player
         makes per game.
@@ -1209,7 +1211,7 @@ class Player(AbstractPlayer):
         return self._receptions_per_game
 
     @_float_property_decorator
-    def receiving_yards_per_game(self):
+    def receiving_yards_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the acerage number of receiving yards the player
         gains per game.
@@ -1217,7 +1219,7 @@ class Player(AbstractPlayer):
         return self._receiving_yards_per_game
 
     @_float_property_decorator
-    def catch_percentage(self):
+    def catch_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of passes the player caught while
         being the target of a pass. Percentage ranges from 0-100.
@@ -1225,7 +1227,7 @@ class Player(AbstractPlayer):
         return self._catch_percentage
 
     @_int_property_decorator
-    def first_downs_receiving(self):
+    def first_downs_receiving(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of first downs the player has gained
         from pass attempts.
@@ -1233,7 +1235,7 @@ class Player(AbstractPlayer):
         return self._first_downs_receiving
 
     @_int_property_decorator
-    def receiving_yards_before_catch(self):
+    def receiving_yards_before_catch(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player has gained
         prior to catching a pass.
@@ -1241,7 +1243,7 @@ class Player(AbstractPlayer):
         return self._receiving_yards_before_catch
 
     @_float_property_decorator
-    def receiving_yards_before_catch_per_reception(self):
+    def receiving_yards_before_catch_per_reception(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of yards the player gains on average
         prior to catching a pass.
@@ -1249,7 +1251,7 @@ class Player(AbstractPlayer):
         return self._receiving_yards_before_catch_per_reception
 
     @_int_property_decorator
-    def receiving_yards_after_catch(self):
+    def receiving_yards_after_catch(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player has gained
         after catching a pass.
@@ -1257,7 +1259,7 @@ class Player(AbstractPlayer):
         return self._receiving_yards_after_catch
 
     @_float_property_decorator
-    def receiving_yards_after_catch_per_reception(self):
+    def receiving_yards_after_catch_per_reception(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of yards the player gains on average
         after catching a pass.
@@ -1265,7 +1267,7 @@ class Player(AbstractPlayer):
         return self._receiving_yards_after_catch_per_reception
 
     @_int_property_decorator
-    def receiving_broken_tackles(self):
+    def receiving_broken_tackles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of tackles the player has broken after
         catching a pass.
@@ -1273,7 +1275,7 @@ class Player(AbstractPlayer):
         return self._receiving_broken_tackles
 
     @_float_property_decorator
-    def receptions_per_broken_tackle(self):
+    def receptions_per_broken_tackle(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of receptions the player made per
         broken tackle.
@@ -1281,7 +1283,7 @@ class Player(AbstractPlayer):
         return self._receptions_per_broken_tackle
 
     @_int_property_decorator
-    def dropped_passes(self):
+    def dropped_passes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player has dropped a
         pass.
@@ -1289,7 +1291,7 @@ class Player(AbstractPlayer):
         return self._dropped_passes
 
     @_float_property_decorator
-    def drop_percentage(self):
+    def drop_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of passes the player has dropped.
         Percentage ranges from 0-100.
@@ -1297,7 +1299,7 @@ class Player(AbstractPlayer):
         return self._drop_percentage
 
     @_int_property_decorator
-    def touches(self):
+    def touches(self) -> Optional[int]:
         """
         Returns an ``int`` of the combined number of rushing attempts and
         receptions the player had.
@@ -1305,7 +1307,7 @@ class Player(AbstractPlayer):
         return self._touches
 
     @_float_property_decorator
-    def yards_per_touch(self):
+    def yards_per_touch(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per rushing
         attempt and/or reception.
@@ -1313,7 +1315,7 @@ class Player(AbstractPlayer):
         return self._yards_per_touch
 
     @_int_property_decorator
-    def yards_from_scrimmage(self):
+    def yards_from_scrimmage(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards gained from scrimmage
         for both rushing and receiving.
@@ -1321,7 +1323,7 @@ class Player(AbstractPlayer):
         return self._yards_from_scrimmage
 
     @_int_property_decorator
-    def rushing_and_receiving_touchdowns(self):
+    def rushing_and_receiving_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the combined number of rushing and receiving
         touchdowns the player scored.
@@ -1329,21 +1331,21 @@ class Player(AbstractPlayer):
         return self._rushing_and_receiving_touchdowns
 
     @_int_property_decorator
-    def fumbles(self):
+    def fumbles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player fumbled the ball.
         """
         return self._fumbles
 
     @_int_property_decorator
-    def punt_returns(self):
+    def punt_returns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times a player returned a punt.
         """
         return self._punt_returns
 
     @_int_property_decorator
-    def punt_return_yards(self):
+    def punt_return_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the amount of yards the player gained while
         returning a punt.
@@ -1351,7 +1353,7 @@ class Player(AbstractPlayer):
         return self._punt_return_yards
 
     @_int_property_decorator
-    def punt_return_touchdown(self):
+    def punt_return_touchdown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of punts the player returned for a
         touchdown.
@@ -1359,7 +1361,7 @@ class Player(AbstractPlayer):
         return self._punt_return_touchdown
 
     @_int_property_decorator
-    def longest_punt_return(self):
+    def longest_punt_return(self) -> Optional[int]:
         """
         Returns an ``int`` of the highest number of yards the player has gained
         while returning a punt.
@@ -1367,7 +1369,7 @@ class Player(AbstractPlayer):
         return self._longest_punt_return
 
     @_float_property_decorator
-    def yards_per_punt_return(self):
+    def yards_per_punt_return(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player returned
         per punt.
@@ -1375,14 +1377,14 @@ class Player(AbstractPlayer):
         return self._yards_per_punt_return
 
     @_int_property_decorator
-    def kickoff_returns(self):
+    def kickoff_returns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of kickoffs the player returned.
         """
         return self._kickoff_returns
 
     @_int_property_decorator
-    def kickoff_return_yards(self):
+    def kickoff_return_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the amount of yards the player gained while
         returning a kickoff.
@@ -1390,7 +1392,7 @@ class Player(AbstractPlayer):
         return self._kickoff_return_yards
 
     @_int_property_decorator
-    def kickoff_return_touchdown(self):
+    def kickoff_return_touchdown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of kickoffs the player returned for a
         touchdown.
@@ -1398,7 +1400,7 @@ class Player(AbstractPlayer):
         return self._kickoff_return_touchdown
 
     @_int_property_decorator
-    def longest_kickoff_return(self):
+    def longest_kickoff_return(self) -> Optional[int]:
         """
         Returns an ``int`` of the highest number of yards the player has gained
         while returning a kickoff.
@@ -1406,7 +1408,7 @@ class Player(AbstractPlayer):
         return self._longest_kickoff_return
 
     @_float_property_decorator
-    def yards_per_kickoff_return(self):
+    def yards_per_kickoff_return(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player returned
         per kickoff.
@@ -1414,7 +1416,7 @@ class Player(AbstractPlayer):
         return self._yards_per_kickoff_return
 
     @_int_property_decorator
-    def all_purpose_yards(self):
+    def all_purpose_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of all-purpose yards the player has
         gained from receptions, rushes, and kickoff and punt returns.
@@ -1422,7 +1424,7 @@ class Player(AbstractPlayer):
         return self._all_purpose_yards
 
     @_int_property_decorator
-    def less_than_nineteen_yards_field_goal_attempts(self):
+    def less_than_nineteen_yards_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player attempted
         from nineteen or fewer yards out.
@@ -1430,7 +1432,7 @@ class Player(AbstractPlayer):
         return self._less_than_nineteen_yards_field_goal_attempts
 
     @_int_property_decorator
-    def less_than_nineteen_yards_field_goals_made(self):
+    def less_than_nineteen_yards_field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player made from
         nineteen or fewer yards out.
@@ -1438,7 +1440,7 @@ class Player(AbstractPlayer):
         return self._less_than_nineteen_yards_field_goals_made
 
     @_int_property_decorator
-    def twenty_to_twenty_nine_yard_field_goal_attempts(self):
+    def twenty_to_twenty_nine_yard_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player attempted
         from twenty to twenty-nine yards out.
@@ -1446,7 +1448,7 @@ class Player(AbstractPlayer):
         return self._twenty_to_twenty_nine_yard_field_goal_attempts
 
     @_int_property_decorator
-    def twenty_to_twenty_nine_yard_field_goals_made(self):
+    def twenty_to_twenty_nine_yard_field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player made from
         twenty to twenty-nine yards out.
@@ -1454,7 +1456,7 @@ class Player(AbstractPlayer):
         return self._twenty_to_twenty_nine_yard_field_goals_made
 
     @_int_property_decorator
-    def thirty_to_thirty_nine_yard_field_goal_attempts(self):
+    def thirty_to_thirty_nine_yard_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player attempted
         from thirty to thirty-nine yards out.
@@ -1462,7 +1464,7 @@ class Player(AbstractPlayer):
         return self._thirty_to_thirty_nine_yard_field_goal_attempts
 
     @_int_property_decorator
-    def thirty_to_thirty_nine_yard_field_goals_made(self):
+    def thirty_to_thirty_nine_yard_field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player made from
         thirty to thirty-nine yards out.
@@ -1470,7 +1472,7 @@ class Player(AbstractPlayer):
         return self._thirty_to_thirty_nine_yard_field_goals_made
 
     @_int_property_decorator
-    def fourty_to_fourty_nine_yard_field_goal_attempts(self):
+    def fourty_to_fourty_nine_yard_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player attempted
         from fourty to fourty-nine yards out.
@@ -1478,7 +1480,7 @@ class Player(AbstractPlayer):
         return self._fourty_to_fourty_nine_yard_field_goal_attempts
 
     @_int_property_decorator
-    def fourty_to_fourty_nine_yard_field_goals_made(self):
+    def fourty_to_fourty_nine_yard_field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player made from
         fourty to fourty-nine yards out.
@@ -1486,7 +1488,7 @@ class Player(AbstractPlayer):
         return self._fourty_to_fourty_nine_yard_field_goals_made
 
     @_int_property_decorator
-    def fifty_plus_yard_field_goal_attempts(self):
+    def fifty_plus_yard_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player attempted
         from fifty or more yards out.
@@ -1494,7 +1496,7 @@ class Player(AbstractPlayer):
         return self._fifty_plus_yard_field_goal_attempts
 
     @_int_property_decorator
-    def fifty_plus_yard_field_goals_made(self):
+    def fifty_plus_yard_field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of field goals the player made from
         fifty or more yards out.
@@ -1502,7 +1504,7 @@ class Player(AbstractPlayer):
         return self._fifty_plus_yard_field_goals_made
 
     @_int_property_decorator
-    def field_goals_attempted(self):
+    def field_goals_attempted(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals the player
         attempted from any distance.
@@ -1510,7 +1512,7 @@ class Player(AbstractPlayer):
         return self._field_goals_attempted
 
     @_int_property_decorator
-    def field_goals_made(self):
+    def field_goals_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals the player made
         from any distance.
@@ -1518,14 +1520,14 @@ class Player(AbstractPlayer):
         return self._field_goals_made
 
     @_int_property_decorator
-    def longest_field_goal_made(self):
+    def longest_field_goal_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the longest field goal the player made.
         """
         return self._longest_field_goal_made
 
     @_float_property_decorator
-    def field_goal_percentage(self):
+    def field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of field goals the player made.
         Percentage ranges from 0-100.
@@ -1533,21 +1535,21 @@ class Player(AbstractPlayer):
         return self._field_goal_percentage
 
     @_int_property_decorator
-    def extra_points_attempted(self):
+    def extra_points_attempted(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of extra points the player attempted.
         """
         return self._extra_points_attempted
 
     @_int_property_decorator
-    def extra_points_made(self):
+    def extra_points_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of extra points the player made.
         """
         return self._extra_points_made
 
     @_float_property_decorator
-    def extra_point_percentage(self):
+    def extra_point_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of extra points the player made.
         Percentage ranges from 0-100.
@@ -1555,14 +1557,14 @@ class Player(AbstractPlayer):
         return self._extra_point_percentage
 
     @_int_property_decorator
-    def punts(self):
+    def punts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player punted the ball.
         """
         return self._punts
 
     @_int_property_decorator
-    def total_punt_yards(self):
+    def total_punt_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player has punted
         the ball.
@@ -1570,14 +1572,14 @@ class Player(AbstractPlayer):
         return self._total_punt_yards
 
     @_int_property_decorator
-    def longest_punt(self):
+    def longest_punt(self) -> Optional[int]:
         """
         Returns an ``int`` of the longest punt the player has kicked.
         """
         return self._longest_punt
 
     @_int_property_decorator
-    def blocked_punts(self):
+    def blocked_punts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of the player's punts that have been
         blocked.
@@ -1585,7 +1587,7 @@ class Player(AbstractPlayer):
         return self._blocked_punts
 
     @_int_property_decorator
-    def interceptions(self):
+    def interceptions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player intercepted a
         pass.
@@ -1593,7 +1595,7 @@ class Player(AbstractPlayer):
         return self._interceptions
 
     @_int_property_decorator
-    def yards_returned_from_interception(self):
+    def yards_returned_from_interception(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards the player returned after
         intercepting a pass.
@@ -1601,7 +1603,7 @@ class Player(AbstractPlayer):
         return self._yards_returned_from_interception
 
     @_int_property_decorator
-    def interceptions_returned_for_touchdown(self):
+    def interceptions_returned_for_touchdown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of touchdowns the player has scored
         after intercepting a pass. Commonly referred to as a 'Pick-6'.
@@ -1609,7 +1611,7 @@ class Player(AbstractPlayer):
         return self._interceptions_returned_for_touchdown
 
     @_int_property_decorator
-    def longest_interception_return(self):
+    def longest_interception_return(self) -> Optional[int]:
         """
         Returns an ``int`` of the most yards the player has returned after
         intercepting a pass.
@@ -1617,7 +1619,7 @@ class Player(AbstractPlayer):
         return self._longest_interception_return
 
     @_int_property_decorator
-    def passes_defended(self):
+    def passes_defended(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passes the player has defended as a
         defensive player.
@@ -1625,21 +1627,21 @@ class Player(AbstractPlayer):
         return self._passes_defended
 
     @_int_property_decorator
-    def fumbles_forced(self):
+    def fumbles_forced(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player forced a fumble.
         """
         return self._fumbles_forced
 
     @_int_property_decorator
-    def fumbles_recovered(self):
+    def fumbles_recovered(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of fumbles the player has recovered.
         """
         return self._fumbles_recovered
 
     @_int_property_decorator
-    def yards_recovered_from_fumble(self):
+    def yards_recovered_from_fumble(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards the player gained after
         recovering a fumble.
@@ -1647,7 +1649,7 @@ class Player(AbstractPlayer):
         return self._yards_recovered_from_fumble
 
     @_int_property_decorator
-    def fumbles_recovered_for_touchdown(self):
+    def fumbles_recovered_for_touchdown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of touchdowns the player has scored
         after recovering a fumble.
@@ -1655,7 +1657,7 @@ class Player(AbstractPlayer):
         return self._fumbles_recovered_for_touchdown
 
     @_float_property_decorator
-    def sacks(self):
+    def sacks(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of times the player sacked a
         quarterback.
@@ -1663,21 +1665,21 @@ class Player(AbstractPlayer):
         return self._sacks
 
     @_int_property_decorator
-    def tackles(self):
+    def tackles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of tackles the player made.
         """
         return self._tackles
 
     @_int_property_decorator
-    def assists_on_tackles(self):
+    def assists_on_tackles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assist the player made on tackles.
         """
         return self._assists_on_tackles
 
     @_int_property_decorator
-    def safeties(self):
+    def safeties(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of safeties the player has scored.
         """
@@ -1879,7 +1881,7 @@ class Roster:
         self._coach = self._parse_coach(page)
 
     @property
-    def players(self):
+    def players(self) -> Union[list[Player], dict[str, str]]:
         """
         Returns a ``list`` of player instances for each player on the requested
         team's roster if the ``slim`` property is False when calling the Roster
@@ -1890,7 +1892,7 @@ class Roster:
         return self._players
 
     @property
-    def coach(self):
+    def coach(self) -> Optional[str]:
         """
         Returns a ``string`` of the coach's name, such as 'Sean Payton'.
         """
