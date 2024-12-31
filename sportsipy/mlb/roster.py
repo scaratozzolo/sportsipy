@@ -1,3 +1,4 @@
+from datetime import datetime
 import pandas as pd
 import re
 from functools import wraps
@@ -11,6 +12,7 @@ from .constants import (NATIONALITY,
                         PLAYER_URL,
                         ROSTER_URL)
 from .player import AbstractPlayer
+from typing import Optional, Union
 
 
 def _cleanup(prop):
@@ -101,7 +103,7 @@ class Player(AbstractPlayer):
         'NN' is a number starting at '01' for the first time that player ID has
         been used and increments by 1 for every successive player.
     """
-    def __init__(self, player_id):
+    def __init__(self, player_id: str):
         self._most_recent_season = ''
         self._index = None
         self._player_id = player_id
@@ -699,7 +701,7 @@ class Player(AbstractPlayer):
         return fields_to_include
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and values where each index is a different season plus the
@@ -716,7 +718,7 @@ class Player(AbstractPlayer):
         return pd.DataFrame(rows, index=[indices])
 
     @property
-    def season(self):
+    def season(self) -> Optional[str]:
         """
         Returns a ``string`` of the season in the format 'YYYY', such as
         '2017'. If no season was requsted, the career stats will be
@@ -725,14 +727,14 @@ class Player(AbstractPlayer):
         return self._season[self._index]
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's name, such as 'Jose Altuve'.
         """
         return self._name
 
     @_most_recent_decorator
-    def team_abbreviation(self):
+    def team_abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's abbreviation, such as 'HOU' for the
         Houston Astros.
@@ -740,21 +742,21 @@ class Player(AbstractPlayer):
         return self._team_abbreviation
 
     @_most_recent_decorator
-    def position(self):
+    def position(self) -> Optional[str]:
         """
         Returns a ``string`` constant of the player's primary position.
         """
         return self._position
 
     @property
-    def height(self):
+    def height(self) -> Optional[str]:
         """
         Returns a ``string`` of the players height in the format "feet-inches".
         """
         return self._height
 
     @property
-    def weight(self):
+    def weight(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's weight in pounds.
         """
@@ -763,14 +765,14 @@ class Player(AbstractPlayer):
         return int(self._weight.replace('lb', ''))
 
     @property
-    def birth_date(self):
+    def birth_date(self) -> Optional[datetime]:
         """
         Returns a ``datetime`` object of the day and year the player was born.
         """
         return self._birth_date
 
     @property
-    def nationality(self):
+    def nationality(self) -> Optional[str]:
         """
         Returns a ``string`` constant denoting which country the player
         originiates from.
@@ -778,7 +780,7 @@ class Player(AbstractPlayer):
         return self._nationality
 
     @property
-    def contract(self):
+    def contract(self) -> dict[str, dict[str, str]]:
         """
         Returns a ``dictionary`` of the player's contract where each key is a
         ``string`` of the year, such as '2017' and each value is a
@@ -788,70 +790,70 @@ class Player(AbstractPlayer):
         return self._contract
 
     @_int_property_decorator
-    def games(self):
+    def games(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player participated in.
         """
         return self._games
 
     @_int_property_decorator
-    def games_started(self):
+    def games_started(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player started.
         """
         return self._games_started
 
     @_int_property_decorator
-    def plate_appearances(self):
+    def plate_appearances(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of plate appearances the player had.
         """
         return self._plate_appearances
 
     @_int_property_decorator
-    def at_bats(self):
+    def at_bats(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of at bats the player had.
         """
         return self._at_bats
 
     @_int_property_decorator
-    def runs(self):
+    def runs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs the player scored.
         """
         return self._runs
 
     @_int_property_decorator
-    def hits(self):
+    def hits(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of hits the player had.
         """
         return self._hits
 
     @_int_property_decorator
-    def doubles(self):
+    def doubles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of doubles the player hit.
         """
         return self._doubles
 
     @_int_property_decorator
-    def triples(self):
+    def triples(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of triples the player hit.
         """
         return self._triples
 
     @_int_property_decorator
-    def home_runs(self):
+    def home_runs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of home runs the player hit.
         """
         return self._home_runs
 
     @_int_property_decorator
-    def runs_batted_in(self):
+    def runs_batted_in(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs batted in the player
         registered.
@@ -859,14 +861,14 @@ class Player(AbstractPlayer):
         return self._runs_batted_in
 
     @_int_property_decorator
-    def stolen_bases(self):
+    def stolen_bases(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases the player has stolen.
         """
         return self._stolen_bases
 
     @_int_property_decorator
-    def times_caught_stealing(self):
+    def times_caught_stealing(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player was caught
         stealing.
@@ -874,7 +876,7 @@ class Player(AbstractPlayer):
         return self._times_caught_stealing
 
     @_int_property_decorator
-    def bases_on_balls(self):
+    def bases_on_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases the player registered as a
         result of balls.
@@ -882,21 +884,21 @@ class Player(AbstractPlayer):
         return self._bases_on_balls
 
     @_int_property_decorator
-    def times_struck_out(self):
+    def times_struck_out(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player was struck out.
         """
         return self._times_struck_out
 
     @_float_property_decorator
-    def batting_average(self):
+    def batting_average(self) -> Optional[float]:
         """
         Returns a ``float`` of the batting average for the player.
         """
         return self._batting_average
 
     @_float_property_decorator
-    def on_base_percentage(self):
+    def on_base_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of at bats that result in the
         batter getting on base.
@@ -904,7 +906,7 @@ class Player(AbstractPlayer):
         return self._on_base_percentage
 
     @_float_property_decorator
-    def slugging_percentage(self):
+    def slugging_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the slugging percentage for the player based
         on the number of bases gained per at-bat with bigger plays getting more
@@ -913,7 +915,7 @@ class Player(AbstractPlayer):
         return self._slugging_percentage
 
     @_float_property_decorator
-    def on_base_plus_slugging_percentage(self):
+    def on_base_plus_slugging_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the on base percentage plus the slugging
         percentage. Percentage ranges from 0-1.
@@ -921,7 +923,7 @@ class Player(AbstractPlayer):
         return self._on_base_plus_slugging_percentage
 
     @_int_property_decorator
-    def on_base_plus_slugging_percentage_plus(self):
+    def on_base_plus_slugging_percentage_plus(self) -> Optional[int]:
         """
         Returns an ``int`` of the on base percentage plus the slugging
         percentage, adjusted to the player's ballpark.
@@ -929,14 +931,14 @@ class Player(AbstractPlayer):
         return self._on_base_plus_slugging_percentage_plus
 
     @_int_property_decorator
-    def total_bases(self):
+    def total_bases(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases the player has gained.
         """
         return self._total_bases
 
     @_int_property_decorator
-    def grounded_into_double_plays(self):
+    def grounded_into_double_plays(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of double plays the player grounded
         into.
@@ -944,7 +946,7 @@ class Player(AbstractPlayer):
         return self._grounded_into_double_plays
 
     @_int_property_decorator
-    def times_hit_by_pitch(self):
+    def times_hit_by_pitch(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player has been hit by a
         pitch.
@@ -952,7 +954,7 @@ class Player(AbstractPlayer):
         return self._times_hit_by_pitch
 
     @_int_property_decorator
-    def sacrifice_hits(self):
+    def sacrifice_hits(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of sacrifice hits or sacrafice bunts
         the player made.
@@ -960,14 +962,14 @@ class Player(AbstractPlayer):
         return self._sacrifice_hits
 
     @_int_property_decorator
-    def sacrifice_flies(self):
+    def sacrifice_flies(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of sacrifice flies the player hit.
         """
         return self._sacrifice_flies
 
     @_int_property_decorator
-    def intentional_bases_on_balls(self):
+    def intentional_bases_on_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player has been
         intentionally walked by the opposition.
@@ -975,7 +977,7 @@ class Player(AbstractPlayer):
         return self._intentional_bases_on_balls
 
     @_int_property_decorator
-    def complete_games(self):
+    def complete_games(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of complete games the player has
         participated in.
@@ -983,7 +985,7 @@ class Player(AbstractPlayer):
         return self._complete_games
 
     @_float_property_decorator
-    def innings_played(self):
+    def innings_played(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of innings the player has
         played in.
@@ -991,7 +993,7 @@ class Player(AbstractPlayer):
         return self._innings_played
 
     @_int_property_decorator
-    def defensive_chances(self):
+    def defensive_chances(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of defensive chances (equal to the
         number of putouts + assists + errors) the player had.
@@ -999,28 +1001,28 @@ class Player(AbstractPlayer):
         return self._defensive_chances
 
     @_int_property_decorator
-    def putouts(self):
+    def putouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of putouts the player had.
         """
         return self._putouts
 
     @_int_property_decorator
-    def assists(self):
+    def assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the player had.
         """
         return self._assists
 
     @_int_property_decorator
-    def errors(self):
+    def errors(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of errors the player made.
         """
         return self._errors
 
     @_int_property_decorator
-    def double_plays_turned(self):
+    def double_plays_turned(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of double plays the player was
         involved in.
@@ -1028,7 +1030,7 @@ class Player(AbstractPlayer):
         return self._double_plays_turned
 
     @_float_property_decorator
-    def fielding_percentage(self):
+    def fielding_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the players fielding percentage, equivalent to
         (putouts + assists) / (putouts + assists + errors). Percentage ranges
@@ -1037,7 +1039,7 @@ class Player(AbstractPlayer):
         return self._fielding_percentage
 
     @_int_property_decorator
-    def total_fielding_runs_above_average(self):
+    def total_fielding_runs_above_average(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs the player was worth compared
         to an average player.
@@ -1045,7 +1047,7 @@ class Player(AbstractPlayer):
         return self._total_fielding_runs_above_average
 
     @_int_property_decorator
-    def defensive_runs_saved_above_average(self):
+    def defensive_runs_saved_above_average(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of defensive runs the player saved
         compared to an average player.
@@ -1053,7 +1055,7 @@ class Player(AbstractPlayer):
         return self._defensive_runs_saved_above_average
 
     @_int_property_decorator
-    def total_fielding_runs_above_average_per_innings(self):
+    def total_fielding_runs_above_average_per_innings(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs the player was worth per 1,200
         innings compared to an average player.
@@ -1061,7 +1063,7 @@ class Player(AbstractPlayer):
         return self._total_fielding_runs_above_average_per_innings
 
     @_int_property_decorator
-    def defensive_runs_saved_above_average_per_innings(self):
+    def defensive_runs_saved_above_average_per_innings(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of defensive runs the player was worth
         per 1,200 innings compared to an average player.
@@ -1069,7 +1071,7 @@ class Player(AbstractPlayer):
         return self._defensive_runs_saved_above_average_per_innings
 
     @_float_property_decorator
-    def range_factor_per_nine_innings(self):
+    def range_factor_per_nine_innings(self) -> Optional[float]:
         """
         Returns a ``float`` of the players range factor per nine innings, equal
         to 9 * (putouts + assists) / innings_played.
@@ -1077,7 +1079,7 @@ class Player(AbstractPlayer):
         return self._range_factor_per_nine_innings
 
     @_float_property_decorator
-    def range_factor_per_game(self):
+    def range_factor_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the players range factor per game, equal to 9 *
         (putouts + assists) / games_played.
@@ -1085,7 +1087,7 @@ class Player(AbstractPlayer):
         return self._range_factor_per_game
 
     @_float_property_decorator
-    def league_fielding_percentage(self):
+    def league_fielding_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the average fielding percentage for the league
         at the player's position. Percentage ranges from 0-1.
@@ -1093,7 +1095,7 @@ class Player(AbstractPlayer):
         return self._league_fielding_percentage
 
     @_float_property_decorator
-    def league_range_factor_per_nine_innings(self):
+    def league_range_factor_per_nine_innings(self) -> Optional[float]:
         """
         Returns a ``float`` of the average range factor for the league per nine
         innings, equal to 9 * (putouts + assists) / innings_played.
@@ -1101,7 +1103,7 @@ class Player(AbstractPlayer):
         return self._league_range_factor_per_nine_innings
 
     @_float_property_decorator
-    def league_range_factor_per_game(self):
+    def league_range_factor_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the average range factor for the league per
         game, equal to (putouts + assists) / games_played.
@@ -1109,7 +1111,7 @@ class Player(AbstractPlayer):
         return self._league_range_factor_per_game
 
     @_int_property_decorator
-    def games_in_batting_order(self):
+    def games_in_batting_order(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the batting
         lineup.
@@ -1117,7 +1119,7 @@ class Player(AbstractPlayer):
         return self._games_in_batting_order
 
     @_int_property_decorator
-    def games_in_defensive_lineup(self):
+    def games_in_defensive_lineup(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the
         defensive lineup.
@@ -1125,7 +1127,7 @@ class Player(AbstractPlayer):
         return self._games_in_defensive_lineup
 
     @_int_property_decorator
-    def games_pitcher(self):
+    def games_pitcher(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a pitcher.
@@ -1133,7 +1135,7 @@ class Player(AbstractPlayer):
         return self._games_pitcher
 
     @_int_property_decorator
-    def games_catcher(self):
+    def games_catcher(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a catcher.
@@ -1141,7 +1143,7 @@ class Player(AbstractPlayer):
         return self._games_catcher
 
     @_int_property_decorator
-    def games_first_baseman(self):
+    def games_first_baseman(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a first baseman.
@@ -1149,7 +1151,7 @@ class Player(AbstractPlayer):
         return self._games_first_baseman
 
     @_int_property_decorator
-    def games_second_baseman(self):
+    def games_second_baseman(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a second baseman.
@@ -1157,7 +1159,7 @@ class Player(AbstractPlayer):
         return self._games_second_baseman
 
     @_int_property_decorator
-    def games_third_baseman(self):
+    def games_third_baseman(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a third baseman.
@@ -1165,7 +1167,7 @@ class Player(AbstractPlayer):
         return self._games_third_baseman
 
     @_int_property_decorator
-    def games_shortstop(self):
+    def games_shortstop(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a shortstop.
@@ -1173,7 +1175,7 @@ class Player(AbstractPlayer):
         return self._games_shortstop
 
     @_int_property_decorator
-    def games_left_fielder(self):
+    def games_left_fielder(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a left fielder.
@@ -1181,7 +1183,7 @@ class Player(AbstractPlayer):
         return self._games_left_fielder
 
     @_int_property_decorator
-    def games_center_fielder(self):
+    def games_center_fielder(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a center fielder.
@@ -1189,7 +1191,7 @@ class Player(AbstractPlayer):
         return self._games_center_fielder
 
     @_int_property_decorator
-    def games_right_fielder(self):
+    def games_right_fielder(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a right fielder.
@@ -1197,7 +1199,7 @@ class Player(AbstractPlayer):
         return self._games_right_fielder
 
     @_int_property_decorator
-    def games_outfielder(self):
+    def games_outfielder(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as an outfielder.
@@ -1205,7 +1207,7 @@ class Player(AbstractPlayer):
         return self._games_outfielder
 
     @_int_property_decorator
-    def games_designated_hitter(self):
+    def games_designated_hitter(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a designated hitter.
@@ -1213,7 +1215,7 @@ class Player(AbstractPlayer):
         return self._games_designated_hitter
 
     @_int_property_decorator
-    def games_pinch_hitter(self):
+    def games_pinch_hitter(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a pinch hitter.
@@ -1221,7 +1223,7 @@ class Player(AbstractPlayer):
         return self._games_pinch_hitter
 
     @_int_property_decorator
-    def games_pinch_runner(self):
+    def games_pinch_runner(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player was in the lineup
         as a pinch runner.
@@ -1229,7 +1231,7 @@ class Player(AbstractPlayer):
         return self._games_pinch_runner
 
     @_int_property_decorator
-    def wins(self):
+    def wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player has won as a
         pitcher.
@@ -1237,7 +1239,7 @@ class Player(AbstractPlayer):
         return self._wins
 
     @_int_property_decorator
-    def losses(self):
+    def losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player has lost as a
         pitcher.
@@ -1245,7 +1247,7 @@ class Player(AbstractPlayer):
         return self._losses
 
     @_float_property_decorator
-    def win_percentage(self):
+    def win_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the players winning percentage as a pitcher.
         Percentage ranges from 0-1.
@@ -1253,14 +1255,14 @@ class Player(AbstractPlayer):
         return self._win_percentage
 
     @_float_property_decorator
-    def era(self):
+    def era(self) -> Optional[float]:
         """
         Returns a ``float`` of the pitcher's Earned Runs Average.
         """
         return self._era
 
     @_int_property_decorator
-    def games_finished(self):
+    def games_finished(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player finished as a
         pitcher.
@@ -1268,7 +1270,7 @@ class Player(AbstractPlayer):
         return self._games_finished
 
     @_int_property_decorator
-    def shutouts(self):
+    def shutouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player did not allow any
         runs and threw a complete game as a pitcher.
@@ -1276,14 +1278,14 @@ class Player(AbstractPlayer):
         return self._shutouts
 
     @_int_property_decorator
-    def saves(self):
+    def saves(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of saves the player made as a pitcher.
         """
         return self._saves
 
     @_int_property_decorator
-    def hits_allowed(self):
+    def hits_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of hits the player allowed as a
         pitcher.
@@ -1291,7 +1293,7 @@ class Player(AbstractPlayer):
         return self._hits_allowed
 
     @_int_property_decorator
-    def runs_allowed(self):
+    def runs_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs the player allowed as a
         pitcher.
@@ -1299,7 +1301,7 @@ class Player(AbstractPlayer):
         return self._runs_allowed
 
     @_int_property_decorator
-    def earned_runs_allowed(self):
+    def earned_runs_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of earned runs the player allowed as a
         pitcher.
@@ -1307,7 +1309,7 @@ class Player(AbstractPlayer):
         return self._earned_runs_allowed
 
     @_int_property_decorator
-    def home_runs_allowed(self):
+    def home_runs_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of home runs a player has allowed as a
         pitcher.
@@ -1315,7 +1317,7 @@ class Player(AbstractPlayer):
         return self._home_runs_allowed
 
     @_int_property_decorator
-    def bases_on_balls_given(self):
+    def bases_on_balls_given(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases on balls the player has given
         as a pitcher.
@@ -1323,7 +1325,7 @@ class Player(AbstractPlayer):
         return self._bases_on_balls_given
 
     @_int_property_decorator
-    def intentional_bases_on_balls_given(self):
+    def intentional_bases_on_balls_given(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases the player has intentionally
         given as a pitcher.
@@ -1331,7 +1333,7 @@ class Player(AbstractPlayer):
         return self._intentional_bases_on_balls_given
 
     @_int_property_decorator
-    def strikeouts(self):
+    def strikeouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of strikeouts the player threw as a
         pitcher.
@@ -1339,7 +1341,7 @@ class Player(AbstractPlayer):
         return self._strikeouts
 
     @_int_property_decorator
-    def times_hit_player(self):
+    def times_hit_player(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the pitcher hit a player with
         a pitch.
@@ -1347,21 +1349,21 @@ class Player(AbstractPlayer):
         return self._times_hit_player
 
     @_int_property_decorator
-    def balks(self):
+    def balks(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the pitcher balked.
         """
         return self._balks
 
     @_int_property_decorator
-    def wild_pitches(self):
+    def wild_pitches(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of wild pitches the player has thrown.
         """
         return self._wild_pitches
 
     @_float_property_decorator
-    def era_plus(self):
+    def era_plus(self) -> Optional[float]:
         """
         Returns a ``float`` of the pitcher's ERA while adjusted for the
         ballpark.
@@ -1369,7 +1371,7 @@ class Player(AbstractPlayer):
         return self._era_plus
 
     @_float_property_decorator
-    def fielding_independent_pitching(self):
+    def fielding_independent_pitching(self) -> Optional[float]:
         """
         Returns a ``float`` of the pitcher's effectiveness at preventing home
         runs, bases on balls, and hitting players with pitches, while causing
@@ -1378,7 +1380,7 @@ class Player(AbstractPlayer):
         return self._fielding_independent_pitching
 
     @_float_property_decorator
-    def whip(self):
+    def whip(self) -> Optional[float]:
         """
         Returns a ``float`` of the pitcher's WHIP score, equivalent to (bases
         on balls + hits) / innings played.
@@ -1386,7 +1388,7 @@ class Player(AbstractPlayer):
         return self._whip
 
     @_float_property_decorator
-    def hits_against_per_nine_innings(self):
+    def hits_against_per_nine_innings(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of hits the player has given per nine
         innings played.
@@ -1394,7 +1396,7 @@ class Player(AbstractPlayer):
         return self._hits_against_per_nine_innings
 
     @_float_property_decorator
-    def home_runs_against_per_nine_innings(self):
+    def home_runs_against_per_nine_innings(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of home runs the pitcher has given
         per nine innings played.
@@ -1402,7 +1404,7 @@ class Player(AbstractPlayer):
         return self._home_runs_against_per_nine_innings
 
     @_float_property_decorator
-    def bases_on_balls_given_per_nine_innings(self):
+    def bases_on_balls_given_per_nine_innings(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of bases on balls the pitcher has
         given per nine innings played.
@@ -1410,7 +1412,7 @@ class Player(AbstractPlayer):
         return self._bases_on_balls_given_per_nine_innings
 
     @_float_property_decorator
-    def batters_struckout_per_nine_innings(self):
+    def batters_struckout_per_nine_innings(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of batters the pitcher has struck out
         per nine innings played.
@@ -1418,7 +1420,7 @@ class Player(AbstractPlayer):
         return self._batters_struckout_per_nine_innings
 
     @_float_property_decorator
-    def strikeouts_thrown_per_walk(self):
+    def strikeouts_thrown_per_walk(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of batters the pitcher has struck out
         per the number of walks given.
@@ -1447,14 +1449,14 @@ class Roster:
         respective stats which greatly reduces the time to return a response if
         just the names and IDs are desired. Defaults to False.
     """
-    def __init__(self, team, year=None, slim=False):
+    def __init__(self, team: str, year: Optional[str]=None, slim: Optional[bool]=False):
         self._team = team
         self._slim = slim
         self._coach = None
         if slim:
-            self._players = {}
+            self._players: dict[str, str] = {}
         else:
-            self._players = []
+            self._players: list[Player] = []
 
         self._find_players_with_coach(year)
 
@@ -1640,7 +1642,7 @@ class Roster:
         self._coach = self._parse_coach(page)
 
     @property
-    def players(self):
+    def players(self) -> Union[list[Player], dict[str, str]]:
         """
         Returns a ``list`` of player instances for each player on the requested
         team's roster if the ``slim`` property is False when calling the Roster
@@ -1651,7 +1653,7 @@ class Roster:
         return self._players
 
     @property
-    def coach(self):
+    def coach(self) -> Optional[str]:
         """
         Returns a ``string`` of the coach's name, such as 'AJ Hinch'.
         """
