@@ -7,6 +7,7 @@ from urllib.error import HTTPError
 from .. import utils
 from .constants import PLAYER_SCHEME, PLAYER_URL, ROSTER_URL
 from .player import AbstractPlayer
+from typing import Optional, Union
 
 
 def _cleanup(prop):
@@ -91,7 +92,7 @@ class Player(AbstractPlayer):
         number starting at '1' for the first time that player ID has been used
         and increments by 1 for every successive player.
     """
-    def __init__(self, player_id):
+    def __init__(self, player_id: str):
         self._most_recent_season = ''
         self._index = None
         self._player_id = player_id
@@ -475,7 +476,7 @@ class Player(AbstractPlayer):
         return fields_to_include
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and values where each index is a different season plus the
@@ -492,7 +493,7 @@ class Player(AbstractPlayer):
         return pd.DataFrame(rows, index=[indices])
 
     @property
-    def season(self):
+    def season(self) -> Optional[str]:
         """
         Returns a ``string`` of the season in the format 'YYYY-YY', such as
         '2017-18'. If no season was requested, the career stats will be
@@ -501,7 +502,7 @@ class Player(AbstractPlayer):
         return self._season[self._index]
 
     @property
-    def conference(self):
+    def conference(self) -> Optional[str]:
         """
         Returns a ``string`` of the abbreviation for the conference the team
         participated in for the requested season.
@@ -509,7 +510,7 @@ class Player(AbstractPlayer):
         return self._conference[self._index]
 
     @_most_recent_decorator
-    def team_abbreviation(self):
+    def team_abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the abbrevation for the team the player plays
         for, such as 'PURDUE' for Carsen Edwards.
@@ -517,14 +518,14 @@ class Player(AbstractPlayer):
         return self._team_abbreviation
 
     @property
-    def position(self):
+    def position(self) -> Optional[str]:
         """
         Returns a ``string`` constant of the player's primary position.
         """
         return self._position
 
     @property
-    def height(self):
+    def height(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's height in the format
         "feet-inches".
@@ -532,7 +533,7 @@ class Player(AbstractPlayer):
         return self._height
 
     @property
-    def weight(self):
+    def weight(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's weight in pounds.
         """
@@ -541,21 +542,21 @@ class Player(AbstractPlayer):
         return int(self._weight.replace('lb', ''))
 
     @_int_property_decorator
-    def games_played(self):
+    def games_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player participated in.
         """
         return self._games_played
 
     @_int_property_decorator
-    def games_started(self):
+    def games_started(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player started.
         """
         return self._games_started
 
     @_float_property_decorator
-    def player_efficiency_rating(self):
+    def player_efficiency_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's efficiency rating which represents
         the player's relative production level. An average player in the league
@@ -564,7 +565,7 @@ class Player(AbstractPlayer):
         return self._player_efficiency_rating
 
     @_int_property_decorator
-    def points_produced(self):
+    def points_produced(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of offensive points the player
         produced.
@@ -572,7 +573,7 @@ class Player(AbstractPlayer):
         return self._points_produced
 
     @_float_property_decorator
-    def offensive_win_shares(self):
+    def offensive_win_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team as a result of his offensive plays.
@@ -580,7 +581,7 @@ class Player(AbstractPlayer):
         return self._offensive_win_shares
 
     @_float_property_decorator
-    def defensive_win_shares(self):
+    def defensive_win_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team as a result of his defensive plays.
@@ -588,7 +589,7 @@ class Player(AbstractPlayer):
         return self._defensive_win_shares
 
     @_float_property_decorator
-    def win_shares(self):
+    def win_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team as a result of his offensive and defensive plays.
@@ -596,7 +597,7 @@ class Player(AbstractPlayer):
         return self._win_shares
 
     @_float_property_decorator
-    def win_shares_per_40_minutes(self):
+    def win_shares_per_40_minutes(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team per 40 minutes of playtime. An average player has a contribution
@@ -605,7 +606,7 @@ class Player(AbstractPlayer):
         return self._win_shares_per_40_minutes
 
     @_float_property_decorator
-    def offensive_box_plus_minus(self):
+    def offensive_box_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of offensive points per 100
         possessions the player contributed in comparison to an average player
@@ -614,7 +615,7 @@ class Player(AbstractPlayer):
         return self._offensive_box_plus_minus
 
     @_float_property_decorator
-    def defensive_box_plus_minus(self):
+    def defensive_box_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of defensive points per 100
         possessions the player contributed in comparison to an average player
@@ -623,7 +624,7 @@ class Player(AbstractPlayer):
         return self._defensive_box_plus_minus
 
     @_float_property_decorator
-    def box_plus_minus(self):
+    def box_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of points per 100 possessions
         the player contributed in comparison to an average player in the
@@ -653,14 +654,14 @@ class Roster:
         respective stats which greatly reduces the time to return a response if
         just the names and IDs are desired. Defaults to False.
     """
-    def __init__(self, team, year=None, slim=False):
+    def __init__(self, team: str, year: Optional[str]=None, slim: Optional[bool]=False):
         self._team = team
         self._slim = slim
         self._coach = None
         if slim:
-            self._players = {}
+            self._players: dict[str, str] = {}
         else:
-            self._players = []
+            self._players: list[Player] = []
 
         self._find_players_with_coach(year)
 
@@ -828,7 +829,7 @@ class Roster:
         self._coach = self._parse_coach(page)
 
     @property
-    def players(self):
+    def players(self) -> Union[dict[str, str], list[Player]]:
         """
         Returns a ``list`` of player instances for each player on the requested
         team's roster if the ``slim`` property is False when calling the Roster
@@ -839,7 +840,7 @@ class Roster:
         return self._players
 
     @property
-    def coach(self):
+    def coach(self) -> Optional[str]:
         """
         Returns a ``string`` of the coach's name, such as 'Matt Painter'.
         """

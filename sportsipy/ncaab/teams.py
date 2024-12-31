@@ -7,6 +7,7 @@ from .conferences import Conferences
 from .ncaab_utils import _retrieve_all_teams
 from .roster import Roster
 from .schedule import Schedule
+from typing import Iterator, Optional
 
 
 class Team:
@@ -234,7 +235,7 @@ class Team:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the string abbreviation of the
@@ -342,7 +343,7 @@ class Team:
         return pd.DataFrame([fields_to_include], index=[self._abbreviation])
 
     @property
-    def conference(self):
+    def conference(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's conference abbreviation, such as
         'big-12' for the Big 12 Conference.
@@ -350,7 +351,7 @@ class Team:
         return self._team_conference
 
     @property
-    def abbreviation(self):
+    def abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's short name, such as 'PURDUE' for the
         Purdue Boilermakers.
@@ -358,7 +359,7 @@ class Team:
         return self._abbreviation
 
     @property
-    def schedule(self):
+    def schedule(self) -> Schedule:
         """
         Returns an instance of the Schedule class containing the team's
         complete schedule for the season.
@@ -366,7 +367,7 @@ class Team:
         return Schedule(self._abbreviation, self._year)
 
     @property
-    def roster(self):
+    def roster(self) -> Roster:
         """
         Returns an instance of the Roster class containing all players for the
         team during the season with all career stats.
@@ -374,7 +375,7 @@ class Team:
         return Roster(self._abbreviation, self._year)
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's full name, such as 'Purdue
         Boilermakers'.
@@ -382,7 +383,7 @@ class Team:
         return self._name
 
     @int_property_decorator
-    def games_played(self):
+    def games_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team has played
         during the season.
@@ -390,7 +391,7 @@ class Team:
         return self._games_played
 
     @int_property_decorator
-    def wins(self):
+    def wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team won during the
         season.
@@ -398,7 +399,7 @@ class Team:
         return self._wins
 
     @int_property_decorator
-    def losses(self):
+    def losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team lost during
         the season.
@@ -406,7 +407,7 @@ class Team:
         return self._losses
 
     @float_property_decorator
-    def win_percentage(self):
+    def win_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins divided by the number of
         games played during the season. Percentage ranges from 0-1.
@@ -414,7 +415,7 @@ class Team:
         return self._win_percentage
 
     @float_property_decorator
-    def simple_rating_system(self):
+    def simple_rating_system(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's average point differential compared
         to the strength of schedule. Higher values indicate stronger teams. An
@@ -424,7 +425,7 @@ class Team:
         return self._simple_rating_system
 
     @float_property_decorator
-    def strength_of_schedule(self):
+    def strength_of_schedule(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's strength of schedule based on the
         points above and below average. An average strength of schedule is
@@ -434,7 +435,7 @@ class Team:
         return self._strength_of_schedule
 
     @int_property_decorator
-    def conference_wins(self):
+    def conference_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of conference games the team won
         during the season.
@@ -442,7 +443,7 @@ class Team:
         return self._conference_wins
 
     @int_property_decorator
-    def conference_losses(self):
+    def conference_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of conference games the team
         lost during the season.
@@ -450,7 +451,7 @@ class Team:
         return self._conference_losses
 
     @int_property_decorator
-    def home_wins(self):
+    def home_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of home games the team won
         during the season.
@@ -458,7 +459,7 @@ class Team:
         return self._home_wins
 
     @int_property_decorator
-    def home_losses(self):
+    def home_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of home games the team lost
         during the season.
@@ -466,7 +467,7 @@ class Team:
         return self._home_losses
 
     @int_property_decorator
-    def away_wins(self):
+    def away_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of away games the team won
         during the season.
@@ -474,7 +475,7 @@ class Team:
         return self._away_wins
 
     @int_property_decorator
-    def away_losses(self):
+    def away_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of away games the team lost
         during the season.
@@ -482,7 +483,7 @@ class Team:
         return self._away_losses
 
     @int_property_decorator
-    def points(self):
+    def points(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of points the team scored during
         the season.
@@ -490,7 +491,7 @@ class Team:
         return self._points
 
     @int_property_decorator
-    def opp_points(self):
+    def opp_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of points opponents have scored
         during the season.
@@ -498,7 +499,7 @@ class Team:
         return self._opp_points
 
     @int_property_decorator
-    def minutes_played(self):
+    def minutes_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of minutes played by the team
         during the season.
@@ -506,7 +507,7 @@ class Team:
         return self._minutes_played
 
     @int_property_decorator
-    def field_goals(self):
+    def field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals made during the
         season.
@@ -514,7 +515,7 @@ class Team:
         return self._field_goals
 
     @int_property_decorator
-    def field_goal_attempts(self):
+    def field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goal attempts during
         the season.
@@ -522,7 +523,7 @@ class Team:
         return self._field_goal_attempts
 
     @float_property_decorator
-    def field_goal_percentage(self):
+    def field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of field goals made divided by the
         total number of field goal attempts. Percentage ranges from 0-1.
@@ -530,7 +531,7 @@ class Team:
         return self._field_goal_percentage
 
     @int_property_decorator
-    def two_point_field_goals(self):
+    def two_point_field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of two point field goals made
         during the season.
@@ -538,7 +539,7 @@ class Team:
         return self.field_goals - self.three_point_field_goals
 
     @int_property_decorator
-    def two_point_field_goal_attempts(self):
+    def two_point_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of two point field goal attempts
         during the season.
@@ -546,7 +547,7 @@ class Team:
         return self.field_goal_attempts - self.three_point_field_goal_attempts
 
     @float_property_decorator
-    def two_point_field_goal_percentage(self):
+    def two_point_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of two point field goals made divided
         by the number of two point field goal attempts. Percentage ranges from
@@ -560,7 +561,7 @@ class Team:
             return 0.0
 
     @int_property_decorator
-    def three_point_field_goals(self):
+    def three_point_field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of three point field goals made
         during the season.
@@ -568,7 +569,7 @@ class Team:
         return self._three_point_field_goals
 
     @int_property_decorator
-    def three_point_field_goal_attempts(self):
+    def three_point_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of three point field goal
         attempts during the season.
@@ -576,7 +577,7 @@ class Team:
         return self._three_point_field_goal_attempts
 
     @float_property_decorator
-    def three_point_field_goal_percentage(self):
+    def three_point_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of three point field goals made
         divided by the number of three point field goal attempts. Percentage
@@ -585,7 +586,7 @@ class Team:
         return self._three_point_field_goal_percentage
 
     @int_property_decorator
-    def free_throws(self):
+    def free_throws(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of free throws made during the
         season.
@@ -593,7 +594,7 @@ class Team:
         return self._free_throws
 
     @int_property_decorator
-    def free_throw_attempts(self):
+    def free_throw_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of free throw attempts during
         the season.
@@ -601,7 +602,7 @@ class Team:
         return self._free_throw_attempts
 
     @float_property_decorator
-    def free_throw_percentage(self):
+    def free_throw_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of free throws made divided by the
         number of free throw attempts during the season.
@@ -609,7 +610,7 @@ class Team:
         return self._free_throw_percentage
 
     @int_property_decorator
-    def offensive_rebounds(self):
+    def offensive_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of offensive rebounds during the
         season.
@@ -617,7 +618,7 @@ class Team:
         return self._offensive_rebounds
 
     @int_property_decorator
-    def defensive_rebounds(self):
+    def defensive_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of defensive rebounds during the
         season.
@@ -628,42 +629,42 @@ class Team:
             return None
 
     @int_property_decorator
-    def total_rebounds(self):
+    def total_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of rebounds during the season.
         """
         return self._total_rebounds
 
     @int_property_decorator
-    def assists(self):
+    def assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of assists during the season.
         """
         return self._assists
 
     @int_property_decorator
-    def steals(self):
+    def steals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of steals during the season.
         """
         return self._steals
 
     @int_property_decorator
-    def blocks(self):
+    def blocks(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of blocks during the season.
         """
         return self._blocks
 
     @int_property_decorator
-    def turnovers(self):
+    def turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of turnovers during the season.
         """
         return self._turnovers
 
     @int_property_decorator
-    def personal_fouls(self):
+    def personal_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of personal fouls during the
         season.
@@ -671,7 +672,7 @@ class Team:
         return self._personal_fouls
 
     @int_property_decorator
-    def opp_field_goals(self):
+    def opp_field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals made during the
         season by opponents.
@@ -679,7 +680,7 @@ class Team:
         return self._opp_field_goals
 
     @int_property_decorator
-    def opp_field_goal_attempts(self):
+    def opp_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goal attempts during
         the season by opponents.
@@ -687,7 +688,7 @@ class Team:
         return self._opp_field_goal_attempts
 
     @float_property_decorator
-    def opp_field_goal_percentage(self):
+    def opp_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of field goals made divided by the
         total number of field goal attempts by opponents. Percentage ranges
@@ -696,7 +697,7 @@ class Team:
         return self._opp_field_goal_percentage
 
     @int_property_decorator
-    def opp_two_point_field_goals(self):
+    def opp_two_point_field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of two point field goals made
         during the season by opponents.
@@ -704,7 +705,7 @@ class Team:
         return self.opp_field_goals - self.opp_three_point_field_goals
 
     @int_property_decorator
-    def opp_two_point_field_goal_attempts(self):
+    def opp_two_point_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of two point field goal attempts
         during the season by opponents.
@@ -713,7 +714,7 @@ class Team:
             self.opp_three_point_field_goal_attempts
 
     @float_property_decorator
-    def opp_two_point_field_goal_percentage(self):
+    def opp_two_point_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of two point field goals made divided
         by the number of two point field goal attempts by opponents. Percentage
@@ -727,7 +728,7 @@ class Team:
             return 0.0
 
     @int_property_decorator
-    def opp_three_point_field_goals(self):
+    def opp_three_point_field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of three point field goals made
         during the season by opponents.
@@ -735,7 +736,7 @@ class Team:
         return self._opp_three_point_field_goals
 
     @int_property_decorator
-    def opp_three_point_field_goal_attempts(self):
+    def opp_three_point_field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of three point field goal
         attempts during the season by opponents.
@@ -743,7 +744,7 @@ class Team:
         return self._opp_three_point_field_goal_attempts
 
     @float_property_decorator
-    def opp_three_point_field_goal_percentage(self):
+    def opp_three_point_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of three point field goals made
         divided by the number of three point field goal attempts by opponents.
@@ -752,7 +753,7 @@ class Team:
         return self._opp_three_point_field_goal_percentage
 
     @int_property_decorator
-    def opp_free_throws(self):
+    def opp_free_throws(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of free throws made during the
         season by opponents.
@@ -760,7 +761,7 @@ class Team:
         return self._opp_free_throws
 
     @int_property_decorator
-    def opp_free_throw_attempts(self):
+    def opp_free_throw_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of free throw attempts during
         the season by opponents.
@@ -768,7 +769,7 @@ class Team:
         return self._opp_free_throw_attempts
 
     @float_property_decorator
-    def opp_free_throw_percentage(self):
+    def opp_free_throw_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of free throws made divided by the
         number of free throw attempts during the season by opponents.
@@ -776,7 +777,7 @@ class Team:
         return self._opp_free_throw_percentage
 
     @int_property_decorator
-    def opp_offensive_rebounds(self):
+    def opp_offensive_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of offensive rebounds during the
         season by opponents.
@@ -784,7 +785,7 @@ class Team:
         return self._opp_offensive_rebounds
 
     @int_property_decorator
-    def opp_defensive_rebounds(self):
+    def opp_defensive_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of defensive rebounds during the
         season by opponents.
@@ -795,7 +796,7 @@ class Team:
             return None
 
     @int_property_decorator
-    def opp_total_rebounds(self):
+    def opp_total_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of rebounds during the season by
         opponents.
@@ -803,7 +804,7 @@ class Team:
         return self._opp_total_rebounds
 
     @int_property_decorator
-    def opp_assists(self):
+    def opp_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of assists during the season by
         opponents.
@@ -811,7 +812,7 @@ class Team:
         return self._opp_assists
 
     @int_property_decorator
-    def opp_steals(self):
+    def opp_steals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of steals during the season by
         opponents.
@@ -819,7 +820,7 @@ class Team:
         return self._opp_steals
 
     @int_property_decorator
-    def opp_blocks(self):
+    def opp_blocks(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of blocks during the season by
         opponents.
@@ -827,7 +828,7 @@ class Team:
         return self._opp_blocks
 
     @int_property_decorator
-    def opp_turnovers(self):
+    def opp_turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of turnovers during the season
         by opponents.
@@ -835,7 +836,7 @@ class Team:
         return self._opp_turnovers
 
     @int_property_decorator
-    def opp_personal_fouls(self):
+    def opp_personal_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of personal fouls during the
         season by opponents.
@@ -843,7 +844,7 @@ class Team:
         return self._opp_personal_fouls
 
     @float_property_decorator
-    def pace(self):
+    def pace(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of possessions per 40
         minutes.
@@ -851,7 +852,7 @@ class Team:
         return self._pace
 
     @float_property_decorator
-    def offensive_rating(self):
+    def offensive_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of points scored per 100
         possessions.
@@ -859,7 +860,7 @@ class Team:
         return self._offensive_rating
 
     @float_property_decorator
-    def net_rating(self):
+    def net_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the net team rating which is equivalent to the
         difference between the offensive rating and the defensive (or the
@@ -872,7 +873,7 @@ class Team:
             return None
 
     @float_property_decorator
-    def free_throw_attempt_rate(self):
+    def free_throw_attempt_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of free throw attempts per
         field goal attempt.
@@ -880,7 +881,7 @@ class Team:
         return self._free_throw_attempt_rate
 
     @float_property_decorator
-    def three_point_attempt_rate(self):
+    def three_point_attempt_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of field goal attempts from
         3-point range. Percentage ranges from 0-1.
@@ -888,7 +889,7 @@ class Team:
         return self._three_point_attempt_rate
 
     @float_property_decorator
-    def true_shooting_percentage(self):
+    def true_shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's true shooting percentage which
         considers free throws, 2-point field goals, and 3-point field goals.
@@ -897,7 +898,7 @@ class Team:
         return self._true_shooting_percentage
 
     @float_property_decorator
-    def total_rebound_percentage(self):
+    def total_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available rebounds a team
         grabbed.
@@ -906,7 +907,7 @@ class Team:
         return self._total_rebound_percentage
 
     @float_property_decorator
-    def assist_percentage(self):
+    def assist_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of field goals that were
         assisted.
@@ -915,7 +916,7 @@ class Team:
         return self._assist_percentage
 
     @float_property_decorator
-    def steal_percentage(self):
+    def steal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of opponent possessions that
         ended in a steal. Percentage ranges from 0-100.
@@ -923,7 +924,7 @@ class Team:
         return self._steal_percentage
 
     @float_property_decorator
-    def block_percentage(self):
+    def block_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of 2-point field goals by the
         opponent that were blocked. Percentage ranges from 0-100.
@@ -931,7 +932,7 @@ class Team:
         return self._block_percentage
 
     @float_property_decorator
-    def effective_field_goal_percentage(self):
+    def effective_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the field goal percentage while giving extra
         weight to 3-point field goals. Percentage ranges from 0-1.
@@ -939,7 +940,7 @@ class Team:
         return self._effective_field_goal_percentage
 
     @float_property_decorator
-    def turnover_percentage(self):
+    def turnover_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of times the team turned the ball
         over per 100 possessions.
@@ -947,7 +948,7 @@ class Team:
         return self._turnover_percentage
 
     @float_property_decorator
-    def offensive_rebound_percentage(self):
+    def offensive_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available offensive rebounds a
         team grabbed. Percentage ranges from 0-100.
@@ -955,7 +956,7 @@ class Team:
         return self._offensive_rebound_percentage
 
     @float_property_decorator
-    def free_throws_per_field_goal_attempt(self):
+    def free_throws_per_field_goal_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of free throws per field goal
         attempt.
@@ -963,7 +964,7 @@ class Team:
         return self._free_throws_per_field_goal_attempt
 
     @float_property_decorator
-    def opp_offensive_rating(self):
+    def opp_offensive_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of points scored per 100
         possessions by the opponent. This is equivalent to the team's defensive
@@ -973,7 +974,7 @@ class Team:
         return self._opp_offensive_rating
 
     @float_property_decorator
-    def opp_free_throw_attempt_rate(self):
+    def opp_free_throw_attempt_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of free throw attempts per
         field goal attempt by the opponent.
@@ -981,7 +982,7 @@ class Team:
         return self._opp_free_throw_attempt_rate
 
     @float_property_decorator
-    def opp_three_point_attempt_rate(self):
+    def opp_three_point_attempt_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of field goal attempts from
         3-point range by the opponent. Percentage ranges from 0-1.
@@ -989,7 +990,7 @@ class Team:
         return self._opp_three_point_attempt_rate
 
     @float_property_decorator
-    def opp_true_shooting_percentage(self):
+    def opp_true_shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponent's true shooting percentage which
         considers free throws, 2-point field goals, and 3-point field goals.
@@ -998,7 +999,7 @@ class Team:
         return self._opp_true_shooting_percentage
 
     @float_property_decorator
-    def opp_total_rebound_percentage(self):
+    def opp_total_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available rebounds the
         opponent grabbed. Percentage ranges from 0-100.
@@ -1006,7 +1007,7 @@ class Team:
         return self._opp_total_rebound_percentage
 
     @float_property_decorator
-    def opp_assist_percentage(self):
+    def opp_assist_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of the opponent's field goals
         that were assisted. Percentage ranges from 0-100.
@@ -1014,7 +1015,7 @@ class Team:
         return self._opp_assist_percentage
 
     @float_property_decorator
-    def opp_steal_percentage(self):
+    def opp_steal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of possessions that ended in a
         steal by the opponent. Percentage ranges from 0-100.
@@ -1022,7 +1023,7 @@ class Team:
         return self._opp_steal_percentage
 
     @float_property_decorator
-    def opp_block_percentage(self):
+    def opp_block_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of 2-point field goals that were
         blocked by the opponent. Percentage ranges from 0-100.
@@ -1030,7 +1031,7 @@ class Team:
         return self._opp_block_percentage
 
     @float_property_decorator
-    def opp_effective_field_goal_percentage(self):
+    def opp_effective_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponent's field goal percentage while
         giving extra weight to 3-point field goals. Percentage ranges from 0-1.
@@ -1038,7 +1039,7 @@ class Team:
         return self._opp_effective_field_goal_percentage
 
     @float_property_decorator
-    def opp_turnover_percentage(self):
+    def opp_turnover_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of times the opponent turned the ball
         over per 100 possessions.
@@ -1046,7 +1047,7 @@ class Team:
         return self._opp_turnover_percentage
 
     @float_property_decorator
-    def opp_offensive_rebound_percentage(self):
+    def opp_offensive_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available offensive rebounds
         the opponent grabbed. Percentage ranges from 0-100.
@@ -1054,7 +1055,7 @@ class Team:
         return self._opp_offensive_rebound_percentage
 
     @float_property_decorator
-    def opp_free_throws_per_field_goal_attempt(self):
+    def opp_free_throws_per_field_goal_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of free throws per field goal attempt
         by the opponent.
@@ -1094,7 +1095,7 @@ class Teams:
     """
     def __init__(self, year=None, basic_stats=None, basic_opp_stats=None,
                  adv_stats=None, adv_opp_stats=None):
-        self._teams = []
+        self._teams: list[Team] = []
         self._conferences_dict = Conferences(year).team_conference
 
         team_data_dict, year = _retrieve_all_teams(year, basic_stats,
@@ -1102,7 +1103,7 @@ class Teams:
                                                    adv_opp_stats)
         self._instantiate_teams(team_data_dict, year)
 
-    def __getitem__(self, abbreviation):
+    def __getitem__(self, abbreviation: str) -> Team:
         """
         Return a specified team.
 
@@ -1130,7 +1131,7 @@ class Teams:
                 return team
         raise ValueError('Team abbreviation %s not found' % abbreviation)
 
-    def __call__(self, abbreviation):
+    def __call__(self, abbreviation: str) -> Team:
         """
         Return a specified team.
 
@@ -1164,7 +1165,7 @@ class Teams:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Team]:
         """Returns an iterator of all of the NCAAB teams for a given season."""
         return iter(self._teams)
 
@@ -1203,7 +1204,7 @@ class Teams:
             self._teams.append(team)
 
     @property
-    def dataframes(self):
+    def dataframes(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Team class. Rows are indexed by the team abbreviation.

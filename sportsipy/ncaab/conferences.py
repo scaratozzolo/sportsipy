@@ -1,3 +1,4 @@
+from typing import Optional
 from pyquery import PyQuery as pq
 import re
 from urllib.error import HTTPError
@@ -21,8 +22,8 @@ class Conference:
         A string of the requested year to pull conference information from.
         Defaults to the most recent season.
     """
-    def __init__(self, conference_abbreviation, year=None):
-        self._teams = {}
+    def __init__(self, conference_abbreviation: str, year:Optional[str]=None):
+        self._teams: dict[str, str] = {}
         self._conference_abbreviation = conference_abbreviation
 
         self._find_conference_teams(conference_abbreviation, year)
@@ -123,7 +124,7 @@ class Conference:
             self._teams[team_abbreviation] = team_name
 
     @property
-    def teams(self):
+    def teams(self) -> dict[str, str]:
         """
         Returns a ``dictionary`` of team names and abbreviations where each key
         is a ``string`` of the team abbreviation and each value is a ``string``
@@ -148,9 +149,9 @@ class Conferences:
         A string of the requested year to pull conferences from. Defaults to
         the most recent season.
     """
-    def __init__(self, year=None):
-        self._conferences = {}
-        self._team_conference = {}
+    def __init__(self, year:Optional[str]=None):
+        self._conferences: dict[str, dict[str, str]] = {}
+        self._team_conference: dict[str, str] = {}
 
         self._find_conferences(year)
 
@@ -255,7 +256,7 @@ class Conferences:
             self._conferences[conference_abbreviation] = conference_dict
 
     @property
-    def conferences(self):
+    def conferences(self) -> dict[str, dict[str, str]]:
         """
         Returns a ``dictionary`` of conference names and abbreviations where
         each key is a ``string`` of the abbreviation and each value is a
@@ -279,7 +280,7 @@ class Conferences:
         return self._conferences
 
     @property
-    def team_conference(self):
+    def team_conference(self) -> dict[str, str]:
         """
         Returns a ``dictionary`` of conference abbreviations for each team
         where each key is a ``string`` of the team abbreviation and each value
