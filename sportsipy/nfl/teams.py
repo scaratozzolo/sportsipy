@@ -594,7 +594,7 @@ class Teams:
         of the Season page for the designated year.
     """
     def __init__(self, year=None, season_page=None):
-        self._teams = []
+        self._teams: list[Team] = []
 
         team_data_dict, year = _retrieve_all_teams(year, season_page)
         self._instantiate_teams(team_data_dict, year)

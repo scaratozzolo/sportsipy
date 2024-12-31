@@ -224,7 +224,7 @@ class Boxscore:
         The relative link to the boxscore HTML page, such as
         '201802040nwe'.
     """
-    def __init__(self, uri):
+    def __init__(self, uri: str):
         self._uri = uri
         self._date = None
         self._time = None
@@ -1461,7 +1461,7 @@ class Boxscores:
         empty, or if 'end_week' is prior to 'week', only the games from the day
         specified in the 'date' parameter will be saved.
     """
-    def __init__(self, week, year, end_week=None):
+    def __init__(self, week: int, year: int, end_week:Optional[int]=None):
         self._boxscores = {}
 
         self._find_games(week, year, end_week)

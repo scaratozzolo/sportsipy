@@ -84,7 +84,7 @@ class Player(AbstractPlayer):
         is a number starting at '00' for the first time that player ID has been
         used and increments by 1 for every successive player.
     """
-    def __init__(self, player_id):
+    def __init__(self, player_id: str):
         self._most_recent_season = ''
         self._detailed_stats_seasons = None
         self._index = None
@@ -486,7 +486,7 @@ class Player(AbstractPlayer):
                 break
             index += 1
 
-    def __call__(self, requested_season=''):
+    def __call__(self, requested_season:str=''):
         """
         Specify a different season to pull stats from.
 
@@ -1707,14 +1707,14 @@ class Roster:
         respective stats which greatly reduces the time to return a response if
         just the names and IDs are desired. Defaults to False.
     """
-    def __init__(self, team, year=None, slim=False):
+    def __init__(self, team: str, year:Optional[str]=None, slim:Optional[bool]=False):
         self._team = team
         self._slim = slim
         self._coach = None
         if slim:
-            self._players = {}
+            self._players: dict[str, str] = {}
         else:
-            self._players = []
+            self._players: list[Player] = []
 
         self._find_players_with_coach(year)
 

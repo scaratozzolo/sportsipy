@@ -577,10 +577,10 @@ class Schedule:
         The requested year to pull stats from.
     """
     def __init__(self, abbreviation, year=None):
-        self._games = []
+        self._games: list[Game] = []
         self._pull_schedule(abbreviation, year)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int):
         """
         Return a specified game.
 
@@ -600,7 +600,7 @@ class Schedule:
         """
         return self._games[index]
 
-    def __call__(self, date) -> Game:
+    def __call__(self, date: datetime) -> Game:
         """
         Return a specified game.
 
