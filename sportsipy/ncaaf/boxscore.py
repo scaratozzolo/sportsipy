@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pyquery import PyQuery as pq
 from urllib.error import HTTPError
 from .. import utils
@@ -15,6 +15,7 @@ from .player import (AbstractPlayer,
                      _float_property_decorator,
                      _int_property_decorator)
 from functools import wraps
+from typing import Any, Optional
 
 
 def ncaaf_int_property_sub_index(func):
@@ -95,7 +96,7 @@ class BoxscorePlayer(AbstractPlayer):
         AbstractPlayer.__init__(self, player_id, player_name, player_data)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and value for the specified game.
@@ -165,7 +166,7 @@ class BoxscorePlayer(AbstractPlayer):
         return pd.DataFrame([fields_to_include], index=[self._player_id])
 
     @_float_property_decorator
-    def pass_yards_per_attempt(self):
+    def pass_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player gained
         per pass attempt.
@@ -173,7 +174,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._pass_yards_per_attempt
 
     @_int_property_decorator
-    def kickoff_returns(self):
+    def kickoff_returns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of kickoffs the player attempted to
         return.
@@ -181,7 +182,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._kickoff_returns
 
     @_int_property_decorator
-    def kickoff_return_yards(self):
+    def kickoff_return_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player gained while
         the player attempted to return a kickoff.
@@ -189,7 +190,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._kickoff_return_yards
 
     @_float_property_decorator
-    def average_kickoff_return_yards(self):
+    def average_kickoff_return_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player gained
         per attempted kickoff return.
@@ -197,7 +198,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._average_kickoff_return_yards
 
     @_int_property_decorator
-    def punt_returns(self):
+    def punt_returns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of punts the player attempted to
         return.
@@ -205,7 +206,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._punt_returns
 
     @_int_property_decorator
-    def punt_return_yards(self):
+    def punt_return_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player gained while
         the player attempted to return a punt.
@@ -213,7 +214,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._punt_return_yards
 
     @_float_property_decorator
-    def average_punt_return_yards(self):
+    def average_punt_return_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player gained
         per attempted punt return.
@@ -221,7 +222,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._average_punt_return_yards
 
     @_int_property_decorator
-    def extra_points_attempted(self):
+    def extra_points_attempted(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of extra points the player
         attempted.
@@ -229,7 +230,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._extra_points_attempted
 
     @_float_property_decorator
-    def extra_point_percentage(self):
+    def extra_point_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of attempted extra points the
         player made. Percentage ranges from 0-100.
@@ -237,7 +238,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._extra_point_percentage
 
     @_int_property_decorator
-    def field_goals_attempted(self):
+    def field_goals_attempted(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals the player
         attempted.
@@ -245,7 +246,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._field_goals_attempted
 
     @_float_property_decorator
-    def field_goal_percentage(self):
+    def field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of attempted field goals the
         player made. Percentage ranges from 0-100.
@@ -253,7 +254,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._field_goal_percentage
 
     @_int_property_decorator
-    def points_kicking(self):
+    def points_kicking(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of points the player gained from
         kicking field goals or extra points.
@@ -261,14 +262,14 @@ class BoxscorePlayer(AbstractPlayer):
         return self._points_kicking
 
     @_int_property_decorator
-    def punts(self):
+    def punts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player punted the ball.
         """
         return self._punts
 
     @_int_property_decorator
-    def punting_yards(self):
+    def punting_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the player punted the
         ball.
@@ -276,7 +277,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._punting_yards
 
     @_float_property_decorator
-    def punting_yards_per_attempt(self):
+    def punting_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards the player punted
         per attempt.
@@ -298,7 +299,7 @@ class Boxscore:
         The relative link to the boxscore HTML page, such as
         '2018-01-08-georgia'.
     """
-    def __init__(self, uri):
+    def __init__(self, uri: str):
         self._uri = uri
         self._date = None
         self._time = None
@@ -757,7 +758,7 @@ class Boxscore:
         self._away_players, self._home_players = self._find_players(boxscore)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the string URI that is used to
@@ -811,7 +812,7 @@ class Boxscore:
         return pd.DataFrame([fields_to_include], index=[self._uri])
 
     @property
-    def away_players(self):
+    def away_players(self) -> Optional[list[BoxscorePlayer]]:
         """
         Returns a ``list`` of ``BoxscorePlayer`` class instances for each
         player on the away team.
@@ -819,7 +820,7 @@ class Boxscore:
         return self._away_players
 
     @property
-    def home_players(self):
+    def home_players(self) -> Optional[list[BoxscorePlayer]]:
         """
         Returns a ``list`` of ``BoxscorePlayer`` class instances for each
         player on the home team.
@@ -827,21 +828,21 @@ class Boxscore:
         return self._home_players
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the date the game took place.
         """
         return self._date
 
     @property
-    def time(self):
+    def time(self) -> Optional[str]:
         """
         Returns a ``string`` of the time the game started.
         """
         return self._time.replace('Start Time: ', '')
 
     @property
-    def stadium(self):
+    def stadium(self) -> Optional[str]:
         """
         Returns a ``string`` of the name of the stadium where the game was
         played.
@@ -849,7 +850,7 @@ class Boxscore:
         return self._stadium.replace('Stadium: ', '')
 
     @property
-    def summary(self):
+    def summary(self) -> Optional[dict[str, list[int]]]:
         """
         Returns a ``dictionary`` with two keys, 'away' and 'home'. The value of
         each key will be a list for each respective team's score by order of
@@ -864,7 +865,7 @@ class Boxscore:
         return self._summary
 
     @property
-    def winner(self):
+    def winner(self) -> Optional[str]:
         """
         Returns a ``string`` constant indicating whether the home or away team
         won.
@@ -874,7 +875,7 @@ class Boxscore:
         return AWAY
 
     @property
-    def winning_name(self):
+    def winning_name(self) -> Optional[str]:
         """
         Returns a ``string`` of the winning team's name, such as 'Alabama'.
         """
@@ -883,7 +884,7 @@ class Boxscore:
         return self._away_name.text()
 
     @property
-    def winning_abbr(self):
+    def winning_abbr(self) -> str:
         """
         Returns a ``string`` of the winning team's abbreviation, such as
         'ALABAMA'
@@ -898,7 +899,7 @@ class Boxscore:
         return utils._parse_abbreviation(self._away_name)
 
     @property
-    def losing_name(self):
+    def losing_name(self) -> str:
         """
         Returns a ``string`` of the losing team's name, such as 'Georgia'.
         """
@@ -907,7 +908,7 @@ class Boxscore:
         return self._home_name.text()
 
     @property
-    def losing_abbr(self):
+    def losing_abbr(self) -> str:
         """
         Returns a ``string`` of the losing team's abbreviation, such as
         'GEORGIA' for the Georgia Bulldogs.
@@ -921,35 +922,35 @@ class Boxscore:
         return utils._parse_abbreviation(self._home_name)
 
     @int_property_decorator
-    def away_points(self):
+    def away_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the away team scored.
         """
         return self._away_points
 
     @int_property_decorator
-    def away_first_downs(self):
+    def away_first_downs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of first downs the away team gained.
         """
         return self._away_first_downs
 
     @ncaaf_int_property_sub_index
-    def away_rush_attempts(self):
+    def away_rush_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing plays the away team made.
         """
         return self._away_rush_attempts
 
     @ncaaf_int_property_sub_index
-    def away_rush_yards(self):
+    def away_rush_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing yards the away team gained.
         """
         return self._away_rush_yards
 
     @ncaaf_int_property_sub_index
-    def away_rush_touchdowns(self):
+    def away_rush_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing touchdowns the away team
         scored.
@@ -957,7 +958,7 @@ class Boxscore:
         return self._away_rush_touchdowns
 
     @ncaaf_int_property_sub_index
-    def away_pass_completions(self):
+    def away_pass_completions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of completed passes the away team
         made.
@@ -965,7 +966,7 @@ class Boxscore:
         return self._away_pass_completions
 
     @ncaaf_int_property_sub_index
-    def away_pass_attempts(self):
+    def away_pass_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passes that were thrown by the away
         team.
@@ -973,14 +974,14 @@ class Boxscore:
         return self._away_pass_attempts
 
     @ncaaf_int_property_sub_index
-    def away_pass_yards(self):
+    def away_pass_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passing yards the away team gained.
         """
         return self._away_pass_yards
 
     @ncaaf_int_property_sub_index
-    def away_pass_touchdowns(self):
+    def away_pass_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passing touchdowns the away team
         scored.
@@ -988,21 +989,21 @@ class Boxscore:
         return self._away_pass_touchdowns
 
     @ncaaf_int_property_sub_index
-    def away_interceptions(self):
+    def away_interceptions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of interceptions the away team threw.
         """
         return self._away_interceptions
 
     @int_property_decorator
-    def away_total_yards(self):
+    def away_total_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the away team gained.
         """
         return self._away_total_yards
 
     @ncaaf_int_property_sub_index
-    def away_fumbles(self):
+    def away_fumbles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team fumbled the
         ball.
@@ -1010,7 +1011,7 @@ class Boxscore:
         return self._away_fumbles
 
     @ncaaf_int_property_sub_index
-    def away_fumbles_lost(self):
+    def away_fumbles_lost(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team turned the ball
         over as the result of a fumble.
@@ -1018,7 +1019,7 @@ class Boxscore:
         return self._away_fumbles
 
     @int_property_decorator
-    def away_turnovers(self):
+    def away_turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team turned the ball
         over.
@@ -1026,14 +1027,14 @@ class Boxscore:
         return self._away_turnovers
 
     @ncaaf_int_property_sub_index
-    def away_penalties(self):
+    def away_penalties(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of penalties called on the away team.
         """
         return self._away_penalties
 
     @ncaaf_int_property_sub_index
-    def away_yards_from_penalties(self):
+    def away_yards_from_penalties(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards gifted as a result of
         penalties called on the away team.
@@ -1041,35 +1042,35 @@ class Boxscore:
         return self._away_yards_from_penalties
 
     @int_property_decorator
-    def home_points(self):
+    def home_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the home team scored.
         """
         return self._home_points
 
     @int_property_decorator
-    def home_first_downs(self):
+    def home_first_downs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of first downs the home team gained.
         """
         return self._home_first_downs
 
     @ncaaf_int_property_sub_index
-    def home_rush_attempts(self):
+    def home_rush_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing plays the home team made.
         """
         return self._home_rush_attempts
 
     @ncaaf_int_property_sub_index
-    def home_rush_yards(self):
+    def home_rush_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing yards the home team gained.
         """
         return self._home_rush_yards
 
     @ncaaf_int_property_sub_index
-    def home_rush_touchdowns(self):
+    def home_rush_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of rushing touchdowns the home team
         scored.
@@ -1077,7 +1078,7 @@ class Boxscore:
         return self._home_rush_touchdowns
 
     @ncaaf_int_property_sub_index
-    def home_pass_completions(self):
+    def home_pass_completions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of completed passes the home team
         made.
@@ -1085,7 +1086,7 @@ class Boxscore:
         return self._home_pass_completions
 
     @ncaaf_int_property_sub_index
-    def home_pass_attempts(self):
+    def home_pass_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passes that were thrown by the home
         team.
@@ -1093,14 +1094,14 @@ class Boxscore:
         return self._home_pass_attempts
 
     @ncaaf_int_property_sub_index
-    def home_pass_yards(self):
+    def home_pass_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passing yards the home team gained.
         """
         return self._home_pass_yards
 
     @ncaaf_int_property_sub_index
-    def home_pass_touchdowns(self):
+    def home_pass_touchdowns(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of passing touchdowns the home team
         scored.
@@ -1108,21 +1109,21 @@ class Boxscore:
         return self._home_pass_touchdowns
 
     @ncaaf_int_property_sub_index
-    def home_interceptions(self):
+    def home_interceptions(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of interceptions the home team threw.
         """
         return self._home_pass_touchdowns
 
     @int_property_decorator
-    def home_total_yards(self):
+    def home_total_yards(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of yards the home team gained.
         """
         return self._home_total_yards
 
     @ncaaf_int_property_sub_index
-    def home_fumbles(self):
+    def home_fumbles(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team fumbled the
         ball.
@@ -1130,7 +1131,7 @@ class Boxscore:
         return self._home_fumbles
 
     @ncaaf_int_property_sub_index
-    def home_fumbles_lost(self):
+    def home_fumbles_lost(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team turned the ball
         over as the result of a fumble.
@@ -1138,7 +1139,7 @@ class Boxscore:
         return self._home_fumbles_lost
 
     @int_property_decorator
-    def home_turnovers(self):
+    def home_turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team turned the ball
         over.
@@ -1146,14 +1147,14 @@ class Boxscore:
         return self._home_turnovers
 
     @ncaaf_int_property_sub_index
-    def home_penalties(self):
+    def home_penalties(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of penalties called on the home team.
         """
         return self._home_penalties
 
     @ncaaf_int_property_sub_index
-    def home_yards_from_penalties(self):
+    def home_yards_from_penalties(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of yards gifted as a result of
         penalties called on the home team.
@@ -1183,8 +1184,8 @@ class Boxscores:
         empty, or if 'end_date' is prior to 'date', only the games from the day
         specified in the 'date' parameter will be saved.
     """
-    def __init__(self, date, end_date=None):
-        self._boxscores = {}
+    def __init__(self, date: datetime, end_date: Optional[datetime]=None):
+        self._boxscores: dict[str, list[dict[str, Any]]] = {}
 
         self._find_games(date, end_date)
 
@@ -1201,7 +1202,7 @@ class Boxscores:
         return self.__str__()
 
     @property
-    def games(self):
+    def games(self) -> dict[str, list[dict[str, Any]]]:
         """
         Returns a ``dictionary`` object representing all of the games played on
         the requested day. Dictionary is in the following format::

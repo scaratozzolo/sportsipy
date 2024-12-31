@@ -5,6 +5,7 @@ from pyquery import PyQuery as pq
 from urllib.error import HTTPError
 from .. import utils
 from .constants import CONFERENCE_URL, CONFERENCES_URL
+from typing import Any, Optional
 
 
 class Conference:
@@ -27,9 +28,9 @@ class Conference:
         conference has an incomplete or empty page on www.sports-reference.com,
         preventing the parsing from completing successfully.
     """
-    def __init__(self, conference_abbreviation, year=None,
+    def __init__(self, conference_abbreviation: str, year: Optional[str]=None,
                  ignore_missing=False):
-        self._teams = {}
+        self._teams: dict[str, str] = {}
         self._ignore_missing = ignore_missing
         self._conference_abbreviation = conference_abbreviation
 
@@ -135,7 +136,7 @@ class Conference:
             self._teams[team_abbreviation] = team_name
 
     @property
-    def teams(self):
+    def teams(self) -> dict[str, str]:
         """
         Returns a ``dictionary`` of team names and abbreviations where each key
         is a ``string`` of the team abbreviation and each value is a ``string``
@@ -164,9 +165,9 @@ class Conferences:
         conference has an incomplete or empty page on www.sports-reference.com,
         preventing the parsing from completing successfully.
     """
-    def __init__(self, year=None, ignore_missing=False):
-        self._conferences = {}
-        self._team_conference = {}
+    def __init__(self, year: Optional[str]=None, ignore_missing=False):
+        self._conferences: dict[str, dict[str, str]] = {}
+        self._team_conference: dict[str, str] = {}
         self._ignore_missing = ignore_missing
 
         self._find_conferences(year)
@@ -274,7 +275,7 @@ class Conferences:
             self._conferences[conference_abbreviation] = conference_dict
 
     @property
-    def conferences(self):
+    def conferences(self) -> dict[str, dict[str, Any]]:
         """
         Returns a ``dictionary`` of conference names and abbreviations where
         each key is a ``string`` of the abbreviation and each value is a
@@ -298,7 +299,7 @@ class Conferences:
         return self._conferences
 
     @property
-    def team_conference(self):
+    def team_conference(self) -> dict[str, str]:
         """
         Returns a ``dictionary`` of conference abbreviations for each team
         where each key is a ``string`` of the team abbreviation and each value

@@ -15,6 +15,7 @@ from sportsipy.constants import (WIN,
                                  REGULAR_SEASON,
                                  CONFERENCE_TOURNAMENT)
 from sportsipy.ncaaf.boxscore import Boxscore
+from typing import Iterator, Optional
 
 
 class Game:
@@ -133,7 +134,7 @@ class Game:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the boxscore string.
@@ -163,7 +164,7 @@ class Game:
         return pd.DataFrame([fields_to_include], index=[self._boxscore])
 
     @property
-    def dataframe_extended(self):
+    def dataframe_extended(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame representing the Boxscore class for the
         game. This property provides much richer context for the selected game,
@@ -173,7 +174,7 @@ class Game:
         return self.boxscore.dataframe
 
     @property
-    def game(self):
+    def game(self) -> Optional[int]:
         """
         Returns an ``int`` to indicate which game in the season was requested.
         The first game of the season returns 1.
@@ -181,7 +182,7 @@ class Game:
         return int(self._game)
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the date the game was played, such as 'Sep 2,
         2017'.
@@ -189,14 +190,14 @@ class Game:
         return self._date
 
     @property
-    def time(self):
+    def time(self) -> Optional[str]:
         """
         Returns a ``string`` of the time the game started, such as '12:00 PM'.
         """
         return self._time
 
     @property
-    def datetime(self):
+    def datetime(self) -> datetime:
         """
         Returns a datetime object of the month, day, year, and time the game
         was played. If the game doesn't include a time, the default value of
@@ -208,7 +209,7 @@ class Game:
         return datetime.strptime(date_string, '%b %d, %Y %I:%M %p')
 
     @property
-    def boxscore(self):
+    def boxscore(self) -> Boxscore:
         """
         Returns an instance of the Boxscore class containing more detailed
         stats on the game.
@@ -216,7 +217,7 @@ class Game:
         return Boxscore(self._boxscore)
 
     @property
-    def boxscore_index(self):
+    def boxscore_index(self) -> Optional[str]:
         """
         Returns a ``string`` of the URI for a boxscore which can be used to
         access or index a game.
@@ -224,7 +225,7 @@ class Game:
         return self._boxscore
 
     @property
-    def day_of_week(self):
+    def day_of_week(self) -> Optional[str]:
         """
         Returns a ``string`` of the 3-letter abbreviation of the day of the
         week the game was played on, such as 'Sat' for Saturday.
@@ -232,7 +233,7 @@ class Game:
         return self._day_of_week
 
     @property
-    def location(self):
+    def location(self) -> str:
         """
         Returns a ``string`` constant to indicate whether the game was played
         at home, away, or in a neutral location.
@@ -244,7 +245,7 @@ class Game:
         return HOME
 
     @int_property_decorator
-    def rank(self):
+    def rank(self) -> Optional[int]:
         """
         Returns an ``int`` of the team's rank at the time the game was played.
         """
@@ -254,7 +255,7 @@ class Game:
         return rank[0]
 
     @int_property_decorator
-    def opponent_rank(self):
+    def opponent_rank(self) -> Optional[int]:
         """
         Returns an ``int`` of the opponent's rank at the time the game was
         played.
@@ -265,7 +266,7 @@ class Game:
         return rank[0]
 
     @property
-    def opponent_name(self):
+    def opponent_name(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponent's name, such as 'Purdue
         Boilermakers' for the Purdue Boilermakers.
@@ -273,7 +274,7 @@ class Game:
         return self._opponent_name
 
     @property
-    def opponent_abbr(self):
+    def opponent_abbr(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponent's abbreviation, such as 'PURDUE'
         for the Purdue Boilermakers.
@@ -281,7 +282,7 @@ class Game:
         return self._opponent_abbr
 
     @property
-    def opponent_conference(self):
+    def opponent_conference(self) -> Optional[str]:
         """
         Returns a ``string`` of the conference the team participates in, such
         as 'Big Ten' for the Big Ten Conference. If a team does not compete in
@@ -293,7 +294,7 @@ class Game:
         return self._opponent_conference
 
     @property
-    def result(self):
+    def result(self) -> str:
         """
         Returns a ``string`` constant to indicate whether the team won or lost
         the game.
@@ -303,7 +304,7 @@ class Game:
         return WIN
 
     @int_property_decorator
-    def points_for(self):
+    def points_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the team scored during the
         game.
@@ -311,7 +312,7 @@ class Game:
         return self._points_for
 
     @int_property_decorator
-    def points_against(self):
+    def points_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the team allowed during the
         game.
@@ -319,7 +320,7 @@ class Game:
         return self._points_against
 
     @int_property_decorator
-    def wins(self):
+    def wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has won so far in
         the season at the conclusion of the requested game.
@@ -327,7 +328,7 @@ class Game:
         return self._wins
 
     @int_property_decorator
-    def losses(self):
+    def losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has lost so far in
         the season at the conclusion of the requested game.
@@ -335,7 +336,7 @@ class Game:
         return self._losses
 
     @property
-    def streak(self):
+    def streak(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's winning streak at the conclusion of
         the requested game. Streaks are listed in the format '[W|L] #' (ie.
@@ -360,11 +361,11 @@ class Schedule:
     year : string (optional)
         The requested year to pull stats from.
     """
-    def __init__(self, abbreviation, year=None):
-        self._games = []
+    def __init__(self, abbreviation: str, year: Optional[str]=None):
+        self._games: list[Game] = []
         self._pull_schedule(abbreviation, year)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Game:
         """
         Return a specified game.
 
@@ -384,7 +385,7 @@ class Schedule:
         """
         return self._games[index]
 
-    def __call__(self, date):
+    def __call__(self, date: datetime) -> Game:
         """
         Return a specified game.
 
@@ -430,7 +431,7 @@ class Schedule:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Game]:
         """
         Returns an iterator of all of the games scheduled for the given team.
         """
@@ -479,7 +480,7 @@ class Schedule:
             self._games.append(game)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Game class. Rows are indexed by the boxscore string.
@@ -494,7 +495,7 @@ class Schedule:
         return pd.concat(frames)
 
     @property
-    def dataframe_extended(self):
+    def dataframe_extended(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Boxscore class for every game in the schedule. Rows are indexed by the

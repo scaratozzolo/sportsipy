@@ -7,6 +7,7 @@ from .conferences import Conferences
 from .ncaaf_utils import _retrieve_all_teams
 from .roster import Roster
 from .schedule import Schedule
+from typing import Iterator, Optional
 
 
 class Team:
@@ -197,7 +198,7 @@ class Team:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the string abbreviation of the
@@ -268,7 +269,7 @@ class Team:
         return pd.DataFrame([fields_to_include], index=[self._abbreviation])
 
     @property
-    def conference(self):
+    def conference(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's conference abbreviation, such as
         'big-12' for the Big 12 Conference.
@@ -276,7 +277,7 @@ class Team:
         return self._team_conference
 
     @property
-    def abbreviation(self):
+    def abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's short name, such as 'PURDUE' for the
         Purdue Boilermakers.
@@ -284,7 +285,7 @@ class Team:
         return self._abbreviation
 
     @property
-    def schedule(self):
+    def schedule(self) -> Schedule:
         """
         Returns an instance of the Schedule class containing the team's
         complete schedule for the season.
@@ -292,7 +293,7 @@ class Team:
         return Schedule(self._abbreviation, self._year)
 
     @property
-    def roster(self):
+    def roster(self) -> Roster:
         """
         Returns an instance of the Roster class containing all players for the
         team during the season with all career stats.
@@ -300,7 +301,7 @@ class Team:
         return Roster(self._abbreviation, self._year)
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's full name, such as 'Purdue
         Boilermakers'.
@@ -308,7 +309,7 @@ class Team:
         return self._name
 
     @int_property_decorator
-    def games(self):
+    def games(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team has played
         during the season.
@@ -316,7 +317,7 @@ class Team:
         return self._games
 
     @int_property_decorator
-    def wins(self):
+    def wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team won during the
         season.
@@ -324,7 +325,7 @@ class Team:
         return self._wins
 
     @int_property_decorator
-    def losses(self):
+    def losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team lost during
         the season.
@@ -332,7 +333,7 @@ class Team:
         return self._losses
 
     @float_property_decorator
-    def win_percentage(self):
+    def win_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of wins divided by the number of
         games played during the season. Percentage ranges from 0-1.
@@ -340,7 +341,7 @@ class Team:
         return self._win_percentage
 
     @int_property_decorator
-    def conference_wins(self):
+    def conference_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of conference games the team won
         during the season.
@@ -348,7 +349,7 @@ class Team:
         return self._conference_wins
 
     @int_property_decorator
-    def conference_losses(self):
+    def conference_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of conference games the team
         lost during the season.
@@ -356,7 +357,7 @@ class Team:
         return self._conference_losses
 
     @float_property_decorator
-    def conference_win_percentage(self):
+    def conference_win_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of conference wins divided by the
         number of conference games played during the season. Percentage ranges
@@ -365,7 +366,7 @@ class Team:
         return self._conference_win_percentage
 
     @float_property_decorator
-    def points_per_game(self):
+    def points_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of points scored by the team
         per game.
@@ -373,14 +374,14 @@ class Team:
         return self._points_per_game
 
     @float_property_decorator
-    def points_against_per_game(self):
+    def points_against_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of points conceded per game.
         """
         return self._points_against_per_game
 
     @float_property_decorator
-    def strength_of_schedule(self):
+    def strength_of_schedule(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's strength of schedule based on the
         number of points above or below average. An average difficulty schedule
@@ -390,7 +391,7 @@ class Team:
         return self._strength_of_schedule
 
     @float_property_decorator
-    def simple_rating_system(self):
+    def simple_rating_system(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's relative strength based on the
         average margin of victory and the strength of schedule. An average team
@@ -400,14 +401,14 @@ class Team:
         return self._simple_rating_system
 
     @float_property_decorator
-    def pass_completions(self):
+    def pass_completions(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of completed passes per game.
         """
         return self._pass_completions
 
     @float_property_decorator
-    def opponents_pass_completions(self):
+    def opponents_pass_completions(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of completed
         passes per game.
@@ -415,7 +416,7 @@ class Team:
         return self._opponents_pass_completions
 
     @float_property_decorator
-    def pass_attempts(self):
+    def pass_attempts(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of passes that are attempted
         per game.
@@ -423,7 +424,7 @@ class Team:
         return self._pass_attempts
 
     @float_property_decorator
-    def opponents_pass_attempts(self):
+    def opponents_pass_attempts(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of passes that
         are attempted per game.
@@ -431,7 +432,7 @@ class Team:
         return self._opponents_pass_attempts
 
     @float_property_decorator
-    def pass_completion_percentage(self):
+    def pass_completion_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of completed passes per game.
         Percentage ranges from 0-100.
@@ -439,7 +440,7 @@ class Team:
         return self._pass_completion_percentage
 
     @float_property_decorator
-    def opponents_pass_completion_percentage(self):
+    def opponents_pass_completion_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' percentage of completed passes
         per game. Percentage ranges from 0-100.
@@ -447,7 +448,7 @@ class Team:
         return self._opponents_pass_completion_percentage
 
     @float_property_decorator
-    def pass_yards(self):
+    def pass_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained from passing
         per game.
@@ -455,7 +456,7 @@ class Team:
         return self._pass_yards
 
     @float_property_decorator
-    def opponents_pass_yards(self):
+    def opponents_pass_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of yards gained
         from passing per game.
@@ -463,7 +464,7 @@ class Team:
         return self._opponents_pass_yards
 
     @float_property_decorator
-    def interceptions(self):
+    def interceptions(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of interceptions thrown per
         game.
@@ -471,7 +472,7 @@ class Team:
         return self._interceptions
 
     @float_property_decorator
-    def opponents_interceptions(self):
+    def opponents_interceptions(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of interceptions
         thrown per game.
@@ -479,7 +480,7 @@ class Team:
         return self._opponents_interceptions
 
     @float_property_decorator
-    def pass_touchdowns(self):
+    def pass_touchdowns(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of passing touchdowns scored
         per game.
@@ -487,7 +488,7 @@ class Team:
         return self._pass_touchdowns
 
     @float_property_decorator
-    def opponents_pass_touchdowns(self):
+    def opponents_pass_touchdowns(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of passing
         touchdowns scored per game.
@@ -495,14 +496,14 @@ class Team:
         return self._opponents_pass_touchdowns
 
     @float_property_decorator
-    def rush_attempts(self):
+    def rush_attempts(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of rushing plays per game.
         """
         return self._rush_attempts
 
     @float_property_decorator
-    def opponents_rush_attempts(self):
+    def opponents_rush_attempts(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of rushing plays
         per game.
@@ -510,7 +511,7 @@ class Team:
         return self._opponents_rush_attempts
 
     @float_property_decorator
-    def rush_yards(self):
+    def rush_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained from rushing
         per game.
@@ -518,7 +519,7 @@ class Team:
         return self._rush_yards
 
     @float_property_decorator
-    def opponents_rush_yards(self):
+    def opponents_rush_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of yards gained
         from rushing per game.
@@ -526,7 +527,7 @@ class Team:
         return self._opponents_rush_yards
 
     @float_property_decorator
-    def rush_yards_per_attempt(self):
+    def rush_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per rushing
         attempt per game.
@@ -534,7 +535,7 @@ class Team:
         return self._rush_yards_per_attempt
 
     @float_property_decorator
-    def opponents_rush_yards_per_attempt(self):
+    def opponents_rush_yards_per_attempt(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of yards gained
         per rushing attempt per game.
@@ -542,7 +543,7 @@ class Team:
         return self._opponents_rush_yards_per_attempt
 
     @float_property_decorator
-    def rush_touchdowns(self):
+    def rush_touchdowns(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of rushing touchdowns scored
         per game.
@@ -550,7 +551,7 @@ class Team:
         return self._rush_touchdowns
 
     @float_property_decorator
-    def opponents_rush_touchdowns(self):
+    def opponents_rush_touchdowns(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of rushing
         touchdowns scored per game.
@@ -558,14 +559,14 @@ class Team:
         return self._opponents_rush_touchdowns
 
     @float_property_decorator
-    def plays(self):
+    def plays(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of offensive plays per game.
         """
         return self._plays
 
     @float_property_decorator
-    def opponents_plays(self):
+    def opponents_plays(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of offensive plays
         per game.
@@ -573,14 +574,14 @@ class Team:
         return self._opponents_plays
 
     @float_property_decorator
-    def yards(self):
+    def yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per game.
         """
         return self._yards
 
     @float_property_decorator
-    def opponents_yards(self):
+    def opponents_yards(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of yards gained
         per game.
@@ -588,14 +589,14 @@ class Team:
         return self._opponents_yards
 
     @float_property_decorator
-    def turnovers(self):
+    def turnovers(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of turnovers per game.
         """
         return self._turnovers
 
     @float_property_decorator
-    def opponents_turnovers(self):
+    def opponents_turnovers(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of turnovers
         per game.
@@ -603,14 +604,14 @@ class Team:
         return self._opponents_turnovers
 
     @float_property_decorator
-    def fumbles_lost(self):
+    def fumbles_lost(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of fumbles per game.
         """
         return self._fumbles_lost
 
     @float_property_decorator
-    def opponents_fumbles_lost(self):
+    def opponents_fumbles_lost(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of fumbles
         per game.
@@ -618,14 +619,14 @@ class Team:
         return self._opponents_fumbles_lost
 
     @float_property_decorator
-    def yards_per_play(self):
+    def yards_per_play(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained per play.
         """
         return self._yards_per_play
 
     @float_property_decorator
-    def opponents_yards_per_play(self):
+    def opponents_yards_per_play(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of yards gained
         per play.
@@ -633,7 +634,7 @@ class Team:
         return self._opponents_yards_per_play
 
     @float_property_decorator
-    def pass_first_downs(self):
+    def pass_first_downs(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of first downs from passing
         plays per game.
@@ -641,7 +642,7 @@ class Team:
         return self._pass_first_downs
 
     @float_property_decorator
-    def opponents_pass_first_downs(self):
+    def opponents_pass_first_downs(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of first downs
         from passing plays per game.
@@ -649,7 +650,7 @@ class Team:
         return self._opponents_pass_first_downs
 
     @float_property_decorator
-    def rush_first_downs(self):
+    def rush_first_downs(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of first downs from rushing
         plays per game.
@@ -657,7 +658,7 @@ class Team:
         return self._rush_first_downs
 
     @float_property_decorator
-    def opponents_rush_first_downs(self):
+    def opponents_rush_first_downs(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of first downs
         from rushing plays per game.
@@ -665,7 +666,7 @@ class Team:
         return self._opponents_rush_first_downs
 
     @float_property_decorator
-    def first_downs_from_penalties(self):
+    def first_downs_from_penalties(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of first downs from an
         opponent's penalties per game.
@@ -673,7 +674,7 @@ class Team:
         return self._first_downs_from_penalties
 
     @float_property_decorator
-    def opponents_first_downs_from_penalties(self):
+    def opponents_first_downs_from_penalties(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of first downs
         from an opponent's penalties per game.
@@ -681,7 +682,7 @@ class Team:
         return self._opponents_first_downs_from_penalties
 
     @float_property_decorator
-    def first_downs(self):
+    def first_downs(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of first downs achieved per
         game.
@@ -689,7 +690,7 @@ class Team:
         return self._first_downs
 
     @float_property_decorator
-    def opponents_first_downs(self):
+    def opponents_first_downs(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' total number of first downs
         achieved per game.
@@ -697,7 +698,7 @@ class Team:
         return self._opponents_first_downs
 
     @float_property_decorator
-    def penalties(self):
+    def penalties(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of penalties conceded per
         game.
@@ -705,7 +706,7 @@ class Team:
         return self._penalties
 
     @float_property_decorator
-    def opponents_penalties(self):
+    def opponents_penalties(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of penalties
         conceded per game.
@@ -713,7 +714,7 @@ class Team:
         return self._opponents_penalties
 
     @float_property_decorator
-    def yards_from_penalties(self):
+    def yards_from_penalties(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of yards gained from an
         opponent's penalties per game.
@@ -721,7 +722,7 @@ class Team:
         return self._yards_from_penalties
 
     @float_property_decorator
-    def opponents_yards_from_penalties(self):
+    def opponents_yards_from_penalties(self) -> Optional[float]:
         """
         Returns a ``float`` of the opponents' average number of yards gained
         from an opponent's penalties per game.
@@ -755,9 +756,9 @@ class Teams:
         instead of downloading from sports-reference.com. This file should be
         of the Defensive Stats page for the designated year.
     """
-    def __init__(self, year=None, season_page=None, offensive_stats=None,
+    def __init__(self, year: Optional[str]=None, season_page=None, offensive_stats=None,
                  defensive_stats=None):
-        self._teams = []
+        self._teams: list[Team] = []
         self._conferences_dict = Conferences(year, True).team_conference
 
         team_data_dict, year = _retrieve_all_teams(year, season_page,
@@ -765,7 +766,7 @@ class Teams:
                                                    defensive_stats)
         self._instantiate_teams(team_data_dict, year)
 
-    def __getitem__(self, abbreviation):
+    def __getitem__(self, abbreviation: str) -> Team:
         """
         Return a specified team.
 
@@ -793,7 +794,7 @@ class Teams:
                 return team
         raise ValueError('Team abbreviation %s not found' % abbreviation)
 
-    def __call__(self, abbreviation):
+    def __call__(self, abbreviation: str) -> Team:
         """
         Return a specified team.
 
@@ -827,7 +828,7 @@ class Teams:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Team]:
         """Returns an iterator of all of the NCAAF teams for a given season."""
         return iter(self._teams)
 
@@ -864,7 +865,7 @@ class Teams:
             self._teams.append(team)
 
     @property
-    def dataframes(self):
+    def dataframes(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Team class. Rows are indexed by the team abbreviation.
