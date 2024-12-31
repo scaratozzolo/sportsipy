@@ -4,6 +4,7 @@ from functools import wraps
 from pyquery import PyQuery as pq
 from .. import utils
 from .constants import PLAYER_SCHEME
+from typing import Optional
 
 
 def _cleanup(prop):
@@ -191,7 +192,7 @@ class AbstractPlayer:
             setattr(self, field, field_stats)
 
     @property
-    def player_id(self):
+    def player_id(self) -> str:
         """
         Returns a ``string`` of the player's ID on sports-reference, such as
         'hardeja01' for James Harden.
@@ -199,21 +200,21 @@ class AbstractPlayer:
         return self._player_id
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
         Returns a ``string`` of the players name, such as 'James Harden'.
         """
         return self._name
 
     @_int_property_decorator
-    def minutes_played(self):
+    def minutes_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of minutes the player played.
         """
         return self._minutes_played
 
     @_int_property_decorator
-    def field_goals(self):
+    def field_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals the player
         scored.
@@ -221,7 +222,7 @@ class AbstractPlayer:
         return self._field_goals
 
     @_int_property_decorator
-    def field_goal_attempts(self):
+    def field_goal_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of field goals the player
         attempted during the season.
@@ -229,7 +230,7 @@ class AbstractPlayer:
         return self._field_goal_attempts
 
     @_float_property_decorator
-    def field_goal_percentage(self):
+    def field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's field goal percentage during the
         season. Percentage ranges from 0-1.
@@ -237,7 +238,7 @@ class AbstractPlayer:
         return self._field_goal_percentage
 
     @_int_property_decorator
-    def three_pointers(self):
+    def three_pointers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of three point field goals the
         player made.
@@ -245,7 +246,7 @@ class AbstractPlayer:
         return self._three_pointers
 
     @_int_property_decorator
-    def three_point_attempts(self):
+    def three_point_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of three point field goals the
         player attempted during the season.
@@ -253,7 +254,7 @@ class AbstractPlayer:
         return self._three_point_attempts
 
     @_float_property_decorator
-    def three_point_percentage(self):
+    def three_point_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's three point field goal percentage
         during the season. Percentage ranges from 0-1.
@@ -261,7 +262,7 @@ class AbstractPlayer:
         return self._three_point_percentage
 
     @_float_property_decorator
-    def effective_field_goal_percentage(self):
+    def effective_field_goal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's field goal percentage while giving
         extra weight to 3-point field goals. Percentage ranges from 0-1.
@@ -269,7 +270,7 @@ class AbstractPlayer:
         return self._effective_field_goal_percentage
 
     @_int_property_decorator
-    def free_throws(self):
+    def free_throws(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of free throws the player made
         during the season.
@@ -277,7 +278,7 @@ class AbstractPlayer:
         return self._free_throws
 
     @_int_property_decorator
-    def free_throw_attempts(self):
+    def free_throw_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of free throws the player
         attempted during the season.
@@ -285,7 +286,7 @@ class AbstractPlayer:
         return self._free_throw_attempts
 
     @_float_property_decorator
-    def free_throw_percentage(self):
+    def free_throw_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's free throw percentage during the
         season. Percentage ranges from 0-1.
@@ -293,7 +294,7 @@ class AbstractPlayer:
         return self._free_throw_percentage
 
     @_int_property_decorator
-    def offensive_rebounds(self):
+    def offensive_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of offensive rebounds the player
         grabbed during the season.
@@ -301,7 +302,7 @@ class AbstractPlayer:
         return self._offensive_rebounds
 
     @_int_property_decorator
-    def defensive_rebounds(self):
+    def defensive_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of defensive rebounds the player
         grabbed during the season.
@@ -309,7 +310,7 @@ class AbstractPlayer:
         return self._defensive_rebounds
 
     @_int_property_decorator
-    def total_rebounds(self):
+    def total_rebounds(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of offensive and defensive
         rebounds the player grabbed during the season.
@@ -317,7 +318,7 @@ class AbstractPlayer:
         return self._total_rebounds
 
     @_int_property_decorator
-    def assists(self):
+    def assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of assists the player tallied
         during the season.
@@ -325,7 +326,7 @@ class AbstractPlayer:
         return self._assists
 
     @_int_property_decorator
-    def steals(self):
+    def steals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of steals the player tallied
         during the season.
@@ -333,7 +334,7 @@ class AbstractPlayer:
         return self._steals
 
     @_int_property_decorator
-    def blocks(self):
+    def blocks(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots the player blocked
         during the season.
@@ -341,7 +342,7 @@ class AbstractPlayer:
         return self._blocks
 
     @_int_property_decorator
-    def turnovers(self):
+    def turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of times the player turned the
         ball over during the season for any reason.
@@ -349,7 +350,7 @@ class AbstractPlayer:
         return self._turnovers
 
     @_int_property_decorator
-    def personal_fouls(self):
+    def personal_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of personal fouls the player
         committed during the season.
@@ -357,7 +358,7 @@ class AbstractPlayer:
         return self._personal_fouls
 
     @_int_property_decorator
-    def points(self):
+    def points(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of points the player scored
         during the season.
@@ -365,7 +366,7 @@ class AbstractPlayer:
         return self._points
 
     @_float_property_decorator
-    def true_shooting_percentage(self):
+    def true_shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's true shooting percentage which
         takes into account two and three pointers as well as free throws.
@@ -374,7 +375,7 @@ class AbstractPlayer:
         return self._true_shooting_percentage
 
     @_float_property_decorator
-    def three_point_attempt_rate(self):
+    def three_point_attempt_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of field goals that are shot from
         beyond the 3-point arc. Percentage ranges from 0-1.
@@ -382,7 +383,7 @@ class AbstractPlayer:
         return self._three_point_attempt_rate
 
     @_float_property_decorator
-    def free_throw_attempt_rate(self):
+    def free_throw_attempt_rate(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of free throw attempts per field goal
         attempt.
@@ -390,7 +391,7 @@ class AbstractPlayer:
         return self._free_throw_attempt_rate
 
     @_float_property_decorator
-    def offensive_rebound_percentage(self):
+    def offensive_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available offensive rebounds
         the player grabbed. Percentage ranges from 0-100.
@@ -398,7 +399,7 @@ class AbstractPlayer:
         return self._offensive_rebound_percentage
 
     @_float_property_decorator
-    def defensive_rebound_percentage(self):
+    def defensive_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available defensive rebounds
         the player grabbed. Percentage ranges from 0-100.
@@ -406,7 +407,7 @@ class AbstractPlayer:
         return self._defensive_rebound_percentage
 
     @_float_property_decorator
-    def total_rebound_percentage(self):
+    def total_rebound_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of available rebounds the player
         grabbed, both offensive and defensive. Percentage ranges from 0-100.
@@ -414,7 +415,7 @@ class AbstractPlayer:
         return self._total_rebound_percentage
 
     @_float_property_decorator
-    def assist_percentage(self):
+    def assist_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of field goals the player
         assisted while on the floor. Percentage ranges from 0-100.
@@ -422,7 +423,7 @@ class AbstractPlayer:
         return self._assist_percentage
 
     @_float_property_decorator
-    def steal_percentage(self):
+    def steal_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of defensive possessions that
         ended with the player stealing the ball while on the floor. Percentage
@@ -431,7 +432,7 @@ class AbstractPlayer:
         return self._steal_percentage
 
     @_float_property_decorator
-    def block_percentage(self):
+    def block_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of opposing two-point field goal
         attempts that were blocked by the player while on the floor. Percentage
@@ -440,7 +441,7 @@ class AbstractPlayer:
         return self._block_percentage
 
     @_float_property_decorator
-    def turnover_percentage(self):
+    def turnover_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of turnovers per 100
         possessions by the player.
@@ -448,7 +449,7 @@ class AbstractPlayer:
         return self._turnover_percentage
 
     @_float_property_decorator
-    def usage_percentage(self):
+    def usage_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of plays the player is involved
         in while on the floor. Percentage ranges from 0-100.
@@ -456,7 +457,7 @@ class AbstractPlayer:
         return self._usage_percentage
 
     @_float_property_decorator
-    def box_plus_minus(self):
+    def box_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of points per 100 possessions
         the player contributed in comparison to an average player in the

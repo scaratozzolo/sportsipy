@@ -8,6 +8,7 @@ from urllib.error import HTTPError
 from .. import utils
 from .constants import NATIONALITY, PLAYER_SCHEME, PLAYER_URL, ROSTER_URL
 from .player import AbstractPlayer
+from typing import Optional, Union
 
 
 def _cleanup(prop):
@@ -105,7 +106,7 @@ class Player(AbstractPlayer):
         been used and increments by 1 for every successive player.
     """
 
-    def __init__(self, player_id):
+    def __init__(self, player_id: str):
         self._most_recent_season = ''
         self._index = None
         self._player_id = player_id
@@ -715,7 +716,7 @@ class Player(AbstractPlayer):
         return fields_to_include
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and values where each index is a different season plus the
@@ -732,7 +733,7 @@ class Player(AbstractPlayer):
         return pd.DataFrame(rows, index=[indices])
 
     @property
-    def season(self):
+    def season(self) -> Optional[str]:
         """
         Returns a ``string`` of the season in the format 'YYYY-YY', such as
         '2017-18'. If no season was requested, the career stats will be
@@ -741,7 +742,7 @@ class Player(AbstractPlayer):
         return self._season[self._index]
 
     @property
-    def team_abbreviation(self):
+    def team_abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the abbrevation for the team the player plays
         for, such as 'HOU' for James Harden.
@@ -749,14 +750,14 @@ class Player(AbstractPlayer):
         return self._team_abbreviation[self._index]
 
     @_most_recent_decorator
-    def position(self):
+    def position(self) -> Optional[str]:
         """
         Returns a ``string`` constant of the player's primary position.
         """
         return self._position
 
     @property
-    def height(self):
+    def height(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's height in the format
         "feet-inches".
@@ -764,7 +765,7 @@ class Player(AbstractPlayer):
         return self._height
 
     @property
-    def weight(self):
+    def weight(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's weight in pounds.
         """
@@ -775,14 +776,14 @@ class Player(AbstractPlayer):
         return result
 
     @property
-    def birth_date(self):
+    def birth_date(self) -> Optional[datetime]:
         """
         Returns a ``datetime`` object of the day and year the player was born.
         """
         return datetime.strptime(self._birth_date, '%Y-%m-%d')
 
     @property
-    def nationality(self):
+    def nationality(self) -> Optional[str]:
         """
         Returns a ``string`` constant denoting which country the player
         originates from.
@@ -790,21 +791,21 @@ class Player(AbstractPlayer):
         return self._nationality
 
     @_int_property_decorator
-    def games_played(self):
+    def games_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player participated in.
         """
         return self._games_played
 
     @_int_property_decorator
-    def games_started(self):
+    def games_started(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player started.
         """
         return self._games_started
 
     @_float_property_decorator
-    def field_goals_per_poss(self):
+    def field_goals_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of field goals the player
         scored per 100 posessions.
@@ -812,7 +813,7 @@ class Player(AbstractPlayer):
         return self._field_goals_per_poss
 
     @_float_property_decorator
-    def field_goal_attempts_per_poss(self):
+    def field_goal_attempts_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of field goals the player
         attempted per 100 posessions.
@@ -820,7 +821,7 @@ class Player(AbstractPlayer):
         return self._field_goal_attempts_per_poss
 
     @_float_property_decorator
-    def three_pointers_per_poss(self):
+    def three_pointers_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of three point field goals the
         player made per 100 posessions.
@@ -828,7 +829,7 @@ class Player(AbstractPlayer):
         return self._three_pointers_per_poss
 
     @_float_property_decorator
-    def three_point_attempts_per_poss(self):
+    def three_point_attempts_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of three point field goals the
         player attempted per 100 posessions.
@@ -836,7 +837,7 @@ class Player(AbstractPlayer):
         return self._three_point_attempts_per_poss
 
     @_int_property_decorator
-    def two_pointers(self):
+    def two_pointers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of two point field goals the
         player made.
@@ -844,7 +845,7 @@ class Player(AbstractPlayer):
         return self._two_pointers
 
     @_int_property_decorator
-    def two_point_attempts(self):
+    def two_point_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of two point field goals the
         player attempted during the season.
@@ -852,7 +853,7 @@ class Player(AbstractPlayer):
         return self._two_point_attempts
 
     @_float_property_decorator
-    def two_pointers_per_poss(self):
+    def two_pointers_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of two point field goals the
         player made per 100 posessions.
@@ -860,7 +861,7 @@ class Player(AbstractPlayer):
         return self._two_pointers_per_poss
 
     @_float_property_decorator
-    def two_point_attempts_per_poss(self):
+    def two_point_attempts_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of two point field goals the
         player attempted per 100 posessions.
@@ -868,7 +869,7 @@ class Player(AbstractPlayer):
         return self._two_point_attempts_per_poss
 
     @_float_property_decorator
-    def two_point_percentage(self):
+    def two_point_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's two point field goal percentage
         during the season. Percentage ranges from 0-1.
@@ -876,7 +877,7 @@ class Player(AbstractPlayer):
         return self._two_point_percentage
 
     @_float_property_decorator
-    def free_throws_per_poss(self):
+    def free_throws_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of free throws the player made
         per 100 posessions.
@@ -884,7 +885,7 @@ class Player(AbstractPlayer):
         return self._free_throws_per_poss
 
     @_float_property_decorator
-    def free_throw_attempts_per_poss(self):
+    def free_throw_attempts_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of free throws the player
         attempted per 100 posessions.
@@ -892,7 +893,7 @@ class Player(AbstractPlayer):
         return self._free_throw_attempts_per_poss
 
     @_float_property_decorator
-    def offensive_rebounds_per_poss(self):
+    def offensive_rebounds_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of offensive rebounds the
         player grabbed per 100 posessions.
@@ -900,7 +901,7 @@ class Player(AbstractPlayer):
         return self._offensive_rebounds_per_poss
 
     @_float_property_decorator
-    def defensive_rebounds_per_poss(self):
+    def defensive_rebounds_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of defensive rebounds the
         player grabbed per 100 posessions.
@@ -908,7 +909,7 @@ class Player(AbstractPlayer):
         return self._defensive_rebounds_per_poss
 
     @_float_property_decorator
-    def total_rebounds_per_poss(self):
+    def total_rebounds_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of offensive and defensive
         rebounds the player grabbed per 100 posessions.
@@ -916,7 +917,7 @@ class Player(AbstractPlayer):
         return self._total_rebounds_per_poss
 
     @_float_property_decorator
-    def assists_per_poss(self):
+    def assists_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of assists the player tallied
         per 100 posessions.
@@ -924,7 +925,7 @@ class Player(AbstractPlayer):
         return self._assists_per_poss
 
     @_float_property_decorator
-    def steals_per_poss(self):
+    def steals_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of steals the player tallied
         per 100 posessions.
@@ -932,7 +933,7 @@ class Player(AbstractPlayer):
         return self._steals_per_poss
 
     @_float_property_decorator
-    def blocks_per_poss(self):
+    def blocks_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of shots the player blocked
         per 100 posessions.
@@ -940,7 +941,7 @@ class Player(AbstractPlayer):
         return self._blocks_per_poss
 
     @_float_property_decorator
-    def turnovers_per_poss(self):
+    def turnovers_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of times the player turned the
         ball over per 100 posessions.
@@ -948,7 +949,7 @@ class Player(AbstractPlayer):
         return self._turnovers_per_poss
 
     @_float_property_decorator
-    def personal_fouls_per_poss(self):
+    def personal_fouls_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of personal fouls the player
         committed per 100 posessions.
@@ -956,7 +957,7 @@ class Player(AbstractPlayer):
         return self._personal_fouls_per_poss
 
     @_float_property_decorator
-    def points_per_poss(self):
+    def points_per_poss(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of points the player scored
         per 100 posessions.
@@ -964,7 +965,7 @@ class Player(AbstractPlayer):
         return self._points_per_poss
 
     @_float_property_decorator
-    def player_efficiency_rating(self):
+    def player_efficiency_rating(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's efficiency rating which represents
         the player's relative production level. An average player in the league
@@ -973,7 +974,7 @@ class Player(AbstractPlayer):
         return self._player_efficiency_rating
 
     @_float_property_decorator
-    def offensive_win_shares(self):
+    def offensive_win_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team as a result of his offensive plays.
@@ -981,7 +982,7 @@ class Player(AbstractPlayer):
         return self._offensive_win_shares
 
     @_float_property_decorator
-    def defensive_win_shares(self):
+    def defensive_win_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team as a result of his defensive plays.
@@ -989,7 +990,7 @@ class Player(AbstractPlayer):
         return self._defensive_win_shares
 
     @_float_property_decorator
-    def win_shares(self):
+    def win_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team as a result of his offensive and defensive plays.
@@ -997,7 +998,7 @@ class Player(AbstractPlayer):
         return self._win_shares
 
     @_float_property_decorator
-    def win_shares_per_48_minutes(self):
+    def win_shares_per_48_minutes(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of wins the player contributed to the
         team per 48 minutes of playtime. An average player has a contribution
@@ -1006,7 +1007,7 @@ class Player(AbstractPlayer):
         return self._win_shares_per_48_minutes
 
     @_float_property_decorator
-    def offensive_box_plus_minus(self):
+    def offensive_box_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of offensive points per 100
         possessions the player contributed in comparison to an average player
@@ -1015,7 +1016,7 @@ class Player(AbstractPlayer):
         return self._offensive_box_plus_minus
 
     @_float_property_decorator
-    def defensive_box_plus_minus(self):
+    def defensive_box_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of defensive points per 100
         possessions the player contributed in comparison to an average player
@@ -1024,7 +1025,7 @@ class Player(AbstractPlayer):
         return self._defensive_box_plus_minus
 
     @_float_property_decorator
-    def value_over_replacement_player(self):
+    def value_over_replacement_player(self) -> Optional[float]:
         """
         Returns a ``float`` of the total number of points per 100 team
         possessions the player contributed compared to a replacement-level
@@ -1034,7 +1035,7 @@ class Player(AbstractPlayer):
         return self._value_over_replacement_player
 
     @_float_property_decorator
-    def shooting_distance(self):
+    def shooting_distance(self) -> Optional[float]:
         """
         Returns a ``float`` of the average distance the player takes a shot
         from in feet.
@@ -1042,7 +1043,7 @@ class Player(AbstractPlayer):
         return self._shooting_distance
 
     @_float_property_decorator
-    def percentage_shots_two_pointers(self):
+    def percentage_shots_two_pointers(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player takes that
         are 2-pointers. Percentage ranges from 0-1.
@@ -1050,7 +1051,7 @@ class Player(AbstractPlayer):
         return self._percentage_shots_two_pointers
 
     @_float_property_decorator
-    def percentage_zero_to_three_footers(self):
+    def percentage_zero_to_three_footers(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player takes from
         zero to three feet from the basket. Percentage ranges from 0-1.
@@ -1058,7 +1059,7 @@ class Player(AbstractPlayer):
         return self._percentage_zero_to_three_footers
 
     @_float_property_decorator
-    def percentage_three_to_ten_footers(self):
+    def percentage_three_to_ten_footers(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player takes from
         three to ten feet from the basket. Percentage ranges from 0-1.
@@ -1066,7 +1067,7 @@ class Player(AbstractPlayer):
         return self._percentage_three_to_ten_footers
 
     @_float_property_decorator
-    def percentage_ten_to_sixteen_footers(self):
+    def percentage_ten_to_sixteen_footers(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player takes from
         ten to sixteen feet from the basket. Percentage ranges from 0-1.
@@ -1074,7 +1075,7 @@ class Player(AbstractPlayer):
         return self._percentage_ten_to_sixteen_footers
 
     @_float_property_decorator
-    def percentage_sixteen_foot_plus_two_pointers(self):
+    def percentage_sixteen_foot_plus_two_pointers(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player takes that
         are greater than sixteen feet from the basket, but in front of or on
@@ -1083,7 +1084,7 @@ class Player(AbstractPlayer):
         return self._percentage_sixteen_foot_plus_two_pointers
 
     @_float_property_decorator
-    def percentage_shots_three_pointers(self):
+    def percentage_shots_three_pointers(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player takes from
         beyond the three point arc. Percentage ranges from 0-1.
@@ -1091,7 +1092,7 @@ class Player(AbstractPlayer):
         return self._percentage_shots_three_pointers
 
     @_float_property_decorator
-    def field_goal_perc_zero_to_three_feet(self):
+    def field_goal_perc_zero_to_three_feet(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's field goal percentage for shots
         between zero and three feet from the basket. Percentage ranges from
@@ -1100,7 +1101,7 @@ class Player(AbstractPlayer):
         return self._field_goal_perc_zero_to_three_feet
 
     @_float_property_decorator
-    def field_goal_perc_three_to_ten_feet(self):
+    def field_goal_perc_three_to_ten_feet(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's field goal percentage for shots
         between three and ten feet from the basket. Percentage ranges from
@@ -1109,7 +1110,7 @@ class Player(AbstractPlayer):
         return self._field_goal_perc_three_to_ten_feet
 
     @_float_property_decorator
-    def field_goal_perc_ten_to_sixteen_feet(self):
+    def field_goal_perc_ten_to_sixteen_feet(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's field goal percentage for shots
         between ten and sixteen feet from the basket. Percentage ranges from
@@ -1118,7 +1119,7 @@ class Player(AbstractPlayer):
         return self._field_goal_perc_ten_to_sixteen_feet
 
     @_float_property_decorator
-    def field_goal_perc_sixteen_foot_plus_two_pointers(self):
+    def field_goal_perc_sixteen_foot_plus_two_pointers(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's field goal percentage for shots
         that are greater than sixteen feet from the basket, but in front
@@ -1127,7 +1128,7 @@ class Player(AbstractPlayer):
         return self._field_goal_perc_sixteen_foot_plus_two_pointers
 
     @_float_property_decorator
-    def two_pointers_assisted_percentage(self):
+    def two_pointers_assisted_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of 2-point field goals by the
         player that are assisted. Percentage ranges from 0-1.
@@ -1135,7 +1136,7 @@ class Player(AbstractPlayer):
         return self._two_pointers_assisted_percentage
 
     @_float_property_decorator
-    def percentage_field_goals_as_dunks(self):
+    def percentage_field_goals_as_dunks(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of the player's shot attempts
         that are dunks. Percentage ranges from 0-1.
@@ -1143,7 +1144,7 @@ class Player(AbstractPlayer):
         return self._percentage_field_goals_as_dunks
 
     @_int_property_decorator
-    def dunks(self):
+    def dunks(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of dunks the player made during
         the season.
@@ -1151,7 +1152,7 @@ class Player(AbstractPlayer):
         return self._dunks
 
     @_float_property_decorator
-    def three_pointers_assisted_percentage(self):
+    def three_pointers_assisted_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of 3-point field goals by the
         player that are assisted. Percentage ranges from 0-1.
@@ -1159,7 +1160,7 @@ class Player(AbstractPlayer):
         return self._three_pointers_assisted_percentage
 
     @_float_property_decorator
-    def percentage_of_three_pointers_from_corner(self):
+    def percentage_of_three_pointers_from_corner(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of 3-point shots the player
         attempted from the corner. Percentage ranges from 0-1.
@@ -1167,7 +1168,7 @@ class Player(AbstractPlayer):
         return self._percentage_of_three_pointers_from_corner
 
     @_float_property_decorator
-    def three_point_shot_percentage_from_corner(self):
+    def three_point_shot_percentage_from_corner(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of 3-pointers from the corner
         that went in. Percentage ranges from 0-1.
@@ -1175,7 +1176,7 @@ class Player(AbstractPlayer):
         return self._three_point_shot_percentage_from_corner
 
     @_int_property_decorator
-    def half_court_heaves(self):
+    def half_court_heaves(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player took from beyond
         mid-court.
@@ -1183,7 +1184,7 @@ class Player(AbstractPlayer):
         return self._half_court_heaves
 
     @_int_property_decorator
-    def half_court_heaves_made(self):
+    def half_court_heaves_made(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player made from beyond
         mid-court.
@@ -1191,7 +1192,7 @@ class Player(AbstractPlayer):
         return self._half_court_heaves_made
 
     @_int_property_decorator_default_zero
-    def point_guard_percentage(self):
+    def point_guard_percentage(self) -> int:
         """
         Returns an ``int`` of the percentage of time the player spent as a
         point guard. Percentage ranges from 0-100 and is rounded to the
@@ -1200,7 +1201,7 @@ class Player(AbstractPlayer):
         return self._point_guard_percentage
 
     @_int_property_decorator_default_zero
-    def shooting_guard_percentage(self):
+    def shooting_guard_percentage(self) -> int:
         """
         Returns an ``int`` of the percentage of time the player spent as a
         shooting guard. Percentage ranges from 0-100 and is rounded to the
@@ -1209,7 +1210,7 @@ class Player(AbstractPlayer):
         return self._shooting_guard_percentage
 
     @_int_property_decorator_default_zero
-    def small_forward_percentage(self):
+    def small_forward_percentage(self) -> int:
         """
         Returns an ``int`` of the percentage of time the player spent as a
         small forward. Percentage ranges from 0-100 and is rounded to the
@@ -1218,7 +1219,7 @@ class Player(AbstractPlayer):
         return self._small_forward_percentage
 
     @_int_property_decorator_default_zero
-    def power_forward_percentage(self):
+    def power_forward_percentage(self) -> int:
         """
         Returns an ``int`` of the percentage of time the player spent as a
         power forward. Percentage ranges from 0-100 and is rounded to the
@@ -1227,7 +1228,7 @@ class Player(AbstractPlayer):
         return self._power_forward_percentage
 
     @_int_property_decorator_default_zero
-    def center_percentage(self):
+    def center_percentage(self) -> int:
         """
         Returns an ``int`` of the percentage of time the player spent as a
         center. Percentage ranges from 0-100 and is rounded to the nearest
@@ -1236,7 +1237,7 @@ class Player(AbstractPlayer):
         return self._center_percentage
 
     @_float_property_decorator
-    def on_court_plus_minus(self):
+    def on_court_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of points the player contributes to
         the team while on the court per 100 possessions.
@@ -1244,7 +1245,7 @@ class Player(AbstractPlayer):
         return self._on_court_plus_minus
 
     @_float_property_decorator
-    def net_plus_minus(self):
+    def net_plus_minus(self) -> Optional[float]:
         """
         Returns a ``float`` of the net number of points the player contributes
         to the team per 100 possessions regardless of being on the floor or
@@ -1253,7 +1254,7 @@ class Player(AbstractPlayer):
         return self._net_plus_minus
 
     @_int_property_decorator
-    def passing_turnovers(self):
+    def passing_turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of turnovers the player
         committed due to a bad pass.
@@ -1261,7 +1262,7 @@ class Player(AbstractPlayer):
         return self._passing_turnovers
 
     @_int_property_decorator
-    def lost_ball_turnovers(self):
+    def lost_ball_turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of turnovers the player
         committed due to losing the ball.
@@ -1269,7 +1270,7 @@ class Player(AbstractPlayer):
         return self._lost_ball_turnovers
 
     @_int_property_decorator
-    def other_turnovers(self):
+    def other_turnovers(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of all other non-passing/
         dribbling turnovers the player committed.
@@ -1277,7 +1278,7 @@ class Player(AbstractPlayer):
         return self._other_turnovers
 
     @_int_property_decorator
-    def shooting_fouls(self):
+    def shooting_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shooting fouls the player
         committed.
@@ -1285,7 +1286,7 @@ class Player(AbstractPlayer):
         return self._shooting_fouls
 
     @_int_property_decorator
-    def blocking_fouls(self):
+    def blocking_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of blocking fouls the player
         committed.
@@ -1293,7 +1294,7 @@ class Player(AbstractPlayer):
         return self._blocking_fouls
 
     @_int_property_decorator
-    def offensive_fouls(self):
+    def offensive_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of offensive fouls the player
         committed.
@@ -1301,7 +1302,7 @@ class Player(AbstractPlayer):
         return self._offensive_fouls
 
     @_int_property_decorator
-    def take_fouls(self):
+    def take_fouls(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of take fouls the player
         committed by taking a foul before the offensive player has a chance to
@@ -1310,7 +1311,7 @@ class Player(AbstractPlayer):
         return self._take_fouls
 
     @_int_property_decorator
-    def points_generated_by_assists(self):
+    def points_generated_by_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of points the player generated
         as a result of him assisting the shooter.
@@ -1318,7 +1319,7 @@ class Player(AbstractPlayer):
         return self._points_generated_by_assists
 
     @_int_property_decorator
-    def shooting_fouls_drawn(self):
+    def shooting_fouls_drawn(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shooting fouls the player
         drew during the season.
@@ -1326,7 +1327,7 @@ class Player(AbstractPlayer):
         return self._shooting_fouls_drawn
 
     @_int_property_decorator
-    def and_ones(self):
+    def and_ones(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of times the player was fouled
         in the act of shooting and made the basket.
@@ -1334,7 +1335,7 @@ class Player(AbstractPlayer):
         return self._and_ones
 
     @_int_property_decorator
-    def shots_blocked(self):
+    def shots_blocked(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots the player took that
         were blocked by an opposing player.
@@ -1342,14 +1343,14 @@ class Player(AbstractPlayer):
         return self._shots_blocked
 
     @_int_property_decorator
-    def salary(self):
+    def salary(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's annual salary rounded down.
         """
         return self._salary
 
     @property
-    def contract(self):
+    def contract(self) -> dict[str, str]:
         """
         Returns a ``dictionary`` of the player's contract details where the key
         is a ``string`` of the season, such as '2018-19', and the value is a
@@ -1381,14 +1382,14 @@ class Roster:
         just the names and IDs are desired. Defaults to False.
     """
 
-    def __init__(self, team, year=None, slim=False):
+    def __init__(self, team: str, year:Optional[str]=None, slim:Optional[bool]=False):
         self._team = team
         self._slim = slim
         self._coach = None
         if slim:
-            self._players = {}
+            self._players: dict[str, str] = {}
         else:
-            self._players = []
+            self._players: list[Player] = []
         self._find_players_with_coach(year)
 
     def __str__(self):
@@ -1566,7 +1567,7 @@ class Roster:
         self._coach = self._parse_coach(page)
 
     @property
-    def players(self):
+    def players(self) -> Union[list[Player], dict[str, str]]:
         """
         Returns a ``list`` of player instances for each player on the requested
         team's roster if the ``slim`` property is False when calling the Roster
@@ -1577,7 +1578,7 @@ class Roster:
         return self._players
 
     @property
-    def coach(self):
+    def coach(self) -> Optional[str]:
         """
         Returns a ``string`` of the coach's name, such as "Mike D'Antoni".
         """
