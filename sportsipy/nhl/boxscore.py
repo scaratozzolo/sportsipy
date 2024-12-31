@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pyquery import PyQuery as pq
 from urllib.error import HTTPError
 from .. import utils
@@ -14,6 +14,7 @@ from .player import (AbstractPlayer,
                      _float_property_decorator,
                      _int_property_decorator)
 from functools import wraps
+from typing import Any, Optional
 
 
 def nhl_int_property_decorator(func):
@@ -91,7 +92,7 @@ class BoxscorePlayer(AbstractPlayer):
         AbstractPlayer.__init__(self, player_id, player_name, player_data)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a ``pandas DataFrame`` containing all other relevant
         properties and values for the specified game.
@@ -139,23 +140,23 @@ class BoxscorePlayer(AbstractPlayer):
         return pd.DataFrame([fields_to_include], index=[self._player_id])
 
     @property
-    def decision(self):
+    def decision(self) -> Optional[str]:
         """
         Returns a ``string`` denoting whether the goalie won or lost the game.
         """
         return self._decision
 
     @_float_property_decorator
-    def defensive_zone_start_percentage(self):
+    def defensive_zone_start_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of starts that took place in the
         player's defensive zone. Percentage ranges from 0-100.
         """
         if self.offensive_zone_start_percentage:
-            return [100.0 - self.offensive_zone_start_percentage]
+            return 100.0 - self.offensive_zone_start_percentage
 
     @_int_property_decorator
-    def defensive_zone_starts(self):
+    def defensive_zone_starts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of starts that took place in the
         player's defensive zone.
@@ -163,7 +164,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._defensive_zone_starts
 
     @_int_property_decorator
-    def individual_corsi_for_events(self):
+    def individual_corsi_for_events(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of individual events that impacted
         the player's Corsi For score during the game.
@@ -171,7 +172,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._individual_corsi_for_events
 
     @_int_property_decorator
-    def offensive_zone_starts(self):
+    def offensive_zone_starts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of starts that took place in the
         player's offensive zone.
@@ -179,7 +180,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._offensive_zone_starts
 
     @_int_property_decorator
-    def on_ice_shot_attempts_for(self):
+    def on_ice_shot_attempts_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the Corsi For shot attempts that occurred while
         the player was on the ice.
@@ -187,7 +188,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._on_ice_shot_attempts_for
 
     @_int_property_decorator
-    def on_ice_shot_attempts_against(self):
+    def on_ice_shot_attempts_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the Corsi Against shot attempts that occurred
         while the player was on the ice.
@@ -195,7 +196,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._on_ice_shot_attempts_against
 
     @_int_property_decorator
-    def shifts(self):
+    def shifts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shifts the player had on the ice
         during the game.
@@ -203,7 +204,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._shifts
 
     @property
-    def time_on_ice(self):
+    def time_on_ice(self) -> Optional[str]:
         """
         Returns a ``string`` of the total time the player has spent on ice in
         the format 'MM:SS'.
@@ -226,7 +227,7 @@ class Boxscore:
         The relative link to the boxscore HTML page, such as
         '201806070VEG'.
     """
-    def __init__(self, uri):
+    def __init__(self, uri: str):
         self._uri = uri
         self._date = None
         self._time = None
@@ -675,7 +676,7 @@ class Boxscore:
         self._away_players, self._home_players = self._find_players(boxscore)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the string URI that is used to
@@ -730,7 +731,7 @@ class Boxscore:
         return pd.DataFrame([fields_to_include], index=[self._uri])
 
     @property
-    def away_players(self):
+    def away_players(self) -> Optional[list[BoxscorePlayer]]:
         """
         Returns a ``list`` of ``BoxscorePlayer`` class instances for each
         player on the away team.
@@ -738,7 +739,7 @@ class Boxscore:
         return self._away_players
 
     @property
-    def home_players(self):
+    def home_players(self) -> Optional[list[BoxscorePlayer]]:
         """
         Returns a ``list`` of ``BoxscorePlayer`` class instances for each
         player on the home team.
@@ -746,21 +747,21 @@ class Boxscore:
         return self._home_players
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the date the game took place.
         """
         return self._date
 
     @property
-    def time(self):
+    def time(self) -> Optional[str]:
         """
         Returns a ``string`` of the time the game started.
         """
         return self._time
 
     @property
-    def arena(self):
+    def arena(self) -> Optional[str]:
         """
         Returns a ``string`` of the name of the ballpark where the game was
         played.
@@ -768,21 +769,21 @@ class Boxscore:
         return self._arena
 
     @int_property_decorator
-    def attendance(self):
+    def attendance(self) -> Optional[int]:
         """
         Returns an ``int`` of the game's listed attendance.
         """
         return self._attendance
 
     @property
-    def duration(self):
+    def duration(self) -> Optional[str]:
         """
         Returns a ``string`` of the game's duration in the format 'H:MM'.
         """
         return self._duration
 
     @property
-    def playoff_round(self):
+    def playoff_round(self) -> Optional[str]:
         """
         Returns a ``string`` denoting which round of the playoffs the game is a
         part of, such as 'Western First Round', or None if the game was played
@@ -791,7 +792,7 @@ class Boxscore:
         return self._playoff_round
 
     @property
-    def winner(self):
+    def winner(self) -> str:
         """
         Returns a ``string`` constant indicating whether the home or away team
         won.
@@ -801,7 +802,7 @@ class Boxscore:
         return AWAY
 
     @property
-    def winning_name(self):
+    def winning_name(self) -> str:
         """
         Returns a ``string`` of the winning team's name, such as 'Vegas Golden
         Knights'.
@@ -811,7 +812,7 @@ class Boxscore:
         return self._away_name.text()
 
     @property
-    def winning_abbr(self):
+    def winning_abbr(self) -> str:
         """
         Returns a ``string`` of the winning team's abbreviation, such as 'VEG'
         for the Vegas Golden Knights.
@@ -821,7 +822,7 @@ class Boxscore:
         return utils._parse_abbreviation(self._away_name)
 
     @property
-    def losing_name(self):
+    def losing_name(self) -> str:
         """
         Returns a ``string`` of the losing team's name, such as 'Washington
         Capitals'.
@@ -831,7 +832,7 @@ class Boxscore:
         return self._home_name.text()
 
     @property
-    def losing_abbr(self):
+    def losing_abbr(self) -> str:
         """
         Returns a ``string`` of the losing team's abbreviation, such as 'WSH'
         for the Washington Capitals.
@@ -841,28 +842,28 @@ class Boxscore:
         return utils._parse_abbreviation(self._home_name)
 
     @int_property_decorator
-    def away_goals(self):
+    def away_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the away team scored.
         """
         return self._away_goals
 
     @int_property_decorator
-    def away_assists(self):
+    def away_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the away team registered.
         """
         return self._away_assists
 
     @int_property_decorator
-    def away_points(self):
+    def away_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the away team registered.
         """
         return self._away_points
 
     @int_property_decorator
-    def away_penalties_in_minutes(self):
+    def away_penalties_in_minutes(self) -> Optional[int]:
         """
         Returns an ``int`` of the length of time the away team spent in the
         penalty box.
@@ -870,7 +871,7 @@ class Boxscore:
         return self._away_penalties_in_minutes
 
     @int_property_decorator
-    def away_even_strength_goals(self):
+    def away_even_strength_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the away team scored at even
         strength.
@@ -878,7 +879,7 @@ class Boxscore:
         return self._away_even_strength_goals
 
     @int_property_decorator
-    def away_power_play_goals(self):
+    def away_power_play_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the away team scored while on
         a power play.
@@ -886,7 +887,7 @@ class Boxscore:
         return self._away_power_play_goals
 
     @int_property_decorator
-    def away_short_handed_goals(self):
+    def away_short_handed_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the away team scored while
         short handed.
@@ -894,7 +895,7 @@ class Boxscore:
         return self._away_short_handed_goals
 
     @nhl_int_property_decorator
-    def away_game_winning_goals(self):
+    def away_game_winning_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of game winning goals the away team
         scored.
@@ -902,7 +903,7 @@ class Boxscore:
         return self._away_game_winning_goals
 
     @nhl_int_property_decorator
-    def away_even_strength_assists(self):
+    def away_even_strength_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the away team registered
         while at even strength.
@@ -910,7 +911,7 @@ class Boxscore:
         return self._away_even_strength_assists
 
     @nhl_int_property_decorator
-    def away_power_play_assists(self):
+    def away_power_play_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the away team registered
         while on a power play.
@@ -918,7 +919,7 @@ class Boxscore:
         return self._away_power_play_assists
 
     @nhl_int_property_decorator
-    def away_short_handed_assists(self):
+    def away_short_handed_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the away team registered
         while short handed.
@@ -926,7 +927,7 @@ class Boxscore:
         return self._away_short_handed_assists
 
     @int_property_decorator
-    def away_shots_on_goal(self):
+    def away_shots_on_goal(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots on goal the away team
         registered.
@@ -934,7 +935,7 @@ class Boxscore:
         return self._away_shots_on_goal
 
     @float_property_decorator
-    def away_shooting_percentage(self):
+    def away_shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the away team's shooting percentage. Percentage
         ranges from 0-100.
@@ -942,14 +943,14 @@ class Boxscore:
         return self._away_shooting_percentage
 
     @nhl_int_property_decorator
-    def away_saves(self):
+    def away_saves(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of saves the away team made.
         """
         return self._away_saves
 
     @property
-    def away_save_percentage(self):
+    def away_save_percentage(self) -> float:
         """
         Returns a ``float`` of the percentage of shots the away team saved.
         Percentage ranges from 0-1.
@@ -961,7 +962,7 @@ class Boxscore:
             return 0.0
 
     @nhl_int_property_decorator
-    def away_shutout(self):
+    def away_shutout(self) -> Optional[int]:
         """
         Returns an ``int`` denoting whether or not the away team shutout the
         home team.
@@ -969,28 +970,28 @@ class Boxscore:
         return self._away_shutout
 
     @int_property_decorator
-    def home_goals(self):
+    def home_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the home team scored.
         """
         return self._home_goals
 
     @int_property_decorator
-    def home_assists(self):
+    def home_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the home team registered.
         """
         return self._home_assists
 
     @int_property_decorator
-    def home_points(self):
+    def home_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the home team registered.
         """
         return self._home_points
 
     @int_property_decorator
-    def home_penalties_in_minutes(self):
+    def home_penalties_in_minutes(self) -> Optional[int]:
         """
         Returns an ``int`` of the length of time the home team spent in the
         penalty box.
@@ -998,7 +999,7 @@ class Boxscore:
         return self._home_penalties_in_minutes
 
     @int_property_decorator
-    def home_even_strength_goals(self):
+    def home_even_strength_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the home team scored at even
         strength.
@@ -1006,7 +1007,7 @@ class Boxscore:
         return self._home_even_strength_goals
 
     @int_property_decorator
-    def home_power_play_goals(self):
+    def home_power_play_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the home team scored while on
         a power play.
@@ -1014,7 +1015,7 @@ class Boxscore:
         return self._home_power_play_goals
 
     @int_property_decorator
-    def home_short_handed_goals(self):
+    def home_short_handed_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the home team scored while
         short handed.
@@ -1022,7 +1023,7 @@ class Boxscore:
         return self._home_short_handed_goals
 
     @nhl_int_property_decorator
-    def home_game_winning_goals(self):
+    def home_game_winning_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of game winning goals the home team
         scored.
@@ -1030,7 +1031,7 @@ class Boxscore:
         return self._home_game_winning_goals
 
     @nhl_int_property_decorator
-    def home_even_strength_assists(self):
+    def home_even_strength_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the home team registered
         while at even strength.
@@ -1038,7 +1039,7 @@ class Boxscore:
         return self._home_even_strength_assists
 
     @nhl_int_property_decorator
-    def home_power_play_assists(self):
+    def home_power_play_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the home team registered
         while on a power play.
@@ -1046,7 +1047,7 @@ class Boxscore:
         return self._home_power_play_assists
 
     @nhl_int_property_decorator
-    def home_short_handed_assists(self):
+    def home_short_handed_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the home team registered
         while short handed.
@@ -1054,7 +1055,7 @@ class Boxscore:
         return self._home_short_handed_assists
 
     @int_property_decorator
-    def home_shots_on_goal(self):
+    def home_shots_on_goal(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots on goal the home team
         registered.
@@ -1062,7 +1063,7 @@ class Boxscore:
         return self._home_shots_on_goal
 
     @float_property_decorator
-    def home_shooting_percentage(self):
+    def home_shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the home team's shooting percentage. Percentage
         ranges from 0-100.
@@ -1070,14 +1071,14 @@ class Boxscore:
         return self._home_shooting_percentage
 
     @nhl_int_property_decorator
-    def home_saves(self):
+    def home_saves(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of saves the home team made.
         """
         return self._home_saves
 
     @property
-    def home_save_percentage(self):
+    def home_save_percentage(self) -> float:
         """
         Returns a ``float`` of the percentage of shots the home team saved.
         Percentage ranges from 0-1.
@@ -1089,7 +1090,7 @@ class Boxscore:
             return 0.0
 
     @nhl_int_property_decorator
-    def home_shutout(self):
+    def home_shutout(self) -> Optional[int]:
         """
         Returns an ``int`` denoting whether or not the home team shutout the
         home team.
@@ -1118,8 +1119,8 @@ class Boxscores:
         empty, or if 'end_date' is prior to 'date', only the games from the day
         specified in the 'date' parameter will be saved.
     """
-    def __init__(self, date, end_date=None):
-        self._boxscores = {}
+    def __init__(self, date: datetime, end_date: Optional[datetime]=None):
+        self._boxscores: dict[str, list[dict[str, Any]]] = {}
 
         self._find_games(date, end_date)
 
@@ -1136,7 +1137,7 @@ class Boxscores:
         return self.__str__()
 
     @property
-    def games(self):
+    def games(self) -> dict[str, list[dict[str, Any]]]:
         """
         Returns a ``dictionary`` object representing all of the games played on
         the requested day. Dictionary is in the following format::

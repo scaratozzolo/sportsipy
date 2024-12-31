@@ -5,6 +5,7 @@ from pyquery import PyQuery as pq
 from urllib.error import HTTPError
 from .. import utils
 from .constants import BOXSCORE_RETRY, PLAYER_SCHEME
+from typing import Optional
 
 
 def _int_property_decorator(func):
@@ -164,7 +165,7 @@ class AbstractPlayer:
             setattr(self, field, field_stats)
 
     @property
-    def player_id(self):
+    def player_id(self) -> str:
         """
         Returns a ``string`` of the player's ID on hockey-reference, such as
         'zettehe01' for Henrik Zetterberg.
@@ -172,35 +173,35 @@ class AbstractPlayer:
         return self._player_id
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
         Returns a ``string`` of the player's name, such as 'Henrik Zetterberg'.
         """
         return self._name
 
     @_int_property_decorator
-    def goals(self):
+    def goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player scored.
         """
         return self._goals
 
     @_int_property_decorator
-    def assists(self):
+    def assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has assisted.
         """
         return self._assists
 
     @_int_property_decorator
-    def points(self):
+    def points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the player has gained.
         """
         return self._points
 
     @_int_property_decorator
-    def plus_minus(self):
+    def plus_minus(self) -> Optional[int]:
         """
         Returns an ``int`` representing the relative presence the player has on
         the outcome of the game.
@@ -208,7 +209,7 @@ class AbstractPlayer:
         return self._plus_minus
 
     @_int_property_decorator
-    def penalties_in_minutes(self):
+    def penalties_in_minutes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of minutes the player has served as a
         result of penalties.
@@ -216,7 +217,7 @@ class AbstractPlayer:
         return self._penalties_in_minutes
 
     @_int_property_decorator
-    def even_strength_goals(self):
+    def even_strength_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has scored at even
         strength.
@@ -224,7 +225,7 @@ class AbstractPlayer:
         return self._even_strength_goals
 
     @_int_property_decorator
-    def power_play_goals(self):
+    def power_play_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has scored while
         on a power play.
@@ -232,7 +233,7 @@ class AbstractPlayer:
         return self._power_play_goals
 
     @_int_property_decorator
-    def short_handed_goals(self):
+    def short_handed_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has scored while
         short handed.
@@ -240,7 +241,7 @@ class AbstractPlayer:
         return self._short_handed_goals
 
     @_int_property_decorator
-    def game_winning_goals(self):
+    def game_winning_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of game-winning goals the player has
         scored.
@@ -248,7 +249,7 @@ class AbstractPlayer:
         return self._game_winning_goals
 
     @_int_property_decorator
-    def even_strength_assists(self):
+    def even_strength_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has assisted while
         at even strength.
@@ -256,7 +257,7 @@ class AbstractPlayer:
         return self._even_strength_assists
 
     @_int_property_decorator
-    def power_play_assists(self):
+    def power_play_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has assisted while
         on a power play.
@@ -264,7 +265,7 @@ class AbstractPlayer:
         return self._power_play_assists
 
     @_int_property_decorator
-    def short_handed_assists(self):
+    def short_handed_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player has assisted while
         short handed.
@@ -272,14 +273,14 @@ class AbstractPlayer:
         return self._short_handed_assists
 
     @_int_property_decorator
-    def shots_on_goal(self):
+    def shots_on_goal(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots on goal the player has made.
         """
         return self._shots_on_goal
 
     @_float_property_decorator
-    def shooting_percentage(self):
+    def shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of the player's shots that go in
         the goal. Percentage ranges from 0-100.
@@ -287,7 +288,7 @@ class AbstractPlayer:
         return self._shooting_percentage
 
     @_int_property_decorator
-    def blocks_at_even_strength(self):
+    def blocks_at_even_strength(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player blocks while at
         even strength.
@@ -295,7 +296,7 @@ class AbstractPlayer:
         return self._blocks_at_even_strength
 
     @_int_property_decorator
-    def hits_at_even_strength(self):
+    def hits_at_even_strength(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of hits the player makes while at even
         strength.
@@ -303,7 +304,7 @@ class AbstractPlayer:
         return self._hits_at_even_strength
 
     @_float_property_decorator
-    def corsi_for_percentage(self):
+    def corsi_for_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the 'Corsi For' percentage, equal to corsi_for /
         (corsi_for + corsi_against). Percentage ranges from 0-100.
@@ -311,7 +312,7 @@ class AbstractPlayer:
         return self._corsi_for_percentage
 
     @_float_property_decorator
-    def relative_corsi_for_percentage(self):
+    def relative_corsi_for_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's relative 'Corsi For' percentage,
         equal to the difference between the player's on and off-ice Corsi For
@@ -320,7 +321,7 @@ class AbstractPlayer:
         return self._relative_corsi_for_percentage
 
     @_float_property_decorator
-    def offensive_zone_start_percentage(self):
+    def offensive_zone_start_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of faceoffs that occur in the
         offensive zone while the player is on ice. Percentage ranges from
@@ -329,7 +330,7 @@ class AbstractPlayer:
         return self._offensive_zone_start_percentage
 
     @_int_property_decorator
-    def goals_against(self):
+    def goals_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the opponent scored on the
         player while in goal.
@@ -337,7 +338,7 @@ class AbstractPlayer:
         return self._goals_against
 
     @_int_property_decorator
-    def shots_against(self):
+    def shots_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the opponent took while the
         player is in goal.
@@ -345,7 +346,7 @@ class AbstractPlayer:
         return self._shots_against
 
     @_int_property_decorator
-    def saves(self):
+    def saves(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player has saved while in
         goal.
@@ -353,7 +354,7 @@ class AbstractPlayer:
         return self._saves
 
     @_float_property_decorator
-    def save_percentage(self):
+    def save_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shots the player has saved.
         Percentage ranges from 0-1.
@@ -361,7 +362,7 @@ class AbstractPlayer:
         return self._save_percentage
 
     @_int_property_decorator
-    def shutouts(self):
+    def shutouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shutouts the player has registered
         while in goal.
