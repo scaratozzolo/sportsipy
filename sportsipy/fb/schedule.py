@@ -13,6 +13,7 @@ from sportsipy.constants import (AWAY,
                                  NEUTRAL,
                                  WIN)
 from urllib.error import HTTPError
+from typing import Iterator, Optional
 
 
 class Game:
@@ -187,7 +188,7 @@ class Game:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas ``DataFrame`` containing all other class properties
         and values. The index for the DataFrame is the match report ID.
@@ -222,7 +223,7 @@ class Game:
         return pd.DataFrame([fields_to_include], index=[self.match_report])
 
     @property
-    def competition(self):
+    def competition(self) -> Optional[str]:
         """
         Returns a ``string`` of the competitions name, such as 'Premier
         League' or 'Champions Lg'.
@@ -230,7 +231,7 @@ class Game:
         return self._competition
 
     @property
-    def matchweek(self):
+    def matchweek(self) -> Optional[str]:
         """
         Returns a ``string`` of the matchweek the game was played in, such
         as 'Matchweek 1' or 'Group Stage'.
@@ -238,14 +239,14 @@ class Game:
         return self._matchweek
 
     @property
-    def day(self):
+    def day(self) -> Optional[str]:
         """
         Returns a ``string`` of the day of the week the game was played on.
         """
         return self._day
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the date the game was played in the format
         'YYYY-MM-DD'.
@@ -253,7 +254,7 @@ class Game:
         return self._date
 
     @property
-    def time(self):
+    def time(self) -> Optional[str]:
         """
         Returns a ``string`` of the time the game started in 24-hour
         format, local to the home venue.
@@ -261,7 +262,7 @@ class Game:
         return self._time
 
     @property
-    def datetime(self):
+    def datetime(self) -> Optional[datetime]:
         """
         Returns a ``datetime`` object representing the date and time the match
         started. If the time is not present, the default time of midnight on
@@ -303,7 +304,7 @@ class Game:
         return datetime_
 
     @property
-    def venue(self):
+    def venue(self) -> Optional[str]:
         """
         Returns a ``string`` constant representing if the team played at
         home ('Home'), on the road ('Away'), or at a neutral site
@@ -319,7 +320,7 @@ class Game:
             return NEUTRAL
 
     @property
-    def result(self):
+    def result(self) -> Optional[str]:
         """
         Returns a ``string`` constant representing if the team won ('Win'),
         drew ('Draw'), or lost ('Loss').
@@ -334,7 +335,7 @@ class Game:
             return LOSS
 
     @int_property_decorator
-    def goals_for(self):
+    def goals_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team scored.
         """
@@ -344,7 +345,7 @@ class Game:
         return self._goals_for
 
     @int_property_decorator
-    def goals_against(self):
+    def goals_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team conceded.
         """
@@ -354,7 +355,7 @@ class Game:
         return self._goals_against
 
     @int_property_decorator
-    def shootout_scored(self):
+    def shootout_scored(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of penalties the team scored if the
         game went to a shootout after normal play.
@@ -365,7 +366,7 @@ class Game:
         return penalties
 
     @int_property_decorator
-    def shootout_against(self):
+    def shootout_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of penalties the team conceded if the
         game went to a shootout after normal play.
@@ -376,14 +377,14 @@ class Game:
         return penalties
 
     @property
-    def opponent(self):
+    def opponent(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponents name, such as 'Arsenal'.
         """
         return self._opponent
 
     @property
-    def opponent_id(self):
+    def opponent_id(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponents squad ID, such as '18bb7c10'
         for Arsenal.
@@ -391,7 +392,7 @@ class Game:
         return self._opponent_id
 
     @float_property_decorator
-    def expected_goals(self):
+    def expected_goals(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of goals the team was expected to
         score based on the quality of shots taken.
@@ -399,7 +400,7 @@ class Game:
         return self._expected_goals
 
     @float_property_decorator
-    def expected_goals_against(self):
+    def expected_goals_against(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of goals the team was expected to
         concede based on the quality of shots taken.
@@ -407,7 +408,7 @@ class Game:
         return self._expected_goals_against
 
     @int_property_decorator
-    def attendance(self):
+    def attendance(self) -> Optional[int]:
         """
         Returns an ``int`` of the recorded attendance at the game.
         """
@@ -417,7 +418,7 @@ class Game:
             return None
 
     @property
-    def captain(self):
+    def captain(self) -> Optional[str]:
         """
         Returns a ``string`` representing the captain's name, such as
         'Harry Kane'.
@@ -425,7 +426,7 @@ class Game:
         return self._captain
 
     @property
-    def captain_id(self):
+    def captain_id(self) -> Optional[str]:
         """
         Returns a ``string`` of the captain's unique ID on fbref.com, such
         as '21a66f6a' for Harry Kane.
@@ -433,7 +434,7 @@ class Game:
         return self._captain_id
 
     @property
-    def formation(self):
+    def formation(self) -> Optional[str]:
         """
         Returns a ``string`` of the formation the team started with during
         the game, such as '4-4-2'.
@@ -441,7 +442,7 @@ class Game:
         return self._formation
 
     @property
-    def referee(self):
+    def referee(self) -> Optional[str]:
         """
         Returns a ``string`` of the first and last name of the referee for
         the match.
@@ -449,14 +450,14 @@ class Game:
         return self._referee
 
     @property
-    def match_report(self):
+    def match_report(self) -> Optional[str]:
         """
         Returns a ``string`` of the 8-digit match ID for the game.
         """
         return self._match_report
 
     @property
-    def notes(self):
+    def notes(self) -> Optional[str]:
         """
         Returns a ``string`` of any notes that might be included with the
         game.
@@ -481,11 +482,11 @@ class Schedule:
         information instead of making another request to the website. If the
         document is not provided, it will be pulled during a later step.
     """
-    def __init__(self, team_id, doc=None):
-        self._games = []
+    def __init__(self, team_id: str, doc=None):
+        self._games: list[Game] = []
         self._pull_schedule(team_id, doc)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Game:
         """
         Return a specified game.
 
@@ -510,7 +511,7 @@ class Schedule:
         """
         return self._games[index]
 
-    def __call__(self, date):
+    def __call__(self, date: datetime) -> Game:
         """
         Return a specified game.
 
@@ -558,7 +559,7 @@ class Schedule:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Game]:
         """
         Returns an iterator of all of the games scheduled for the given team.
         """
