@@ -6,6 +6,7 @@ from urllib.error import HTTPError
 from .. import utils
 from .constants import PLAYER_SCHEME, PLAYER_URL, ROSTER_URL
 from .player import AbstractPlayer
+from typing import Optional, Union
 
 
 def _int_property_decorator(func):
@@ -60,7 +61,7 @@ class Player(AbstractPlayer):
         number starting at '01' for the first time that player ID has been used
         and increments by 1 for every successive player.
     """
-    def __init__(self, player_id):
+    def __init__(self, player_id: str):
         self._most_recent_season = ''
         self._index = None
         self._player_id = player_id
@@ -367,7 +368,7 @@ class Player(AbstractPlayer):
         element should be the index value.
         """
         index = 0
-        for season in self._season or season == 'Career':
+        for season in self._season or ['Career']:
             if season == 'Career':
                 self._index = index
                 break
@@ -522,7 +523,7 @@ class Player(AbstractPlayer):
         return fields_to_include
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and values where each index is a different season plus the
@@ -541,7 +542,7 @@ class Player(AbstractPlayer):
         return pd.DataFrame(rows, index=[indices])
 
     @property
-    def season(self):
+    def season(self) -> Optional[str]:
         """
         Returns a ``string`` of the season in the format 'YYYY-YY', such as
         '2017-18'. If no season was requested, the career stats will be
@@ -550,14 +551,14 @@ class Player(AbstractPlayer):
         return self._season[self._index]
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's name, such as 'Henrik Zetterberg'.
         """
         return self._name
 
     @property
-    def team_abbreviation(self):
+    def team_abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's abbreviation, such as 'DET' for the
         Detroit Red Wings.
@@ -568,7 +569,7 @@ class Player(AbstractPlayer):
         return self._team_abbreviation[self._index]
 
     @property
-    def height(self):
+    def height(self) -> Optional[str]:
         """
         Returns a ``string`` of the player's height in the format
         "feet-inches".
@@ -576,7 +577,7 @@ class Player(AbstractPlayer):
         return self._height
 
     @property
-    def weight(self):
+    def weight(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's weight in pounds.
         """
@@ -585,28 +586,28 @@ class Player(AbstractPlayer):
         return int(self._weight.replace('lb', ''))
 
     @_int_property_decorator
-    def age(self):
+    def age(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's age on February 1st of the season.
         """
         return self._age
 
     @property
-    def league(self):
+    def league(self) -> Optional[str]:
         """
         Returns a ``string`` of the league the player's team participates in.
         """
         return self._league[self._index]
 
     @_int_property_decorator
-    def games_played(self):
+    def games_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the player participated in.
         """
         return self._games_played
 
     @_int_property_decorator
-    def time_on_ice(self):
+    def time_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the total time the player has spent on ice in
         minutes.
@@ -614,7 +615,7 @@ class Player(AbstractPlayer):
         return self._time_on_ice
 
     @property
-    def average_time_on_ice(self):
+    def average_time_on_ice(self) -> Optional[str]:
         """
         Returns a ``string`` of the average time the player spends on the ice
         per game.
@@ -622,7 +623,7 @@ class Player(AbstractPlayer):
         return self._average_time_on_ice[self._index]
 
     @_int_property_decorator
-    def total_shots(self):
+    def total_shots(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots the player took
         regardless of them being on goal or not.
@@ -630,21 +631,21 @@ class Player(AbstractPlayer):
         return self._total_shots
 
     @_int_property_decorator
-    def faceoff_wins(self):
+    def faceoff_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of faceoffs the player won.
         """
         return self._faceoff_wins
 
     @_int_property_decorator
-    def faceoff_losses(self):
+    def faceoff_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of faceoffs the player lost.
         """
         return self._faceoff_losses
 
     @_float_property_decorator
-    def faceoff_percentage(self):
+    def faceoff_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of faceoffs the player wins.
         Percentage ranges from 0-100.
@@ -652,7 +653,7 @@ class Player(AbstractPlayer):
         return self._faceoff_percentage
 
     @_int_property_decorator
-    def blocks_at_even_strength(self):
+    def blocks_at_even_strength(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player blocks while at
         even strength.
@@ -660,7 +661,7 @@ class Player(AbstractPlayer):
         return self._blocks_at_even_strength
 
     @_int_property_decorator
-    def takeaways(self):
+    def takeaways(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player took the puck away
         from an opponent.
@@ -668,7 +669,7 @@ class Player(AbstractPlayer):
         return self._takeaways
 
     @_int_property_decorator
-    def giveaways(self):
+    def giveaways(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player gave the puck away
         to an opponent.
@@ -676,7 +677,7 @@ class Player(AbstractPlayer):
         return self._giveaways
 
     @_float_property_decorator
-    def time_on_ice_even_strength(self):
+    def time_on_ice_even_strength(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of time the player spent on ice in
         minutes while at even strength.
@@ -684,7 +685,7 @@ class Player(AbstractPlayer):
         return self._time_on_ice_even_strength
 
     @_float_property_decorator
-    def corsi_for(self):
+    def corsi_for(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's 'Corsi For' factor at even
         strength, equal to shots + blocks + misses.
@@ -692,7 +693,7 @@ class Player(AbstractPlayer):
         return self._corsi_for
 
     @_float_property_decorator
-    def corsi_against(self):
+    def corsi_against(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's 'Corsi Against' factor at even
         strength, equal to shots + blocks + misses.
@@ -700,7 +701,7 @@ class Player(AbstractPlayer):
         return self._corsi_against
 
     @_int_property_decorator
-    def fenwick_for(self):
+    def fenwick_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's 'Fenwick For' factor at even
         strength, equal to shots + misses.
@@ -708,7 +709,7 @@ class Player(AbstractPlayer):
         return self._fenwick_for
 
     @_int_property_decorator
-    def fenwick_against(self):
+    def fenwick_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's 'Fenwick Against' factor at even
         strength, equal to shots + misses.
@@ -716,7 +717,7 @@ class Player(AbstractPlayer):
         return self._fenwick_against
 
     @_float_property_decorator
-    def fenwick_for_percentage(self):
+    def fenwick_for_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's 'Fenwick For' percentage, equal to
         fenwick_for / (fenwick_for + fenwick_against). Percentage ranges from
@@ -725,7 +726,7 @@ class Player(AbstractPlayer):
         return self._fenwick_for_percentage
 
     @_float_property_decorator
-    def relative_fenwick_for_percentage(self):
+    def relative_fenwick_for_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's relative 'Fenwick For' percentage,
         equal to the difference between the player's on and off-ice Fenwick For
@@ -734,7 +735,7 @@ class Player(AbstractPlayer):
         return self._relative_fenwick_for_percentage
 
     @_int_property_decorator
-    def goals_for_on_ice(self):
+    def goals_for_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team has scored while the
         player is on ice.
@@ -742,7 +743,7 @@ class Player(AbstractPlayer):
         return self._goals_for_on_ice
 
     @_float_property_decorator
-    def shooting_percentage_on_ice(self):
+    def shooting_percentage_on_ice(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's shooting percentage while the player
         is on ice.
@@ -750,7 +751,7 @@ class Player(AbstractPlayer):
         return self._shooting_percentage_on_ice
 
     @_int_property_decorator
-    def goals_against_on_ice(self):
+    def goals_against_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the team has been scored on
         while the player is on ice.
@@ -758,7 +759,7 @@ class Player(AbstractPlayer):
         return self._goals_against_on_ice
 
     @_int_property_decorator
-    def save_percentage_on_ice(self):
+    def save_percentage_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the team's save percentage while the player is on
         ice.
@@ -766,7 +767,7 @@ class Player(AbstractPlayer):
         return self._save_percentage_on_ice
 
     @_float_property_decorator
-    def pdo(self):
+    def pdo(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's PDO while the player is on ice at
         even strength, equal to the team's shooting percentage + save
@@ -775,7 +776,7 @@ class Player(AbstractPlayer):
         return self._pdo
 
     @_float_property_decorator
-    def defensive_zone_start_percentage(self):
+    def defensive_zone_start_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of faceoffs that occur in the
         defensive zone whil the player is on ice. Percentage ranges from
@@ -784,7 +785,7 @@ class Player(AbstractPlayer):
         return self._defensive_zone_start_percentage
 
     @_int_property_decorator
-    def goals_created(self):
+    def goals_created(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player created, equal to
         (goals + assists * 0.5) * team_goals / (team_goals + team_assists *
@@ -793,7 +794,7 @@ class Player(AbstractPlayer):
         return self._goals_created
 
     @_int_property_decorator
-    def adjusted_goals(self):
+    def adjusted_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the adjusted number of goals the player has
         scored.
@@ -801,7 +802,7 @@ class Player(AbstractPlayer):
         return self._adjusted_goals
 
     @_int_property_decorator
-    def adjusted_assists(self):
+    def adjusted_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the adjusted number of goals the player has
         assisted.
@@ -809,7 +810,7 @@ class Player(AbstractPlayer):
         return self._adjusted_assists
 
     @_int_property_decorator
-    def adjusted_points(self):
+    def adjusted_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the adjusted number of points the player has
         gained.
@@ -817,14 +818,14 @@ class Player(AbstractPlayer):
         return self._adjusted_points
 
     @_int_property_decorator
-    def adjusted_goals_created(self):
+    def adjusted_goals_created(self) -> Optional[int]:
         """
         Returns an ``int`` of the adjusted number of goals the player created.
         """
         return self._adjusted_goals_created
 
     @_int_property_decorator
-    def total_goals_for_on_ice(self):
+    def total_goals_for_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of goals for while the player
         was on ice.
@@ -832,7 +833,7 @@ class Player(AbstractPlayer):
         return self._total_goals_for_on_ice
 
     @_int_property_decorator
-    def power_play_goals_for_on_ice(self):
+    def power_play_goals_for_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of power play goals for while
         the player was on ice.
@@ -840,7 +841,7 @@ class Player(AbstractPlayer):
         return self._power_play_goals_for_on_ice
 
     @_int_property_decorator
-    def total_goals_against_on_ice(self):
+    def total_goals_against_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of goals against while the
         player was on ice.
@@ -848,7 +849,7 @@ class Player(AbstractPlayer):
         return self._total_goals_against_on_ice
 
     @_int_property_decorator
-    def power_play_goals_against_on_ice(self):
+    def power_play_goals_against_on_ice(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of power play goals against
         while the player was on ice.
@@ -856,7 +857,7 @@ class Player(AbstractPlayer):
         return self._power_play_goals_against_on_ice
 
     @_float_property_decorator
-    def offensive_point_shares(self):
+    def offensive_point_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's offensive point share, equal to the
         approximate number of points the player contributed to while on
@@ -865,7 +866,7 @@ class Player(AbstractPlayer):
         return self._offensive_point_shares
 
     @_float_property_decorator
-    def defensive_point_shares(self):
+    def defensive_point_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's denensive point share, equal to the
         approximate number of points the player contributed to while on
@@ -874,7 +875,7 @@ class Player(AbstractPlayer):
         return self._defensive_point_shares
 
     @_float_property_decorator
-    def point_shares(self):
+    def point_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's total point share, equal to the sum
         of the player's offensive and defensive point share.
@@ -882,21 +883,21 @@ class Player(AbstractPlayer):
         return self._point_shares
 
     @_int_property_decorator
-    def shootout_attempts(self):
+    def shootout_attempts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shootouts the player attempted.
         """
         return self._shootout_attempts
 
     @_int_property_decorator
-    def shootout_goals(self):
+    def shootout_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shootout goals the player scored.
         """
         return self._shootout_goals
 
     @_int_property_decorator
-    def shootout_misses(self):
+    def shootout_misses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shootouts the player failed to
         score.
@@ -904,7 +905,7 @@ class Player(AbstractPlayer):
         return self._shootout_misses
 
     @_float_property_decorator
-    def shootout_percentage(self):
+    def shootout_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of shootouts the player scores
         in. Percentage ranges from 0-100.
@@ -912,7 +913,7 @@ class Player(AbstractPlayer):
         return self._shootout_percentage
 
     @_int_property_decorator
-    def wins(self):
+    def wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the team won while the player
         is in goal.
@@ -920,7 +921,7 @@ class Player(AbstractPlayer):
         return self._wins
 
     @_int_property_decorator
-    def losses(self):
+    def losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the team lost while the
         player is in goal.
@@ -928,7 +929,7 @@ class Player(AbstractPlayer):
         return self._losses
 
     @_int_property_decorator
-    def ties_plus_overtime_loss(self):
+    def ties_plus_overtime_loss(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the team has either tied or
         lost in overtime or a shootout while the player is in goal.
@@ -936,7 +937,7 @@ class Player(AbstractPlayer):
         return self._ties_plus_overtime_loss
 
     @_float_property_decorator
-    def goals_against_average(self):
+    def goals_against_average(self) -> Optional[float]:
         """
         Returns a ``float`` of the average number of goals the opponent has
         scored per game while the player is in goal.
@@ -944,7 +945,7 @@ class Player(AbstractPlayer):
         return self._goals_against_average
 
     @_int_property_decorator
-    def minutes(self):
+    def minutes(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of minutes the player has spent
         in goal.
@@ -952,7 +953,7 @@ class Player(AbstractPlayer):
         return self._minutes
 
     @_int_property_decorator
-    def quality_starts(self):
+    def quality_starts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of quality starts the player has had,
         equal to starting out with an in-game save percentage greater than the
@@ -961,7 +962,7 @@ class Player(AbstractPlayer):
         return self._quality_starts
 
     @_float_property_decorator
-    def quality_start_percentage(self):
+    def quality_start_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of the player's starts that are
         considered quality starts while in goal. Percentage ranges from 0-1.
@@ -969,7 +970,7 @@ class Player(AbstractPlayer):
         return self._quality_start_percentage
 
     @_int_property_decorator
-    def really_bad_starts(self):
+    def really_bad_starts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of really bad starts the player has
         had, equal to starting out with an in-game save percentage less than
@@ -978,7 +979,7 @@ class Player(AbstractPlayer):
         return self._really_bad_starts
 
     @_int_property_decorator
-    def goal_against_percentage_relative(self):
+    def goal_against_percentage_relative(self) -> Optional[int]:
         """
         Returns an ``int`` of the player's goals against average compared to
         the league average where 100 is an average player and 0 means the
@@ -987,7 +988,7 @@ class Player(AbstractPlayer):
         return self._goal_against_percentage_relative
 
     @_float_property_decorator
-    def goals_saved_above_average(self):
+    def goals_saved_above_average(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of goals the player saved above the
         league average.
@@ -995,7 +996,7 @@ class Player(AbstractPlayer):
         return self._goals_saved_above_average
 
     @_float_property_decorator
-    def adjusted_goals_against_average(self):
+    def adjusted_goals_against_average(self) -> Optional[float]:
         """
         Returns a ``float`` of the adjusted goals against average for the
         player while in goal.
@@ -1003,14 +1004,14 @@ class Player(AbstractPlayer):
         return self._adjusted_goals_against_average
 
     @_float_property_decorator
-    def goalie_point_shares(self):
+    def goalie_point_shares(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's point share while in goal.
         """
         return self._goalie_point_shares
 
     @_int_property_decorator
-    def even_strength_shots_faced(self):
+    def even_strength_shots_faced(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player has faced while at
         even strength.
@@ -1018,7 +1019,7 @@ class Player(AbstractPlayer):
         return self._even_strength_shots_faced
 
     @_int_property_decorator
-    def even_strength_goals_allowed(self):
+    def even_strength_goals_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player allowed in goal
         while at even strength.
@@ -1026,7 +1027,7 @@ class Player(AbstractPlayer):
         return self._even_strength_goals_allowed
 
     @_float_property_decorator
-    def even_strength_save_percentage(self):
+    def even_strength_save_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's save percentage while at even
         strength.
@@ -1034,7 +1035,7 @@ class Player(AbstractPlayer):
         return self._even_strength_save_percentage
 
     @_int_property_decorator
-    def power_play_shots_faced(self):
+    def power_play_shots_faced(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player has faced while on
         a power play.
@@ -1042,7 +1043,7 @@ class Player(AbstractPlayer):
         return self._power_play_shots_faced
 
     @_int_property_decorator
-    def power_play_goals_allowed(self):
+    def power_play_goals_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player allowed in goal
         while on a power play.
@@ -1050,7 +1051,7 @@ class Player(AbstractPlayer):
         return self._power_play_goals_allowed
 
     @_float_property_decorator
-    def power_play_save_percentage(self):
+    def power_play_save_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's save percentage while on a power
         play.
@@ -1058,7 +1059,7 @@ class Player(AbstractPlayer):
         return self._power_play_save_percentage
 
     @_int_property_decorator
-    def short_handed_shots_faced(self):
+    def short_handed_shots_faced(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shots the player has faced while
         short handed.
@@ -1066,7 +1067,7 @@ class Player(AbstractPlayer):
         return self._short_handed_shots_faced
 
     @_int_property_decorator
-    def short_handed_goals_allowed(self):
+    def short_handed_goals_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the player allowed in goal
         while short handed.
@@ -1074,7 +1075,7 @@ class Player(AbstractPlayer):
         return self._short_handed_goals_allowed
 
     @_float_property_decorator
-    def short_handed_save_percentage(self):
+    def short_handed_save_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's save percentage while short handed.
         """
@@ -1102,14 +1103,14 @@ class Roster:
         respective stats which greatly reduces the time to return a response if
         just the names and IDs are desired. Defaults to False.
     """
-    def __init__(self, team, year=None, slim=False):
+    def __init__(self, team: str, year: Optional[str]=None, slim: Optional[bool]=False):
         self._team = team
         self._slim = slim
         self._coach = None
         if slim:
-            self._players = {}
+            self._players: dict[str, str] = {}
         else:
-            self._players = []
+            self._players: list[Player] = []
 
         self._find_players_with_coach(year)
 
@@ -1274,7 +1275,7 @@ class Roster:
         self._coach = self._parse_coach(page)
 
     @property
-    def players(self):
+    def players(self) -> Union[dict[str, str], list[Player]]:
         """
         Returns a ``list`` of player instances for each player on the requested
         team's roster if the ``slim`` property is False when calling the Roster
@@ -1285,7 +1286,7 @@ class Roster:
         return self._players
 
     @property
-    def coach(self):
+    def coach(self) -> Optional[str]:
         """
         Returns a ``string`` of the coach's name, such as 'Jeff Blashill'.
         """

@@ -3,6 +3,7 @@ from pyquery import PyQuery as pq
 from urllib.error import HTTPError
 from .. import utils
 from .constants import RANKINGS_SCHEME, RANKINGS_URL
+from typing import Any, Optional
 
 
 class Rankings:
@@ -19,8 +20,8 @@ class Rankings:
         A string of the requested year to pull rankings from. Defaults to the
         most recent season.
     """
-    def __init__(self, year=None):
-        self._rankings = {}
+    def __init__(self, year: Optional[str]=None):
+        self._rankings: dict[int, list[dict[str, Any]]] = {}
 
         self._find_rankings(year)
 
@@ -149,7 +150,7 @@ class Rankings:
         self._rankings[int(week)] = weekly_rankings
 
     @property
-    def current_extended(self):
+    def current_extended(self) -> list[dict[str, Any]]:
         """
         Returns a ``list`` of ``dictionaries`` of the most recent AP rankings.
         The list is ordered in terms of the ranking so the #1 team will be in
@@ -177,7 +178,7 @@ class Rankings:
         return ordered_dict
 
     @property
-    def current(self):
+    def current(self) -> dict[str, int]:
         """
         Returns a ``dictionary`` of the most recent rankings from the
         Associated Press where each key is a ``string`` of the team's
@@ -191,7 +192,7 @@ class Rankings:
         return rankings_dict
 
     @property
-    def complete(self):
+    def complete(self) -> dict[int, list[dict[str, Any]]]:
         """
         Returns a ``dictionary`` where each key is a week number as an ``int``
         and each value is a ``list`` of ``dictionaries`` containing the AP

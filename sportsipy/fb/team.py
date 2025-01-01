@@ -8,6 +8,7 @@ from .schedule import Schedule
 from .squad_ids import SQUAD_IDS
 from urllib.error import HTTPError
 from .. import utils
+from typing import Optional
 
 
 class Team:
@@ -35,7 +36,7 @@ class Team:
         instead of downloading from sports-reference.com. This file should be
         of the Squad page for the designated year.
     """
-    def __init__(self, team_id, squad_page=None):
+    def __init__(self, team_id: str, squad_page=None):
         self._squad_id = None
         self._name = None
         self._short_name = None
@@ -329,7 +330,7 @@ class Team:
         self._parse_header(doc)
 
     @property
-    def squad_id(self):
+    def squad_id(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's squad ID according to
         sports-reference.com, such as '361ca564' for Tottenham Hotspur.
@@ -337,7 +338,7 @@ class Team:
         return self._squad_id
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's full name, such as 'Tottenham
         Hotspur'.
@@ -345,7 +346,7 @@ class Team:
         return self._name
 
     @property
-    def short_name(self):
+    def short_name(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's short name, such as 'Tottenham',
         used in schedule and standings tables
@@ -353,7 +354,7 @@ class Team:
         return self._short_name
 
     @property
-    def schedule(self):
+    def schedule(self) -> Schedule:
         """
         Returns an instance of the Schedule class containing the team's
         complete schedule for the season.
@@ -363,7 +364,7 @@ class Team:
         return Schedule(self.squad_id, self._doc)
 
     @property
-    def roster(self):
+    def roster(self) -> Roster:
         """
         Returns an instance of the Roster class containing instances of every
         player on the team.
@@ -373,7 +374,7 @@ class Team:
         return Roster(self._squad_id, self._doc)
 
     @property
-    def season(self):
+    def season(self) -> Optional[str]:
         """
         Returns a ``string`` of the season's year(s) in the format YYYY or
         YYYY-YYYY. For example, '2020' or '2019-2020'.
@@ -381,7 +382,7 @@ class Team:
         return self._season
 
     @property
-    def record(self):
+    def record(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's record during their primary
         competition (ie. Premier League) for the current season in the format
@@ -390,7 +391,7 @@ class Team:
         return self._record
 
     @int_property_decorator
-    def position(self):
+    def position(self) -> Optional[int]:
         """
         Returns an ``int`` of the team's place in the table (ie. 1 for first)
         for the current season in their primary competition (ie. Premier
@@ -399,7 +400,7 @@ class Team:
         return self._position
 
     @int_property_decorator
-    def points(self):
+    def points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the team has gained in their
         primary competition (ie. Premier League).
@@ -407,7 +408,7 @@ class Team:
         return self._points
 
     @property
-    def league(self):
+    def league(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's primary competition, such as
         'Premier League'.
@@ -415,7 +416,7 @@ class Team:
         return self._league
 
     @property
-    def manager(self):
+    def manager(self) -> Optional[str]:
         """
         Returns a ``string`` of the full name of the team's manager, such as
         'José Mourinho'.
@@ -423,7 +424,7 @@ class Team:
         return self._manager
 
     @property
-    def country(self):
+    def country(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's governing country, such as
         'England'.
@@ -431,7 +432,7 @@ class Team:
         return self._country
 
     @property
-    def gender(self):
+    def gender(self) -> Optional[str]:
         """
         Returns a ``string`` denoting which gender the team competes in (ie.
         'Female').
@@ -439,7 +440,7 @@ class Team:
         return self._gender
 
     @int_property_decorator
-    def goals_scored(self):
+    def goals_scored(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team has scored during
         their primary competition (ie. Premier League).
@@ -447,7 +448,7 @@ class Team:
         return self._goals_scored
 
     @int_property_decorator
-    def goals_against(self):
+    def goals_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team has allowed during
         their primary competition (ie. Premier League).
@@ -455,7 +456,7 @@ class Team:
         return self._goals_against
 
     @int_property_decorator
-    def goal_difference(self):
+    def goal_difference(self) -> Optional[int]:
         """
         Returns an ``int`` of the team's goal difference during their primary
         competition (ie. Premier League).
@@ -463,7 +464,7 @@ class Team:
         return self._goal_difference
 
     @float_property_decorator
-    def expected_goals(self):
+    def expected_goals(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of goals the team was expected to
         score during their primary competition (ie. Premier League).
@@ -471,7 +472,7 @@ class Team:
         return self._expected_goals
 
     @float_property_decorator
-    def expected_goals_against(self):
+    def expected_goals_against(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of goals the team was expected to
         concede during their primary competition (ie. Premier League).
@@ -479,7 +480,7 @@ class Team:
         return self._expected_goals_against
 
     @float_property_decorator
-    def expected_goal_difference(self):
+    def expected_goal_difference(self) -> Optional[float]:
         """
         Returns a ``float`` of the difference between the team's expected
         goals scored and conceded during their primary competition (ie. Premier
@@ -488,7 +489,7 @@ class Team:
         return self._expected_goal_difference
 
     @property
-    def home_record(self):
+    def home_record(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's home record during their primary
         competition (ie. Premier League) for the current season in the format
@@ -497,7 +498,7 @@ class Team:
         return self._home_record
 
     @int_property_decorator
-    def home_games(self):
+    def home_games(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has played at home
         during their primary competition (ie. Premier League).
@@ -508,7 +509,7 @@ class Team:
             return None
 
     @property
-    def away_record(self):
+    def away_record(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's away record during their primary
         competition (ie. Premier League) for the current season in the format
@@ -517,7 +518,7 @@ class Team:
         return self._away_record
 
     @int_property_decorator
-    def away_games(self):
+    def away_games(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has played away
         during their primary competition (ie. Premier League).
@@ -528,7 +529,7 @@ class Team:
             return None
 
     @int_property_decorator
-    def home_wins(self):
+    def home_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has won at home
         during their primary competition (ie. Premier League) for the current
@@ -545,7 +546,7 @@ class Team:
         return wins
 
     @int_property_decorator
-    def home_draws(self):
+    def home_draws(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has drawn at home
         during their primary competition (ie. Premier League) for the current
@@ -564,7 +565,7 @@ class Team:
         return draws
 
     @int_property_decorator
-    def home_losses(self):
+    def home_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has lost at home
         during their primary competition (ie. Premier League) for the current
@@ -583,7 +584,7 @@ class Team:
         return losses
 
     @int_property_decorator
-    def away_wins(self):
+    def away_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has won while away
         during their primary competition (ie. Premier League) for the current
@@ -600,7 +601,7 @@ class Team:
         return wins
 
     @int_property_decorator
-    def away_draws(self):
+    def away_draws(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has drawn while away
         during their primary competition (ie. Premier League) for the current
@@ -619,7 +620,7 @@ class Team:
         return draws
 
     @int_property_decorator
-    def away_losses(self):
+    def away_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of games the team has lost while away
         during their primary competition (ie. Premier League) for the current
@@ -638,7 +639,7 @@ class Team:
         return losses
 
     @int_property_decorator
-    def home_points(self):
+    def home_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the team has gained while at
         home during their primary competition (ie. Premier League) for the
@@ -647,7 +648,7 @@ class Team:
         return self._home_points
 
     @int_property_decorator
-    def away_points(self):
+    def away_points(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of points the team has gained while
         away during their primary competition (ie. Premier League) for the

@@ -15,6 +15,7 @@ from sportsipy.constants import (WIN,
                                  CONFERENCE_TOURNAMENT)
 from sportsipy.nhl.boxscore import Boxscore
 from sportsipy.nhl.constants import OVERTIME_LOSS, SHOOTOUT
+from typing import Iterator, Optional
 
 
 class Game:
@@ -143,7 +144,7 @@ class Game:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the boxscore string.
@@ -188,7 +189,7 @@ class Game:
         return pd.DataFrame([fields_to_include], index=[self._boxscore])
 
     @property
-    def dataframe_extended(self):
+    def dataframe_extended(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame representing the Boxscore class for the
         game. This property provides much richer context for the selected game,
@@ -198,7 +199,7 @@ class Game:
         return self.boxscore.dataframe
 
     @int_property_decorator
-    def game(self):
+    def game(self) -> Optional[int]:
         """
         Returns an ``int`` to indicate which game in the season was requested.
         The first game of the season returns 1.
@@ -206,7 +207,7 @@ class Game:
         return int(self._game)
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the date the game was played, such as
         '2017-10-05'.
@@ -214,7 +215,7 @@ class Game:
         return self._date
 
     @property
-    def datetime(self):
+    def datetime(self) -> Optional[datetime]:
         """
         Returns a datetime object to indicate the month, day, and year the game
         was played at.
@@ -222,7 +223,7 @@ class Game:
         return datetime.strptime(self._date, '%Y-%m-%d')
 
     @property
-    def boxscore(self):
+    def boxscore(self) -> Optional[Boxscore]:
         """
         Returns an instance of the Boxscore class containing more detailed
         stats on the game.
@@ -230,7 +231,7 @@ class Game:
         return Boxscore(self._boxscore)
 
     @property
-    def boxscore_index(self):
+    def boxscore_index(self) -> Optional[str]:
         """
         Returns a ``string`` of the URI for a boxscore which can be used to
         access or index a game.
@@ -238,7 +239,7 @@ class Game:
         return self._boxscore
 
     @property
-    def location(self):
+    def location(self) -> str:
         """
         Returns a ``string`` constant to indicate whether the game was played
         at home or away.
@@ -248,7 +249,7 @@ class Game:
         return HOME
 
     @property
-    def opponent_abbr(self):
+    def opponent_abbr(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponent's 3-letter abbreviation, such as
         'NYR' for the New York Rangers.
@@ -256,7 +257,7 @@ class Game:
         return self._opponent_abbr
 
     @property
-    def opponent_name(self):
+    def opponent_name(self) -> Optional[str]:
         """
         Returns a ``string`` of the opponent's name, such as 'New York
         Rangers'.
@@ -264,7 +265,7 @@ class Game:
         return self._opponent_name
 
     @int_property_decorator
-    def goals_scored(self):
+    def goals_scored(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team scored during the
         game.
@@ -272,7 +273,7 @@ class Game:
         return self._goals_scored
 
     @int_property_decorator
-    def goals_allowed(self):
+    def goals_allowed(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of goals the team allowed during the
         game.
@@ -280,7 +281,7 @@ class Game:
         return self._goals_allowed
 
     @property
-    def result(self):
+    def result(self) -> str:
         """
         Returns a ``string`` constant to indicate whether the team lost in
         regulation, lost in overtime, or won.
@@ -293,7 +294,7 @@ class Game:
         return LOSS
 
     @int_property_decorator
-    def overtime(self):
+    def overtime(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of overtimes that were played during
         the game, or an int constant if the game went to a shootout.
@@ -310,7 +311,7 @@ class Game:
         return 0
 
     @int_property_decorator
-    def shots_on_goal(self):
+    def shots_on_goal(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots on goal the team
         registered.
@@ -318,7 +319,7 @@ class Game:
         return self._shots_on_goal
 
     @int_property_decorator
-    def penalties_in_minutes(self):
+    def penalties_in_minutes(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of minutes the team served for
         penalties.
@@ -326,14 +327,14 @@ class Game:
         return self._penalties_in_minutes
 
     @int_property_decorator
-    def power_play_goals(self):
+    def power_play_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of power play goals the team scored.
         """
         return self._power_play_goals
 
     @int_property_decorator
-    def power_play_opportunities(self):
+    def power_play_opportunities(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of power play opportunities the team
         had.
@@ -341,14 +342,14 @@ class Game:
         return self._power_play_opportunities
 
     @int_property_decorator
-    def short_handed_goals(self):
+    def short_handed_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shorthanded goals the team scored.
         """
         return self._short_handed_goals
 
     @int_property_decorator
-    def opp_shots_on_goal(self):
+    def opp_shots_on_goal(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots on goal the opponent
         registered.
@@ -356,7 +357,7 @@ class Game:
         return self._opp_shots_on_goal
 
     @int_property_decorator
-    def opp_penalties_in_minutes(self):
+    def opp_penalties_in_minutes(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of minutes the opponent served
         for penalties.
@@ -364,7 +365,7 @@ class Game:
         return self._opp_penalties_in_minutes
 
     @int_property_decorator
-    def opp_power_play_goals(self):
+    def opp_power_play_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of power play goals the opponent
         scored.
@@ -372,7 +373,7 @@ class Game:
         return self._opp_power_play_goals
 
     @int_property_decorator
-    def opp_power_play_opportunities(self):
+    def opp_power_play_opportunities(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of power play opportunities the
         opponent had.
@@ -380,7 +381,7 @@ class Game:
         return self._opp_power_play_opportunities
 
     @int_property_decorator
-    def opp_short_handed_goals(self):
+    def opp_short_handed_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of shorthanded goals the opponent
         scored.
@@ -388,7 +389,7 @@ class Game:
         return self._opp_short_handed_goals
 
     @int_property_decorator
-    def corsi_for(self):
+    def corsi_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the Corsi For at Even Strength metric which
         equals the number of shots + blocks + misses.
@@ -396,7 +397,7 @@ class Game:
         return self._corsi_for
 
     @int_property_decorator
-    def corsi_against(self):
+    def corsi_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the Corsi Against at Even Strength metric which
         equals the number of shots + blocks + misses by the opponent.
@@ -404,7 +405,7 @@ class Game:
         return self._corsi_against
 
     @float_property_decorator
-    def corsi_for_percentage(self):
+    def corsi_for_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of control a team had of the puck
         which is calculated by the corsi_for value divided by the sum of
@@ -415,7 +416,7 @@ class Game:
         return self._corsi_for_percentage
 
     @int_property_decorator
-    def fenwick_for(self):
+    def fenwick_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the Fenwick For at Even Strength metric which
         equals the number of shots + misses.
@@ -423,7 +424,7 @@ class Game:
         return self._fenwick_for
 
     @int_property_decorator
-    def fenwick_against(self):
+    def fenwick_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the Fenwick Against at Even Strength metric which
         equals the number of shots + misses by the opponent.
@@ -431,7 +432,7 @@ class Game:
         return self._fenwick_against
 
     @float_property_decorator
-    def fenwick_for_percentage(self):
+    def fenwick_for_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of control a team had of the puck
         which is calculated by the fenwick_for value divided by the sum of
@@ -442,7 +443,7 @@ class Game:
         return self._fenwick_for_percentage
 
     @int_property_decorator
-    def faceoff_wins(self):
+    def faceoff_wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of faceoffs the team won at even
         strength.
@@ -450,7 +451,7 @@ class Game:
         return self._faceoff_wins
 
     @int_property_decorator
-    def faceoff_losses(self):
+    def faceoff_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of faceoffs the team lost at even
         strength.
@@ -458,7 +459,7 @@ class Game:
         return self._faceoff_losses
 
     @float_property_decorator
-    def faceoff_win_percentage(self):
+    def faceoff_win_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of percentage of faceoffs the team won while at
         even strength. Percentage ranges from 0-100.
@@ -466,7 +467,7 @@ class Game:
         return self._faceoff_win_percentage
 
     @float_property_decorator
-    def offensive_zone_start_percentage(self):
+    def offensive_zone_start_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of stats that took place in the
         offensive half. Value is calculated by the number of offensive zone
@@ -476,7 +477,7 @@ class Game:
         return self._offensive_zone_start_percentage
 
     @float_property_decorator
-    def pdo(self):
+    def pdo(self) -> Optional[float]:
         """
         Returns a ``float`` of the team's PDO at Even Strength metric which is
         calculated by the sum of the shooting percentage and save percentage.
@@ -499,11 +500,11 @@ class Schedule:
     year : string (optional)
         The requested year to pull stats from.
     """
-    def __init__(self, abbreviation, year=None):
-        self._games = []
+    def __init__(self, abbreviation: str, year: Optional[str]=None):
+        self._games: list[Game] = []
         self._pull_schedule(abbreviation, year)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Game:
         """
         Return a specified game.
 
@@ -523,7 +524,7 @@ class Schedule:
         """
         return self._games[index]
 
-    def __call__(self, date):
+    def __call__(self, date: datetime) -> Game:
         """
         Return a specified game.
 
@@ -569,7 +570,7 @@ class Schedule:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Game]:
         """
         Returns an iterator of all of the games scheduled for the given team.
         """
@@ -618,7 +619,7 @@ class Schedule:
             self._games.append(game)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Game class. Rows are indexed by the boxscore string.
@@ -633,7 +634,7 @@ class Schedule:
         return pd.concat(frames)
 
     @property
-    def dataframe_extended(self):
+    def dataframe_extended(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Boxscore class for every game in the schedule. Rows are indexed by the

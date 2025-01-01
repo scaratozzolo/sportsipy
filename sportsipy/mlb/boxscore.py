@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-from datetime import timedelta
+from datetime import datetime, timedelta
 from pyquery import PyQuery as pq
 from urllib.error import HTTPError
 from .. import utils
@@ -16,6 +16,7 @@ from .constants import (BOXSCORE_ELEMENT_INDEX,
 from .player import (AbstractPlayer,
                      _float_property_decorator,
                      _int_property_decorator)
+from typing import Any, Optional
 
 
 class BoxscorePlayer(AbstractPlayer):
@@ -84,7 +85,7 @@ class BoxscorePlayer(AbstractPlayer):
         AbstractPlayer.__init__(self, player_id, player_name, player_data)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a ``pandas DataFrame`` containing all other relevant class
         properties and values for the specified game.
@@ -142,7 +143,7 @@ class BoxscorePlayer(AbstractPlayer):
         return pd.DataFrame([fields_to_include], index=[self._player_id])
 
     @_float_property_decorator
-    def average_leverage_index(self):
+    def average_leverage_index(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of pressure the player faced during
         the game. 1.0 denotes average pressure while numbers less than 0 denote
@@ -151,14 +152,14 @@ class BoxscorePlayer(AbstractPlayer):
         return self._average_leverage_index
 
     @_float_property_decorator
-    def base_out_runs_added(self):
+    def base_out_runs_added(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of base out runs added by the player.
         """
         return self._base_out_runs_added
 
     @_float_property_decorator
-    def earned_runs_against(self):
+    def earned_runs_against(self) -> Optional[float]:
         """
         Returns a ``float`` of the player's overall Earned Runs Against average
         as calculated by 9 * earned_runs / innings_pitched.
@@ -166,7 +167,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._earned_runs_against
 
     @_float_property_decorator
-    def innings_pitched(self):
+    def innings_pitched(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of innings the player pitched in.
         Numbers ending in '.0' indicate complete innings, while numbers ending
@@ -175,21 +176,21 @@ class BoxscorePlayer(AbstractPlayer):
         return self._innings_pitched
 
     @_int_property_decorator
-    def home_runs_thrown(self):
+    def home_runs_thrown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of home runs the player threw.
         """
         return self._home_runs_thrown
 
     @_int_property_decorator
-    def pitches_thrown(self):
+    def pitches_thrown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of pitches the player threw.
         """
         return self._pitches_thrown
 
     @_int_property_decorator
-    def strikes(self):
+    def strikes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times a strike was called against
         the player.
@@ -197,14 +198,14 @@ class BoxscorePlayer(AbstractPlayer):
         return self._strikes
 
     @_int_property_decorator
-    def strikes_thrown(self):
+    def strikes_thrown(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times a strikes the player threw.
         """
         return self._strikes_thrown
 
     @_int_property_decorator
-    def strikes_contact(self):
+    def strikes_contact(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player threw a strike
         when the player made contact with the ball.
@@ -212,7 +213,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._strikes_contact
 
     @_int_property_decorator
-    def strikes_swinging(self):
+    def strikes_swinging(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player threw a strike
         with the batter swinging.
@@ -220,7 +221,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._strikes_swinging
 
     @_int_property_decorator
-    def strikes_looking(self):
+    def strikes_looking(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the player threw a strike
         with the player looking.
@@ -228,35 +229,35 @@ class BoxscorePlayer(AbstractPlayer):
         return self._strikes_looking
 
     @_int_property_decorator
-    def grounded_balls(self):
+    def grounded_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of grounded balls the player allowed.
         """
         return self._grounded_balls
 
     @_int_property_decorator
-    def fly_balls(self):
+    def fly_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of fly balls the player allowed.
         """
         return self._fly_balls
 
     @_int_property_decorator
-    def line_drives(self):
+    def line_drives(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of line drives the player allowed.
         """
         return self._line_drives
 
     @_int_property_decorator
-    def unknown_bat_types(self):
+    def unknown_bat_types(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of line drives the player allowed.
         """
         return self._unknown_bat_types
 
     @_int_property_decorator
-    def game_score(self):
+    def game_score(self) -> Optional[int]:
         """
         Returns an ``int`` of the pitcher's score determine by many factors,
         such as number of runs scored against, number of strikes, etc.
@@ -264,14 +265,14 @@ class BoxscorePlayer(AbstractPlayer):
         return self._game_score
 
     @_int_property_decorator
-    def inherited_runners(self):
+    def inherited_runners(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runners a relief pitcher inherited.
         """
         return self._inherited_runners
 
     @_int_property_decorator
-    def inherited_score(self):
+    def inherited_score(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runners on base when a relief
         pitcher entered the game that ended up scoring.
@@ -279,7 +280,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._inherited_score
 
     @_float_property_decorator
-    def win_probability_added_pitcher(self):
+    def win_probability_added_pitcher(self) -> Optional[float]:
         """
         Returns a ``float`` of the total positive influence the pitcher's
         offense had on the outcome of the game.
@@ -287,7 +288,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._win_probability_added_pitcher
 
     @_float_property_decorator
-    def average_leverage_index_pitcher(self):
+    def average_leverage_index_pitcher(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of pressure the pitcher faced during
         the game. 1.0 denotes average pressure while numbers less than 0 denote
@@ -296,7 +297,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._average_leverage_index_pitcher
 
     @_float_property_decorator
-    def base_out_runs_saved(self):
+    def base_out_runs_saved(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of runs saved by the pitcher based on
         the number of players on bases. 0.0 denotes an average value.
@@ -304,7 +305,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._base_out_runs_saved
 
     @_float_property_decorator
-    def win_probability_added(self):
+    def win_probability_added(self) -> Optional[float]:
         """
         Returns a ``float`` of the total positive influence the player's
         offense had on the outcome of the game.
@@ -312,7 +313,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._win_probability_added
 
     @_float_property_decorator
-    def win_probability_subtracted(self):
+    def win_probability_subtracted(self) -> Optional[float]:
         """
         Returns a ``float`` of the total negative influence the player's
         offense had on the outcome of the game.
@@ -320,7 +321,7 @@ class BoxscorePlayer(AbstractPlayer):
         return self._win_probability_subtracted
 
     @_float_property_decorator
-    def win_probability_for_offensive_player(self):
+    def win_probability_for_offensive_player(self) -> Optional[float]:
         """
         Returns a ``float`` of the overall influence the player's offense had
         on the outcome of the game where 0.0 denotes no influence and 1.0
@@ -343,7 +344,7 @@ class Boxscore:
         The relative link to the boxscore HTML page, such as
         'BOS/BOS201806070'.
     """
-    def __init__(self, uri):
+    def __init__(self, uri: str):
         self._uri = uri
         self._date = None
         self._time = None
@@ -841,7 +842,7 @@ class Boxscore:
         self._away_players, self._home_players = self._find_players(boxscore)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> Optional[pd.DataFrame]:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the string URI that is used to
@@ -941,7 +942,7 @@ class Boxscore:
         return pd.DataFrame([fields_to_include], index=[self._uri])
 
     @property
-    def away_players(self):
+    def away_players(self) -> Optional[list[BoxscorePlayer]]:
         """
         Returns a ``list`` of ``BoxscorePlayer`` class instances for each
         player on the away team.
@@ -949,7 +950,7 @@ class Boxscore:
         return self._away_players
 
     @property
-    def home_players(self):
+    def home_players(self) -> Optional[list[BoxscorePlayer]]:
         """
         Returns a ``list`` of ``BoxscorePlayer`` class instances for each
         player on the home team.
@@ -957,21 +958,21 @@ class Boxscore:
         return self._home_players
 
     @property
-    def date(self):
+    def date(self) -> Optional[str]:
         """
         Returns a ``string`` of the date the game took place.
         """
         return self._date
 
     @property
-    def time(self):
+    def time(self) -> Optional[str]:
         """
         Returns a ``string`` of the time the game started.
         """
         return self._time
 
     @property
-    def venue(self):
+    def venue(self) -> Optional[str]:
         """
         Returns a ``string`` of the name of the ballpark where the game was
         played.
@@ -979,21 +980,21 @@ class Boxscore:
         return self._venue
 
     @int_property_decorator
-    def attendance(self):
+    def attendance(self) -> Optional[int]:
         """
         Returns an ``int`` of the game's listed attendance.
         """
         return self._attendance
 
     @property
-    def duration(self):
+    def duration(self) -> Optional[str]:
         """
         Returns a ``string`` of the game's duration in the format 'H:MM'.
         """
         return self._duration
 
     @property
-    def time_of_day(self):
+    def time_of_day(self) -> str:
         """
         Returns a ``string`` constant indicated whether the game was played
         during the day or at night.
@@ -1003,7 +1004,7 @@ class Boxscore:
         return DAY
 
     @property
-    def summary(self):
+    def summary(self) -> Optional[dict[str, list[int]]]:
         """
         Returns a ``dictionary`` with two keys, 'away' and 'home'. The value of
         each key will be a list for each respective team's score by order of
@@ -1018,7 +1019,7 @@ class Boxscore:
         return self._summary
 
     @property
-    def winner(self):
+    def winner(self) -> str:
         """
         Returns a ``string`` constant indicating whether the home or away team
         won.
@@ -1028,7 +1029,7 @@ class Boxscore:
         return AWAY
 
     @property
-    def winning_name(self):
+    def winning_name(self) -> str:
         """
         Returns a ``string`` of the winning team's name, such as 'Houston
         Astros'.
@@ -1038,7 +1039,7 @@ class Boxscore:
         return self._away_name.text()
 
     @property
-    def winning_abbr(self):
+    def winning_abbr(self) -> str:
         """
         Returns a ``string`` of the winning team's abbreviation, such as 'HOU'
         for the Houston Astros.
@@ -1048,7 +1049,7 @@ class Boxscore:
         return utils._parse_abbreviation(self._away_name)
 
     @property
-    def losing_name(self):
+    def losing_name(self) -> str:
         """
         Returns a ``string`` of the losing team's name, such as 'Los Angeles
         Dodgers'.
@@ -1058,7 +1059,7 @@ class Boxscore:
         return self._home_name.text()
 
     @property
-    def losing_abbr(self):
+    def losing_abbr(self) -> str:
         """
         Returns a ``string`` of the losing team's abbreviation, such as 'LAD'
         for the Los Angeles Dodgers.
@@ -1068,28 +1069,28 @@ class Boxscore:
         return utils._parse_abbreviation(self._home_name)
 
     @int_property_decorator
-    def away_at_bats(self):
+    def away_at_bats(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of at bats the away team had.
         """
         return self._away_at_bats
 
     @int_property_decorator
-    def away_runs(self):
+    def away_runs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs the away team scored.
         """
         return self._away_runs
 
     @int_property_decorator
-    def away_hits(self):
+    def away_hits(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of hits the away team had.
         """
         return self._away_hits
 
     @int_property_decorator
-    def away_rbi(self):
+    def away_rbi(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs batted in the away team
         registered.
@@ -1097,14 +1098,14 @@ class Boxscore:
         return self._away_rbi
 
     @float_property_decorator
-    def away_earned_runs(self):
+    def away_earned_runs(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of runs the away team earned.
         """
         return self._away_earned_runs
 
     @int_property_decorator
-    def away_bases_on_balls(self):
+    def away_bases_on_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases the away team registerd as a
         result of balls.
@@ -1112,14 +1113,14 @@ class Boxscore:
         return self._away_bases_on_balls
 
     @int_property_decorator
-    def away_strikeouts(self):
+    def away_strikeouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team was struck out.
         """
         return self._away_strikeouts
 
     @int_property_decorator
-    def away_plate_appearances(self):
+    def away_plate_appearances(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of plate appearances the away team
         made.
@@ -1127,14 +1128,14 @@ class Boxscore:
         return self._away_plate_appearances
 
     @float_property_decorator
-    def away_batting_average(self):
+    def away_batting_average(self) -> Optional[float]:
         """
         Returns a ``float`` of the batting average for the away team.
         """
         return self._away_batting_average
 
     @float_property_decorator
-    def away_on_base_percentage(self):
+    def away_on_base_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of at bats that result in the
         batter getting on base.
@@ -1142,7 +1143,7 @@ class Boxscore:
         return self._away_on_base_percentage
 
     @float_property_decorator
-    def away_slugging_percentage(self):
+    def away_slugging_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the slugging percentage for the away team based
         on the number of bases gained per at-bat with bigger plays getting more
@@ -1151,7 +1152,7 @@ class Boxscore:
         return self._away_slugging_percentage
 
     @float_property_decorator
-    def away_on_base_plus(self):
+    def away_on_base_plus(self) -> Optional[float]:
         """
         Returns a ``float`` of the on base percentage plus the slugging
         percentage. Percentage ranges from 0-1.
@@ -1159,14 +1160,14 @@ class Boxscore:
         return self._away_on_base_plus
 
     @int_property_decorator
-    def away_pitches(self):
+    def away_pitches(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of pitches the away team faced.
         """
         return self._away_pitches
 
     @int_property_decorator
-    def away_strikes(self):
+    def away_strikes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times a strike was called against
         the away team.
@@ -1174,7 +1175,7 @@ class Boxscore:
         return self._away_strikes
 
     @float_property_decorator
-    def away_win_probability_for_offensive_player(self):
+    def away_win_probability_for_offensive_player(self) -> Optional[float]:
         """
         Returns a ``float`` of the overall influence the away team's offense
         had on the outcome of the game where 0.0 denotes no influence and 1.0
@@ -1183,7 +1184,7 @@ class Boxscore:
         return self._away_win_probability_for_offensive_player
 
     @float_property_decorator
-    def away_average_leverage_index(self):
+    def away_average_leverage_index(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of pressure the away team's pitcher
         faced during the game. 1.0 denotes average pressure while numbers less
@@ -1192,7 +1193,7 @@ class Boxscore:
         return self._away_average_leverage_index
 
     @float_property_decorator
-    def away_win_probability_added(self):
+    def away_win_probability_added(self) -> Optional[float]:
         """
         Returns a ``float`` of the total positive influence the away team's
         offense had on the outcome of the game.
@@ -1200,7 +1201,7 @@ class Boxscore:
         return self._away_win_probability_added
 
     @float_property_decorator
-    def away_win_probability_subtracted(self):
+    def away_win_probability_subtracted(self) -> Optional[float]:
         """
         Returns a ``float`` of the total negative influence the away team's
         offense had on the outcome of the game.
@@ -1208,7 +1209,7 @@ class Boxscore:
         return self._away_win_probability_subtracted
 
     @float_property_decorator
-    def away_base_out_runs_added(self):
+    def away_base_out_runs_added(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of base out runs added by the away
         team.
@@ -1216,28 +1217,28 @@ class Boxscore:
         return self._away_base_out_runs_added
 
     @int_property_decorator
-    def away_putouts(self):
+    def away_putouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of putouts the away team registered.
         """
         return self._away_putouts
 
     @int_property_decorator
-    def away_assists(self):
+    def away_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the away team registered.
         """
         return self._away_assists
 
     @float_property_decorator
-    def away_innings_pitched(self):
+    def away_innings_pitched(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of innings the away team pitched.
         """
         return self._away_innings_pitched
 
     @int_property_decorator
-    def away_home_runs(self):
+    def away_home_runs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team gave up a home
         run.
@@ -1245,7 +1246,7 @@ class Boxscore:
         return self._away_home_runs
 
     @int_property_decorator
-    def away_strikes_by_contact(self):
+    def away_strikes_by_contact(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team struck out a
         batter who made contact with the pitch.
@@ -1253,7 +1254,7 @@ class Boxscore:
         return self._away_strikes_by_contact
 
     @int_property_decorator
-    def away_strikes_swinging(self):
+    def away_strikes_swinging(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team struck out a
         batter who was swinging.
@@ -1261,7 +1262,7 @@ class Boxscore:
         return self._away_strikes_swinging
 
     @int_property_decorator
-    def away_strikes_looking(self):
+    def away_strikes_looking(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the away team struck out a
         batter who was looking.
@@ -1269,7 +1270,7 @@ class Boxscore:
         return self._away_strikes_looking
 
     @int_property_decorator
-    def away_grounded_balls(self):
+    def away_grounded_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of grounded balls the away team
         allowed.
@@ -1277,21 +1278,21 @@ class Boxscore:
         return self._away_grounded_balls
 
     @int_property_decorator
-    def away_fly_balls(self):
+    def away_fly_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of fly balls the away team allowed.
         """
         return self._away_fly_balls
 
     @int_property_decorator
-    def away_line_drives(self):
+    def away_line_drives(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of line drives the away team allowed.
         """
         return self._away_line_drives
 
     @int_property_decorator
-    def away_unknown_bat_type(self):
+    def away_unknown_bat_type(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of away at bats that were not properly
         tracked and therefore cannot be safely placed in another statistical
@@ -1300,7 +1301,7 @@ class Boxscore:
         return self._away_unknown_bat_type
 
     @int_property_decorator
-    def away_game_score(self):
+    def away_game_score(self) -> Optional[int]:
         """
         Returns an ``int`` of the starting away pitcher's score determine by
         many factors, such as number of runs scored against, number of strikes,
@@ -1309,7 +1310,7 @@ class Boxscore:
         return self._away_game_score
 
     @int_property_decorator
-    def away_inherited_runners(self):
+    def away_inherited_runners(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runners a pitcher inherited when he
         entered the game.
@@ -1317,7 +1318,7 @@ class Boxscore:
         return self._away_inherited_runners
 
     @int_property_decorator
-    def away_inherited_score(self):
+    def away_inherited_score(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of scorers a pitcher inherited when he
         entered the game.
@@ -1325,7 +1326,7 @@ class Boxscore:
         return self._away_inherited_score
 
     @float_property_decorator
-    def away_win_probability_by_pitcher(self):
+    def away_win_probability_by_pitcher(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of influence the away pitcher had on
         the game's result with 0.0 denoting zero influence and 1.0 denoting he
@@ -1334,7 +1335,7 @@ class Boxscore:
         return self._away_win_probability_by_pitcher
 
     @float_property_decorator
-    def away_base_out_runs_saved(self):
+    def away_base_out_runs_saved(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of runs saved by the away pitcher
         based on the number of players on bases. 0.0 denotes an average value.
@@ -1342,28 +1343,28 @@ class Boxscore:
         return self._away_base_out_runs_saved
 
     @int_property_decorator
-    def home_at_bats(self):
+    def home_at_bats(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of at bats the home team had.
         """
         return self._home_at_bats
 
     @int_property_decorator
-    def home_runs(self):
+    def home_runs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs the home team scored.
         """
         return self._home_runs
 
     @int_property_decorator
-    def home_hits(self):
+    def home_hits(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of hits the home team had.
         """
         return self._home_hits
 
     @int_property_decorator
-    def home_rbi(self):
+    def home_rbi(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runs batted in the home team
         registered.
@@ -1371,14 +1372,14 @@ class Boxscore:
         return self._home_rbi
 
     @float_property_decorator
-    def home_earned_runs(self):
+    def home_earned_runs(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of runs the home team earned.
         """
         return self._home_earned_runs
 
     @int_property_decorator
-    def home_bases_on_balls(self):
+    def home_bases_on_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of bases the home team registerd as a
         result of balls.
@@ -1386,14 +1387,14 @@ class Boxscore:
         return self._home_bases_on_balls
 
     @int_property_decorator
-    def home_strikeouts(self):
+    def home_strikeouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team was struck out.
         """
         return self._home_strikeouts
 
     @int_property_decorator
-    def home_plate_appearances(self):
+    def home_plate_appearances(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of plate appearances the home team
         made.
@@ -1401,14 +1402,14 @@ class Boxscore:
         return self._home_plate_appearances
 
     @float_property_decorator
-    def home_batting_average(self):
+    def home_batting_average(self) -> Optional[float]:
         """
         Returns a ``float`` of the batting average for the home team.
         """
         return self._home_batting_average
 
     @float_property_decorator
-    def home_on_base_percentage(self):
+    def home_on_base_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the percentage of at bats that result in the
         batter getting on base.
@@ -1416,7 +1417,7 @@ class Boxscore:
         return self._home_on_base_percentage
 
     @float_property_decorator
-    def home_slugging_percentage(self):
+    def home_slugging_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` of the slugging percentage for the home team based
         on the number of bases gained per at-bat with bigger plays getting more
@@ -1425,7 +1426,7 @@ class Boxscore:
         return self._home_slugging_percentage
 
     @float_property_decorator
-    def home_on_base_plus(self):
+    def home_on_base_plus(self) -> Optional[float]:
         """
         Returns a ``float`` of the on base percentage plus the slugging
         percentage. Percentage ranges from 0-1.
@@ -1433,14 +1434,14 @@ class Boxscore:
         return self._home_on_base_plus
 
     @int_property_decorator
-    def home_pitches(self):
+    def home_pitches(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of pitches the home team faced.
         """
         return self._home_pitches
 
     @int_property_decorator
-    def home_strikes(self):
+    def home_strikes(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times a strike was called against
         the home team.
@@ -1448,7 +1449,7 @@ class Boxscore:
         return self._home_strikes
 
     @float_property_decorator
-    def home_win_probability_for_offensive_player(self):
+    def home_win_probability_for_offensive_player(self) -> Optional[float]:
         """
         Returns a ``float`` of the overall influence the home team's offense
         had on the outcome of the game where 0.0 denotes no influence and 1.0
@@ -1457,7 +1458,7 @@ class Boxscore:
         return self._home_win_probability_for_offensive_player
 
     @float_property_decorator
-    def home_average_leverage_index(self):
+    def home_average_leverage_index(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of pressure the home team's pitcher
         faced during the game. 1.0 denotes average pressure while numbers less
@@ -1466,7 +1467,7 @@ class Boxscore:
         return self._home_average_leverage_index
 
     @float_property_decorator
-    def home_win_probability_added(self):
+    def home_win_probability_added(self) -> Optional[float]:
         """
         Returns a ``float`` of the total positive influence the home team's
         offense had on the outcome of the game.
@@ -1474,7 +1475,7 @@ class Boxscore:
         return self._home_win_probability_added
 
     @float_property_decorator
-    def home_win_probability_subtracted(self):
+    def home_win_probability_subtracted(self) -> Optional[float]:
         """
         Returns a ``float`` of the total negative influence the home team's
         offense had on the outcome of the game.
@@ -1482,7 +1483,7 @@ class Boxscore:
         return self._home_win_probability_subtracted
 
     @float_property_decorator
-    def home_base_out_runs_added(self):
+    def home_base_out_runs_added(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of base out runs added by the home
         team.
@@ -1490,28 +1491,28 @@ class Boxscore:
         return self._home_base_out_runs_added
 
     @int_property_decorator
-    def home_putouts(self):
+    def home_putouts(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of putouts the home team registered.
         """
         return self._home_putouts
 
     @int_property_decorator
-    def home_assists(self):
+    def home_assists(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of assists the home team registered.
         """
         return self._home_assists
 
     @float_property_decorator
-    def home_innings_pitched(self):
+    def home_innings_pitched(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of innings the home team pitched.
         """
         return self._home_innings_pitched
 
     @int_property_decorator
-    def home_home_runs(self):
+    def home_home_runs(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team gave up a home
         run.
@@ -1519,7 +1520,7 @@ class Boxscore:
         return self._home_home_runs
 
     @int_property_decorator
-    def home_strikes_by_contact(self):
+    def home_strikes_by_contact(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team struck out a
         batter who made contact with the pitch.
@@ -1527,7 +1528,7 @@ class Boxscore:
         return self._home_strikes_by_contact
 
     @int_property_decorator
-    def home_strikes_swinging(self):
+    def home_strikes_swinging(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team struck out a
         batter who was swinging.
@@ -1535,7 +1536,7 @@ class Boxscore:
         return self._home_strikes_swinging
 
     @int_property_decorator
-    def home_strikes_looking(self):
+    def home_strikes_looking(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of times the home team struck out a
         batter who was looking.
@@ -1543,7 +1544,7 @@ class Boxscore:
         return self._home_strikes_looking
 
     @int_property_decorator
-    def home_grounded_balls(self):
+    def home_grounded_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of grounded balls the home team
         allowed.
@@ -1551,21 +1552,21 @@ class Boxscore:
         return self._home_grounded_balls
 
     @int_property_decorator
-    def home_fly_balls(self):
+    def home_fly_balls(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of fly balls the home team allowed.
         """
         return self._home_fly_balls
 
     @int_property_decorator
-    def home_line_drives(self):
+    def home_line_drives(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of line drives the home team allowed.
         """
         return self._home_line_drives
 
     @int_property_decorator
-    def home_unknown_bat_type(self):
+    def home_unknown_bat_type(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of home at bats that were not properly
         tracked and therefore cannot be safely placed in another statistical
@@ -1574,7 +1575,7 @@ class Boxscore:
         return self._home_unknown_bat_type
 
     @int_property_decorator
-    def home_game_score(self):
+    def home_game_score(self) -> Optional[int]:
         """
         Returns an ``int`` of the starting home pitcher's score determine by
         many factors, such as number of runs scored against, number of strikes,
@@ -1583,7 +1584,7 @@ class Boxscore:
         return self._home_game_score
 
     @int_property_decorator
-    def home_inherited_runners(self):
+    def home_inherited_runners(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of runners a pitcher inherited when he
         entered the game.
@@ -1591,7 +1592,7 @@ class Boxscore:
         return self._home_inherited_runners
 
     @int_property_decorator
-    def home_inherited_score(self):
+    def home_inherited_score(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of scorers a pitcher inherited when he
         entered the game.
@@ -1599,7 +1600,7 @@ class Boxscore:
         return self._home_inherited_score
 
     @float_property_decorator
-    def home_win_probability_by_pitcher(self):
+    def home_win_probability_by_pitcher(self) -> Optional[float]:
         """
         Returns a ``float`` of the amount of influence the home pitcher had on
         the game's result with 0.0 denoting zero influence and 1.0 denoting he
@@ -1608,7 +1609,7 @@ class Boxscore:
         return self._home_win_probability_by_pitcher
 
     @float_property_decorator
-    def home_base_out_runs_saved(self):
+    def home_base_out_runs_saved(self) -> Optional[float]:
         """
         Returns a ``float`` of the number of runs saved by the home pitcher
         based on the number of players on bases. 0.0 denotes an average value.
@@ -1637,8 +1638,8 @@ class Boxscores:
         pulled. If left empty, or if 'end_date' is prior to 'date', only the
         games from the day specified in the 'date' parameter will be saved.
     """
-    def __init__(self, date, end_date=None):
-        self._boxscores = {}
+    def __init__(self, date: datetime, end_date: Optional[datetime]=None):
+        self._boxscores: dict[str, list[dict[str, Any]]] = {}
 
         self._find_games(date, end_date)
 
@@ -1655,7 +1656,7 @@ class Boxscores:
         return self.__str__()
 
     @property
-    def games(self):
+    def games(self) -> dict[str, list[dict[str, Any]]]:
         """
         Returns a ``dictionary`` object representing all of the games played on
         the requested day. Dictionary is in the following format::

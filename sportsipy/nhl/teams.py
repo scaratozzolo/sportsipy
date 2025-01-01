@@ -6,6 +6,7 @@ from .. import utils
 from .nhl_utils import _retrieve_all_teams
 from .roster import Roster
 from .schedule import Schedule
+from typing import Iterator, Optional
 
 
 class Team:
@@ -152,7 +153,7 @@ class Team:
             setattr(self, field, value)
 
     @property
-    def dataframe(self):
+    def dataframe(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame containing all other class properties and
         values. The index for the DataFrame is the string abbreviation of the
@@ -192,7 +193,7 @@ class Team:
         return pd.DataFrame([fields_to_include], index=[self._abbreviation])
 
     @int_property_decorator
-    def rank(self):
+    def rank(self) -> Optional[int]:
         """
         Returns an ``int`` of the team's rank based on the number of points
         they obtained in the season.
@@ -200,7 +201,7 @@ class Team:
         return self._rank
 
     @property
-    def abbreviation(self):
+    def abbreviation(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's abbreviation, such as 'DET' for the
         Detroit Red Wings.
@@ -208,7 +209,7 @@ class Team:
         return self._abbreviation
 
     @property
-    def schedule(self):
+    def schedule(self) -> Schedule:
         """
         Returns an instance of the Schedule class containing the team's
         complete schedule for the season.
@@ -216,7 +217,7 @@ class Team:
         return Schedule(self._abbreviation, self._year)
 
     @property
-    def roster(self):
+    def roster(self) -> Roster:
         """
         Returns an instance of the Roster class containing all players for the
         team during the season with all career stats.
@@ -224,7 +225,7 @@ class Team:
         return Roster(self._abbreviation, self._year)
 
     @property
-    def name(self):
+    def name(self) -> Optional[str]:
         """
         Returns a ``string`` of the team's full name, such as 'Detroit Red
         Wings'.
@@ -232,7 +233,7 @@ class Team:
         return self._name
 
     @float_property_decorator
-    def average_age(self):
+    def average_age(self) -> Optional[float]:
         """
         Returns a ``float`` of the average age of all players on the team,
         weighted by their time on ice.
@@ -240,7 +241,7 @@ class Team:
         return self._average_age
 
     @int_property_decorator
-    def games_played(self):
+    def games_played(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of games the team has played in
         the season.
@@ -248,7 +249,7 @@ class Team:
         return self._games_played
 
     @int_property_decorator
-    def wins(self):
+    def wins(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of wins the team had in the
         season.
@@ -256,7 +257,7 @@ class Team:
         return self._wins
 
     @int_property_decorator
-    def losses(self):
+    def losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of losses the team had in the
         season.
@@ -264,7 +265,7 @@ class Team:
         return self._losses
 
     @int_property_decorator
-    def overtime_losses(self):
+    def overtime_losses(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of overtime losses the team had
         in the season.
@@ -272,7 +273,7 @@ class Team:
         return self._overtime_losses
 
     @int_property_decorator
-    def points(self):
+    def points(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of points the team gained in the
         season.
@@ -280,7 +281,7 @@ class Team:
         return self._points
 
     @float_property_decorator
-    def points_percentage(self):
+    def points_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` denoting the percentage of points gained divided by
         the maximum possible points available during the season. Percentage
@@ -289,7 +290,7 @@ class Team:
         return self._points_percentage
 
     @int_property_decorator
-    def goals_for(self):
+    def goals_for(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of goals a team scored during
         the season.
@@ -297,7 +298,7 @@ class Team:
         return self._goals_for
 
     @int_property_decorator
-    def goals_against(self):
+    def goals_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of goals opponents scored
         against the team during the season.
@@ -305,7 +306,7 @@ class Team:
         return self._goals_against
 
     @float_property_decorator
-    def simple_rating_system(self):
+    def simple_rating_system(self) -> Optional[float]:
         """
         Returns a ``float`` which takes into account the average goal
         differential vs a team's strength of schedule. The league average
@@ -315,7 +316,7 @@ class Team:
         return self._simple_rating_system
 
     @float_property_decorator
-    def strength_of_schedule(self):
+    def strength_of_schedule(self) -> Optional[float]:
         """
         Returns a ``float`` denoting a team's strength of schedule, based on
         goals scores and conceded. Higher values result in more challenging
@@ -324,21 +325,21 @@ class Team:
         return self._strength_of_schedule
 
     @float_property_decorator
-    def total_goals_per_game(self):
+    def total_goals_per_game(self) -> Optional[float]:
         """
         Returns a ``float`` for the average number of goals scored per game.
         """
         return self._total_goals_per_game
 
     @int_property_decorator
-    def power_play_goals(self):
+    def power_play_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of power play goals scored.
         """
         return self._power_play_goals
 
     @int_property_decorator
-    def power_play_opportunities(self):
+    def power_play_opportunities(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of power play opportunities for
         a team during the season.
@@ -346,7 +347,7 @@ class Team:
         return self._power_play_opportunities
 
     @float_property_decorator
-    def power_play_percentage(self):
+    def power_play_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` denoting the percentage of power play opportunities
         where the team has scored. Percentage ranges from 0-100.
@@ -354,14 +355,14 @@ class Team:
         return self._power_play_percentage
 
     @int_property_decorator
-    def power_play_goals_against(self):
+    def power_play_goals_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of power play goals conceded.
         """
         return self._power_play_goals_against
 
     @int_property_decorator
-    def power_play_opportunities_against(self):
+    def power_play_opportunities_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of power play opportunities for
         the opponents during the season.
@@ -369,7 +370,7 @@ class Team:
         return self._power_play_opportunities_against
 
     @float_property_decorator
-    def penalty_killing_percentage(self):
+    def penalty_killing_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` denoting the percentage of power plays that have
         been successfully defended without a goal being conceded. Percentage
@@ -378,7 +379,7 @@ class Team:
         return self._penalty_killing_percentage
 
     @int_property_decorator
-    def short_handed_goals(self):
+    def short_handed_goals(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of short handed goals the team has
         scored during the season.
@@ -386,7 +387,7 @@ class Team:
         return self._short_handed_goals
 
     @int_property_decorator
-    def short_handed_goals_against(self):
+    def short_handed_goals_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the number of short handed goals the team has
         conceded during the season.
@@ -394,7 +395,7 @@ class Team:
         return self._short_handed_goals_against
 
     @int_property_decorator
-    def shots_on_goal(self):
+    def shots_on_goal(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots on goal the team made
         during the season.
@@ -402,7 +403,7 @@ class Team:
         return self._shots_on_goal
 
     @float_property_decorator
-    def shooting_percentage(self):
+    def shooting_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` denoting the percentage of shots to goals during
         the season. Percentage ranges from 0-100.
@@ -410,7 +411,7 @@ class Team:
         return self._shooting_percentage
 
     @int_property_decorator
-    def shots_against(self):
+    def shots_against(self) -> Optional[int]:
         """
         Returns an ``int`` of the total number of shots on goal the team's
         opponents made during the season.
@@ -418,7 +419,7 @@ class Team:
         return self._shots_against
 
     @float_property_decorator
-    def save_percentage(self):
+    def save_percentage(self) -> Optional[float]:
         """
         Returns a ``float`` denoting the percentage of shots the team has saved
         during the season. Percentage ranges from 0-1.
@@ -426,7 +427,7 @@ class Team:
         return self._save_percentage
 
     @float_property_decorator
-    def pdo_at_even_strength(self):
+    def pdo_at_even_strength(self) -> Optional[float]:
         """
         Returns a ``float`` of the PDO at even strength which equates to the
         shooting percentage plus the save percentage.
@@ -452,13 +453,13 @@ class Teams:
         instead of downloading from sports-reference.com. This file should be
         of the Season page for the designated year.
     """
-    def __init__(self, year=None, season_page=None):
-        self._teams = []
+    def __init__(self, year: Optional[str]=None, season_page: Optional[str]=None):
+        self._teams: list[Team] = []
 
         teams_list, year = _retrieve_all_teams(year, season_page)
         self._instantiate_teams(teams_list, year)
 
-    def __getitem__(self, abbreviation):
+    def __getitem__(self, abbreviation: str) -> Team:
         """
         Return a specified team.
 
@@ -486,7 +487,7 @@ class Teams:
                 return team
         raise ValueError('Team abbreviation %s not found' % abbreviation)
 
-    def __call__(self, abbreviation):
+    def __call__(self, abbreviation: str) -> Team:
         """
         Return a specified team.
 
@@ -520,7 +521,7 @@ class Teams:
         """
         return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Team]:
         """Returns an iterator of all of the NHL teams for a given season."""
         return iter(self._teams)
 
@@ -554,7 +555,7 @@ class Teams:
             rank += 1
 
     @property
-    def dataframes(self):
+    def dataframes(self) -> pd.DataFrame:
         """
         Returns a pandas DataFrame where each row is a representation of the
         Team class. Rows are indexed by the team abbreviation.
